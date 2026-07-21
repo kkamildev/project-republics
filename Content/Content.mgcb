@@ -13,3 +13,16 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin fonts/base.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/base.spritefont
+
+#begin fonts/Ithaca.ttf
+/copy:fonts/Ithaca.ttf
+
+#begin fonts/license.txt
+/copy:fonts/license.txt
+
