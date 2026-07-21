@@ -1,2 +1,8 @@
-﻿using var game = new project_republics.Game1();
-game.Run();
+﻿internal class Program
+{
+    private static void Main(string[] args)
+    {
+        using var game = new project_republics.MainGame();
+        game.Run();
+    }
+}
