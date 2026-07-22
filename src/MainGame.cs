@@ -12,6 +12,7 @@ public class MainGame : Game
 
     public static UserInputListener Input{get;private set;}
     public static ContentLoader CL{get;private set;}
+    public static LangLoader LL{get;private set;}
 
     public static Vector2 ScreenSize {get;private set;}
     public static Vector2 Resolution {get;private set;}
@@ -51,11 +52,14 @@ public class MainGame : Game
     {
         Batch = new SpriteBatch(GraphicsDevice);
         Input = new();
+        // Content Loader
         CL = new(Content);
         CL.LoadAllFonts();
         CL.LoadAllTextures();
         CL.LoadAllSounds();
         CL.LoadAllMusic();
+        // Language Loader
+        LL = new();
 
         Input.InsertAction(Controls.EXIT, (hold) => Exit());
 
@@ -72,7 +76,7 @@ public class MainGame : Game
         GraphicsDevice.Clear(Color.Black);
 
         Batch.Begin();
-        Batch.DrawString(CL.Fonts[Fonts.BASE], "Hello world", new Vector2(200), Color.White);
+        Batch.DrawString(CL.Fonts[Fonts.BASE], LL.Translations["hello_world"], new Vector2(200), Color.White);
         Batch.End();
         base.Draw(gameTime);
     }

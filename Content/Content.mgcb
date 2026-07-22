@@ -26,3 +26,6 @@
 #begin fonts/license.txt
 /copy:fonts/license.txt
 
+#begin lang/english.json
+/copy:lang/english.json
+

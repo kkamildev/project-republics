@@ -7,10 +7,10 @@ namespace project_republics.Utils.Input;
 
 public class ContentData
 {
-    private string _baseFontsPath = "fonts";
-    private string _baseTexturesPath = "textures";
-    private string _baseSoundsPath = "sounds";
-    private string _baseMusicPath = "sounds";
+    private readonly string _baseFontsPath = "fonts";
+    private readonly string _baseTexturesPath = "textures";
+    private readonly string _baseSoundsPath = "sounds";
+    private readonly string _baseMusicPath = "sounds";
 
     public Dictionary<Fonts, string> FontsData{get;private set;}
     public Dictionary<Textures, string> TexturesData{get;private set;}
