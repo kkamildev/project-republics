@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using project_republics.Utils.Input;
+using project_republics.Utils.Storage;
 
 namespace project_republics;
 
@@ -11,6 +12,7 @@ public class MainGame : Game
     public static SpriteBatch Batch {get;private set;}
 
     public static UserInputListener Input{get;private set;}
+    public static StorageLoader Storage{get;private set;}
     public static ContentLoader CL{get;private set;}
     public static LangLoader LL{get;private set;}
 
@@ -52,6 +54,9 @@ public class MainGame : Game
     {
         Batch = new SpriteBatch(GraphicsDevice);
         Input = new();
+        // Storage Loader
+        Storage = new("projectRepublics");
+        Storage.LoadSettings();
         // Content Loader
         CL = new(Content);
         CL.LoadAllFonts();

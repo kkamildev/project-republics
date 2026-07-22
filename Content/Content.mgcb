@@ -29,3 +29,6 @@
 #begin lang/english.json
 /copy:lang/english.json
 
+#begin lang/polish.json
+/copy:lang/polish.json
+

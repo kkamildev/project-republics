@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using project_republics.Utils.Storage;
 
 namespace project_republics.Utils.Input;
 
@@ -21,15 +22,9 @@ public class LangLoader
     private readonly string _basePath = Path.Join("Content", "lang");
     private LangModel _langModel;
 
-    public LangLoader() : this("english")
+    public LangLoader()
     {
-    }
-
-    public LangLoader(string defaultLanguage)
-    {
-        // TODO: Load lang model from settings
-
-        LoadLang(defaultLanguage, (error) => throw new Exception($"{defaultLanguage} file not found"));
+        LoadLang(MainGame.Storage.Settings.LangName, (error) => throw new Exception($"{MainGame.Storage.Settings.LangName} file not found"));
     }
 
     public void LoadLang(string name, Action<string> onError)
@@ -44,6 +39,8 @@ public class LangLoader
             string fileContent = File.ReadAllText(filePath);
             _langModel = JsonSerializer.Deserialize<LangModel>(fileContent);
             // TODO: Saving lang model to settings
+            MainGame.Storage.Settings.LangName = name;
+            MainGame.Storage.SaveSettings();
         }catch(JsonException)
         {
             onError.Invoke("Lang file is corrupted");
