@@ -3,6 +3,8 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using Microsoft.Xna.Framework.Input;
+using project_republics.Utils.Input;
 
 namespace project_republics.Utils.Storage;
 
@@ -38,7 +40,6 @@ public class StorageLoader
             
         }
     }
-
     public void LoadSettings()
     {
         try
@@ -48,10 +49,7 @@ public class StorageLoader
         } catch (Exception)
         {
             // loading default settings
-            Settings = new()
-            {
-                LangName = "english"
-            };
+            Settings = new();
         }
     }
 }

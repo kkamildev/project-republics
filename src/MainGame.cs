@@ -53,10 +53,11 @@ public class MainGame : Game
     protected override void LoadContent()
     {
         Batch = new SpriteBatch(GraphicsDevice);
-        Input = new();
         // Storage Loader
         Storage = new("projectRepublics");
         Storage.LoadSettings();
+        // Input
+        Input = new();
         // Content Loader
         CL = new(Content);
         CL.LoadAllFonts();

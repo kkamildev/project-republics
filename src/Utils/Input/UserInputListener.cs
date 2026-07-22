@@ -19,7 +19,7 @@ public class UserInputListener
     public class ControlMap
     {
         public Controls Control{get;set;}
-        public Keys KeyboardKey{get;set;}
+        public Keys? KeyboardKey{get;set;}
         public Buttons? PadKey{get;set;}
         public MouseButtons? MouseButton{get;set;}
     }
@@ -28,7 +28,6 @@ public class UserInputListener
     private KeyboardState _keyboardState;
     private MouseState _mouseState;
     private GamePadState _gamePadState;
-    private readonly ControlMap[] _mappedControls;
     private HashSet<Controls> _pressedControls;
     
     public UserInputListener()
@@ -36,15 +35,11 @@ public class UserInputListener
         _pressedControls = [];
         _actions = [];
 
-        // TODO: create auto creating controls from file
-        _mappedControls = [
-            new ControlMap(){Control = Controls.EXIT, KeyboardKey = Keys.Escape}
-        ];
     }
 
     public void InsertAction(Controls control, Action<bool> action)
     {
-        ControlMap controlMap = _mappedControls.FirstOrDefault((controlMap) => controlMap.Control == control);
+        ControlMap controlMap = MainGame.Storage.Settings.Controls.FirstOrDefault((controlMap) => controlMap.Control == control);
         if(controlMap != null)
         {
             _actions[controlMap] = action;
@@ -53,7 +48,7 @@ public class UserInputListener
 
     public void RemoveAction(Controls control)
     {
-        ControlMap controlMap = _mappedControls.FirstOrDefault((controlMap) => controlMap.Control == control);
+        ControlMap controlMap = MainGame.Storage.Settings.Controls.FirstOrDefault((controlMap) => controlMap.Control == control);
         if(controlMap != null)
         {
             _actions[controlMap] = null;
@@ -63,9 +58,20 @@ public class UserInputListener
 
     private bool CheckInput(ControlMap controlMap)
     {
-        if(_keyboardState.IsKeyDown(controlMap.KeyboardKey))
+        if(controlMap.PadKey != null && _gamePadState.IsConnected)
         {
-            return true;
+            if(_gamePadState.IsButtonDown((Buttons)controlMap.PadKey))
+            {
+                return true;
+            }
+        }
+        if(controlMap.KeyboardKey != null)
+        {
+            if(_keyboardState.IsKeyDown((Keys)controlMap.KeyboardKey))
+            {
+                return true;
+            }
+            return false;
         }
         if(controlMap.MouseButton != null)
         {
@@ -81,13 +87,7 @@ public class UserInputListener
             {
                 return true;
             }
-        }
-        if(controlMap.PadKey != null && _gamePadState.IsConnected)
-        {
-            if(_gamePadState.IsButtonDown((Buttons)controlMap.PadKey))
-            {
-                return true;
-            }
+            return false;
         }
 
         return false;
@@ -108,14 +108,6 @@ public class UserInputListener
             {
                 _pressedControls.Remove(controlMap.Control);
             }
-        }
-    }
-
-    public ControlMap[] MappedControls
-    {
-        get
-        {
-            return _mappedControls;
         }
     }
 }

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using project_republics.Utils.Storage;
 
 namespace project_republics.Utils.Input;
 
@@ -38,7 +37,6 @@ public class LangLoader
             }
             string fileContent = File.ReadAllText(filePath);
             _langModel = JsonSerializer.Deserialize<LangModel>(fileContent);
-            // TODO: Saving lang model to settings
             MainGame.Storage.Settings.LangName = name;
             MainGame.Storage.SaveSettings();
         }catch(JsonException)
