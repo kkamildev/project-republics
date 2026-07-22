@@ -18,6 +18,7 @@ public class MainGame : Game
 
     public static Vector2 ScreenSize {get;private set;}
     public static Vector2 Resolution {get;private set;}
+    private RenderTarget2D _renderTarget;
 
     public MainGame()
     {
@@ -66,7 +67,8 @@ public class MainGame : Game
         CL.LoadAllMusic();
         // Language Loader
         LL = new();
-
+        // render target
+        _renderTarget = new(Graph.GraphicsDevice, (int)Resolution.X, (int)Resolution.Y);
         Input.InsertAction(Controls.EXIT, (hold) => Exit());
 
     }
@@ -81,9 +83,25 @@ public class MainGame : Game
     {
         GraphicsDevice.Clear(Color.Black);
 
+        GraphicsDevice.SetRenderTarget(_renderTarget);
+        // Draw logic
+
         Batch.Begin();
+        Batch.DrawString(CL.Fonts[Fonts.SMALLEST], LL.Translations["hello_world"], new Vector2(25), Color.White);
+        Batch.DrawString(CL.Fonts[Fonts.SMALLER], LL.Translations["hello_world"], new Vector2(50), Color.White);
+        Batch.DrawString(CL.Fonts[Fonts.SMALL], LL.Translations["hello_world"], new Vector2(100), Color.White);
         Batch.DrawString(CL.Fonts[Fonts.BASE], LL.Translations["hello_world"], new Vector2(200), Color.White);
+        Batch.DrawString(CL.Fonts[Fonts.LARGE], LL.Translations["hello_world"], new Vector2(300), Color.White);
+        Batch.DrawString(CL.Fonts[Fonts.LARGER], LL.Translations["hello_world"], new Vector2(400), Color.White);
+        Batch.DrawString(CL.Fonts[Fonts.LARGEST], LL.Translations["hello_world"], new Vector2(500), Color.White);
         Batch.End();
+
+        GraphicsDevice.SetRenderTarget(null);
+
+        Batch.Begin(samplerState:SamplerState.PointClamp);
+        Batch.Draw(_renderTarget, new Rectangle(0, 0, (int)ScreenSize.X, (int)ScreenSize.Y), Color.White);
+        Batch.End();
+
         base.Draw(gameTime);
     }
 }

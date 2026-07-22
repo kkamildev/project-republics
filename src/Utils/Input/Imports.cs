@@ -9,7 +9,13 @@ public enum Textures
 
 public enum Fonts
 {
-    BASE
+    BASE,
+    LARGE,
+    LARGER,
+    LARGEST,
+    SMALL,
+    SMALLER,
+    SMALLEST
 }
 
 public enum Sounds

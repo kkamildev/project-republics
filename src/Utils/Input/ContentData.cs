@@ -21,7 +21,13 @@ public class ContentData
     {
         // FONTS
         FontsData = new(){
-            {Fonts.BASE, Path.Join(_baseFontsPath, "base")}
+            {Fonts.SMALLEST, Path.Join(_baseFontsPath, "smallest")},
+            {Fonts.SMALLER, Path.Join(_baseFontsPath, "smaller")},
+            {Fonts.SMALL, Path.Join(_baseFontsPath, "small")},
+            {Fonts.BASE, Path.Join(_baseFontsPath, "base")},
+            {Fonts.LARGE, Path.Join(_baseFontsPath, "large")},
+            {Fonts.LARGER, Path.Join(_baseFontsPath, "larger")},
+            {Fonts.LARGEST, Path.Join(_baseFontsPath, "largest")}
         };
         // TEXTURES
         TexturesData = new()
