@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using project_republics.Utils.Components.Texts;
 using project_republics.Utils.Input;
 using project_republics.Utils.Storage;
 
@@ -19,6 +20,8 @@ public class MainGame : Game
     public static Vector2 ScreenSize {get;private set;}
     public static Vector2 Resolution {get;private set;}
     private RenderTarget2D _renderTarget;
+
+    private ShadowedText _test;
 
     public MainGame()
     {
@@ -71,6 +74,12 @@ public class MainGame : Game
         _renderTarget = new(Graph.GraphicsDevice, (int)Resolution.X, (int)Resolution.Y);
         Input.InsertAction(Controls.EXIT, (hold) => Exit());
 
+        _test = new(Fonts.LARGE, "Hello world", Resolution / 2, 0.5f, 0f, 0, new Vector2(2))
+        {
+            ShadowColor = Color.Red,
+            Color = Color.DarkRed
+        };
+
     }
 
     protected override void Update(GameTime gameTime)
@@ -84,17 +93,14 @@ public class MainGame : Game
         GraphicsDevice.Clear(Color.Black);
 
         GraphicsDevice.SetRenderTarget(_renderTarget);
-        // Draw logic
+        // Draw logic Here
 
         Batch.Begin();
-        Batch.DrawString(CL.Fonts[Fonts.SMALLEST], LL.Translations["hello_world"], new Vector2(25), Color.White);
-        Batch.DrawString(CL.Fonts[Fonts.SMALLER], LL.Translations["hello_world"], new Vector2(50), Color.White);
-        Batch.DrawString(CL.Fonts[Fonts.SMALL], LL.Translations["hello_world"], new Vector2(100), Color.White);
-        Batch.DrawString(CL.Fonts[Fonts.BASE], LL.Translations["hello_world"], new Vector2(200), Color.White);
-        Batch.DrawString(CL.Fonts[Fonts.LARGE], LL.Translations["hello_world"], new Vector2(300), Color.White);
-        Batch.DrawString(CL.Fonts[Fonts.LARGER], LL.Translations["hello_world"], new Vector2(400), Color.White);
-        Batch.DrawString(CL.Fonts[Fonts.LARGEST], LL.Translations["hello_world"], new Vector2(500), Color.White);
+
+        _test.Draw();
+        
         Batch.End();
+
 
         GraphicsDevice.SetRenderTarget(null);
 

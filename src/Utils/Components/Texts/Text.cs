@@ -19,9 +19,9 @@ public class Text
         _font = font;
         Content = content;
         Position = position;
-        Color = Color.White;
         LayerDepth = 1f;
         Scale = 1f;
+        Color = Color.White;
     }
 
     public virtual void Draw()

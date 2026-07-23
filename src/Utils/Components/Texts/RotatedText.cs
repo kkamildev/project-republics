@@ -7,7 +7,7 @@ namespace project_republics.Utils.Components.Texts;
 
 public class RotatedText : AlignedText
 {
-    private float _rotation;
+    protected float _rotation;
     public RotatedText(Fonts font, string content, Vector2 position, float ax, float ay, float startingRotation) : base(font, content, position, ax, ay)
     {
         _rotation = startingRotation;
