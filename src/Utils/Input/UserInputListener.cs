@@ -24,7 +24,7 @@ public class UserInputListener
         public MouseButtons? MouseButton{get;set;}
     }
 
-    private Dictionary<ControlMap, Action<bool>> _actions;
+    private readonly Dictionary<ControlMap, Action<bool>> _actions;
     private KeyboardState _keyboardState;
     private MouseState _mouseState;
     private GamePadState _gamePadState;

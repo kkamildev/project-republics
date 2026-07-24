@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using project_republics.Utils.Animations;
 using project_republics.Utils.Components.Texts;
 using project_republics.Utils.Input;
 using project_republics.Utils.Storage;
@@ -19,9 +20,11 @@ public class MainGame : Game
 
     public static Vector2 ScreenSize {get;private set;}
     public static Vector2 Resolution {get;private set;}
+    public static float DeltaTime{get;private set;}
     private RenderTarget2D _renderTarget;
 
     private ShadowedText _test;
+    private Animation _animation;
 
     public MainGame()
     {
@@ -79,12 +82,15 @@ public class MainGame : Game
             ShadowColor = Color.Red,
             Color = Color.DarkRed
         };
+        _animation = new(5f, Exit);
 
     }
 
     protected override void Update(GameTime gameTime)
     {
+        DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         Input.Update();
+        _animation.Update();
         base.Update(gameTime);
     }
 
