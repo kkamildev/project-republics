@@ -45,4 +45,12 @@ public class Animation
             return _elapsedSeconds / _seconds;
         }
     }
+
+    public float BaseProgress
+    {
+        get
+        {
+            return _elapsedSeconds / _seconds;
+        }
+    }
 }
