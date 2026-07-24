@@ -24,7 +24,7 @@ public class Animation
             _elapsedSeconds += MainGame.DeltaTime;
             if(_seconds < _elapsedSeconds)
             {
-                _action.Invoke();
+                _action?.Invoke();
             }
         } else if(Loop)
         {
