@@ -23,6 +23,4 @@ public class EaseInAnimation : Animation
             return MathHelper.Lerp(_from, _to, base.Progress * base.Progress);
         }   
     }
-
-    
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using project_republics.Utils.Animations;
@@ -21,10 +23,9 @@ public class MainGame : Game
     public static Vector2 ScreenSize {get;private set;}
     public static Vector2 Resolution {get;private set;}
     public static float DeltaTime{get;private set;}
+    private float _rotation = 0;
     private RenderTarget2D _renderTarget;
-
-    private ShadowedText _test;
-    private Animation _animation;
+    private AlignedTextGroup _test;
 
     public MainGame()
     {
@@ -77,12 +78,13 @@ public class MainGame : Game
         _renderTarget = new(Graph.GraphicsDevice, (int)Resolution.X, (int)Resolution.Y);
         Input.InsertAction(Controls.EXIT, (hold) => Exit());
 
-        _test = new(Fonts.LARGE, "Hello world", Resolution / 2, 0.5f, 0f, 0, new Vector2(2))
+        _test = new([
+            new Text(Fonts.BASE, "Hello world", new Vector2(0, 0)),
+            new ShadowedText(Fonts.LARGE, "Hello world", new Vector2(0, 70), 0, 0, 0, new Vector2(3)){ShadowColor = Color.Pink, Color = Color.Black}
+        ], new Vector2(300, 200), AlignedTextGroup.Aligment.HORIZONTAL)
         {
-            ShadowColor = Color.Red,
-            Color = Color.DarkRed
+            MainPosition = new Vector2(400, 400)
         };
-        _animation = new(5f, Exit);
 
     }
 
@@ -90,7 +92,8 @@ public class MainGame : Game
     {
         DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         Input.Update();
-        _animation.Update();
+        _rotation += DeltaTime;
+        _test.MainPosition = new Vector2(400 + (float)Math.Sin(_rotation) * 100, 400);
         base.Update(gameTime);
     }
 

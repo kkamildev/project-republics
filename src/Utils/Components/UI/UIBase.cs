@@ -6,14 +6,14 @@ namespace project_republics.Utils.Components.UI;
 
 public abstract class UIBase
 {
-    private Color _mainColor;
-    private Vector2 _mainPosition;
+    protected Color _mainColor;
+    protected Vector2 _mainPosition;
     protected Action _onClose;
 
     public UIBase()
     {
-        MainColor = Color.White;
-        MainPosition = Vector2.Zero;
+        _mainColor = Color.White;
+        _mainPosition = Vector2.Zero;
     }
 
     public UIBase(Action action) : this()
