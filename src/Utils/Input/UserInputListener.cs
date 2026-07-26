@@ -22,6 +22,18 @@ public class UserInputListener
         public Keys? KeyboardKey{get;set;}
         public Buttons? PadKey{get;set;}
         public MouseButtons? MouseButton{get;set;}
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ControlMap other)
+                return Control == other.Control;
+            return false;
+
+        }
+        public override int GetHashCode()
+        {
+            return Control.GetHashCode();
+        }
     }
 
     private readonly Dictionary<ControlMap, Action<bool>> _actions;
@@ -29,17 +41,29 @@ public class UserInputListener
     private MouseState _mouseState;
     private GamePadState _gamePadState;
     private HashSet<Controls> _pressedControls;
+    private HashSet<ControlMap> _controls;
     
     public UserInputListener()
     {
         _pressedControls = [];
         _actions = [];
+        _controls = [];
+        AddConstantControls();
+        _controls.UnionWith(MainGame.Storage.Settings.Controls);
+    }
 
+    private void AddConstantControls()
+    {
+        // Const controls can't be edited from user side
+        ControlMap[] constantControls = [
+            new ControlMap(){Control = Controls.EXIT, KeyboardKey = Keys.Escape}
+        ];
+        _controls.UnionWith(constantControls);
     }
 
     public void InsertAction(Controls control, Action<bool> action)
     {
-        ControlMap controlMap = MainGame.Storage.Settings.Controls.FirstOrDefault((controlMap) => controlMap.Control == control);
+        ControlMap controlMap = _controls.FirstOrDefault((controlMap) => controlMap.Control == control);
         if(controlMap != null)
         {
             _actions[controlMap] = action;
@@ -48,7 +72,7 @@ public class UserInputListener
 
     public void RemoveAction(Controls control)
     {
-        ControlMap controlMap = MainGame.Storage.Settings.Controls.FirstOrDefault((controlMap) => controlMap.Control == control);
+        ControlMap controlMap = _controls.FirstOrDefault((controlMap) => controlMap.Control == control);
         if(controlMap != null)
         {
             _actions[controlMap] = null;

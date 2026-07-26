@@ -21,12 +21,12 @@ public class StorageLoader
         _appPath = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), appName);
 
         CreateFileTree();
-
     }
 
     private void CreateFileTree()
     {
         Directory.CreateDirectory(_appPath);
+        Directory.CreateDirectory(Path.Join(_appPath, "errorLogs"));
     }
 
     public void SaveSettings()
@@ -46,10 +46,21 @@ public class StorageLoader
         {
             string fileContent = File.ReadAllText(Path.Join(_appPath, "settings.json"));
             Settings = JsonSerializer.Deserialize<SettingsModel>(fileContent);
+            if(!Settings.ValidateModel(new SettingsModel()))
+            {
+                throw new Exception();
+            }
         } catch (Exception)
         {
             // loading default settings
             Settings = new();
         }
+    }
+
+    public void SaveErrorLog(string errorContent)
+    {
+        Directory.CreateDirectory(Path.Join(_appPath, "errorLogs"));
+
+        File.WriteAllText(Path.Join(_appPath, "errorLogs", $"{DateTime.Now:yyyy-MM-dd HH-mm-ss}.txt"), errorContent);
     }
 }

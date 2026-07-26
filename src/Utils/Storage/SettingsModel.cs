@@ -2,21 +2,32 @@
 
 using project_republics.Utils.Input;
 using Microsoft.Xna.Framework.Input;
+using static project_republics.Utils.Input.UserInputListener;
 
 namespace project_republics.Utils.Storage;
 
 public class SettingsModel
 {
     public string LangName{get;set;}
-    public UserInputListener.ControlMap[] Controls{get;set;}
+    public ControlMap[] Controls{get;set;}
 
     public SettingsModel()
     {
         // default options
         LangName = "english";
         Controls = [
-            new UserInputListener.ControlMap(){Control = Input.Controls.EXIT, KeyboardKey = Keys.Escape}
+            new ControlMap(){Control = Input.Controls.EXIT, KeyboardKey = Keys.Q}
         ];
+    }
+
+    public bool ValidateModel(SettingsModel defaultModel)
+    {
+        if(defaultModel.Controls.Length != Controls.Length)
+        {
+            return false;
+        }
+
+        return true;
     }
 
 }
