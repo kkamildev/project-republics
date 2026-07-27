@@ -26,7 +26,6 @@ public class StorageLoader
     private void CreateFileTree()
     {
         Directory.CreateDirectory(_appPath);
-        Directory.CreateDirectory(Path.Join(_appPath, "errorLogs"));
     }
 
     public void SaveSettings()
@@ -59,8 +58,14 @@ public class StorageLoader
 
     public void SaveErrorLog(string errorContent)
     {
-        Directory.CreateDirectory(Path.Join(_appPath, "errorLogs"));
-
-        File.WriteAllText(Path.Join(_appPath, "errorLogs", $"{DateTime.Now:yyyy-MM-dd HH-mm-ss}.txt"), errorContent);
+        Directory.CreateDirectory(Path.Join(_appPath, "crashLogs"));
+        string logPath = Path.Join(_appPath, "crashLogs", $"{DateTime.Now:yyyy-MM-dd}.txt");
+        if(File.Exists(logPath))
+        {
+            File.AppendAllText(logPath, errorContent);
+        } else
+        {
+            File.WriteAllText(logPath, errorContent);
+        }
     }
 }

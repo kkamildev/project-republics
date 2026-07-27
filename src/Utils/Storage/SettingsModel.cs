@@ -9,12 +9,14 @@ namespace project_republics.Utils.Storage;
 public class SettingsModel
 {
     public string LangName{get;set;}
+    public bool ErrorLogging{get;set;}
     public ControlMap[] Controls{get;set;}
 
     public SettingsModel()
     {
         // default options
         LangName = "english";
+        ErrorLogging = true;
         Controls = [
             new ControlMap(){Control = Input.Controls.EXIT, KeyboardKey = Keys.Q}
         ];
