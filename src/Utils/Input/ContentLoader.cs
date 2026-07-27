@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -28,11 +29,29 @@ public class ContentLoader
         _fonts = [];
         _sounds = [];
         _music = [];
+        AddConstantContent();
+    }
+
+    private void AddConstantContent()
+    {
+        // generate background
+        Texture2D background = new(MainGame.Graph.GraphicsDevice, 16, 9);
+        Color[] colorData = new Color[16 * 9];
+        for (int i = 0; i < colorData.Length; i++)
+        {
+            colorData[i] = Color.White;
+        }
+        background.SetData(colorData);
+        LoadTexture(Input.Textures.BACKGROUND, background);
     }
 
     public void LoadTexture(Textures texture, string path)
     {
         _textures.Add(texture, _content.Load<Texture2D>(path));
+    }
+    public void LoadTexture(Textures texture, Texture2D value)
+    {
+        _textures.Add(texture, value);
     }
     public void LoadFont(Fonts font, string path)
     {

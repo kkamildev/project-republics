@@ -4,7 +4,8 @@ namespace project_republics.Utils.Input;
 
 public enum Textures
 {
-    
+    AUTHOR_LOGO,
+    BACKGROUND
 }
 
 public enum Fonts
@@ -15,7 +16,8 @@ public enum Fonts
     LARGEST,
     SMALL,
     SMALLER,
-    SMALLEST
+    SMALLEST,
+    HUGE
 }
 
 public enum Sounds

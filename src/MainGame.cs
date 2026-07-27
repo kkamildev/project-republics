@@ -3,6 +3,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using project_republics.Scenes;
 using project_republics.Utils.Animations;
 using project_republics.Utils.Components.Texts;
 using project_republics.Utils.Exceptions;
@@ -24,9 +25,8 @@ public class MainGame : Game
     public static Vector2 ScreenSize {get;private set;}
     public static Vector2 Resolution {get;private set;}
     public static float DeltaTime{get;private set;}
-    private float _rotation = 0;
+    private static IScene _currentScene;
     private RenderTarget2D _renderTarget;
-    private AlignedTextGroup _test;
 
     public MainGame()
     {
@@ -77,40 +77,30 @@ public class MainGame : Game
         LL = new();
         // render target
         _renderTarget = new(Graph.GraphicsDevice, (int)Resolution.X, (int)Resolution.Y);
+
+        // other content
         Input.InsertAction(Controls.EXIT, (hold) => Exit());
 
-        _test = new([
-            new Text(Fonts.BASE, "Hello world", new Vector2(0, 0)),
-            new ShadowedText(Fonts.LARGE, "Hello world", new Vector2(0, 70), 0, 0, 0, new Vector2(3)){ShadowColor = Color.Pink, Color = Color.Black}
-        ], new Vector2(300, 200), AlignedTextGroup.Aligment.HORIZONTAL)
-        {
-            MainPosition = new Vector2(400, 400)
-        };
-
+        ChangeScene(new StartIntroScene());
     }
 
     protected override void Update(GameTime gameTime)
     {
         DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         Input.Update();
-        _rotation += DeltaTime;
-        _test.MainPosition = new Vector2(400 + (float)Math.Sin(_rotation) * 100, 400);
+
+        _currentScene?.Update();
+
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.Black);
 
         GraphicsDevice.SetRenderTarget(_renderTarget);
+        GraphicsDevice.Clear(Color.CornflowerBlue);
         // Draw logic Here
-
-        Batch.Begin();
-
-        _test.Draw();
-        
-        Batch.End();
-
+        _currentScene?.Draw();
 
         GraphicsDevice.SetRenderTarget(null);
 
@@ -119,5 +109,14 @@ public class MainGame : Game
         Batch.End();
 
         base.Draw(gameTime);
+    }
+
+    public static void ChangeScene(IScene newScene)
+    {
+        if(_currentScene != null)
+        {
+            _currentScene.Dispose();
+        }
+        _currentScene = newScene;
     }
 }

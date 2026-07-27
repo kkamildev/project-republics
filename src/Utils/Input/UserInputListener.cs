@@ -37,6 +37,7 @@ public class UserInputListener
     }
 
     private readonly Dictionary<ControlMap, Action<bool>> _actions;
+    private Action _anyKeyPressedAction;
     private KeyboardState _keyboardState;
     private MouseState _mouseState;
     private GamePadState _gamePadState;
@@ -70,6 +71,11 @@ public class UserInputListener
         }
     }
 
+    public void InsertAnyKeyPressedAction(Action anyKeyPressedAction)
+    {
+        _anyKeyPressedAction = anyKeyPressedAction;
+    }
+
     public void RemoveAction(Controls control)
     {
         ControlMap controlMap = _controls.FirstOrDefault((controlMap) => controlMap.Control == control);
@@ -77,6 +83,11 @@ public class UserInputListener
         {
             _actions[controlMap] = null;
         }
+    }
+
+    public void RemoveAnyKeyPressedAction()
+    {
+        _anyKeyPressedAction = null;
     }
 
 
@@ -115,13 +126,18 @@ public class UserInputListener
         }
 
         return false;
-    }
+    }  
 
     public void Update()
     {
         _keyboardState = Keyboard.GetState();
         _mouseState = Mouse.GetState();
         _gamePadState = GamePad.GetState(Microsoft.Xna.Framework.PlayerIndex.One);
+
+        if(_keyboardState.GetPressedKeyCount() >= 1 || InputHelper.IsAnyMouseButtonPressed(_mouseState) || InputHelper.IsAnyPadButtonPressed(_gamePadState))
+        {
+            _anyKeyPressedAction?.Invoke();
+        }
         // checking actions 
         foreach (ControlMap controlMap in _actions.Keys)
         {

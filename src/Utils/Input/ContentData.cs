@@ -27,12 +27,13 @@ public class ContentData
             {Fonts.BASE, Path.Join(_baseFontsPath, "base")},
             {Fonts.LARGE, Path.Join(_baseFontsPath, "large")},
             {Fonts.LARGER, Path.Join(_baseFontsPath, "larger")},
-            {Fonts.LARGEST, Path.Join(_baseFontsPath, "largest")}
+            {Fonts.LARGEST, Path.Join(_baseFontsPath, "largest")},
+            {Fonts.HUGE, Path.Join(_baseFontsPath, "huge")}
         };
         // TEXTURES
         TexturesData = new()
         {
-            
+            {Textures.AUTHOR_LOGO, Path.Join(_baseTexturesPath, "UI", "studioLogo")},
         };
         // SOUNDS
         SoundsData = new()
