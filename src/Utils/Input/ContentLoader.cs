@@ -32,17 +32,25 @@ public class ContentLoader
         AddConstantContent();
     }
 
+    private Texture2D GeneratePlainTexture(int width, int height, Color color)
+    {
+        Texture2D texture = new(MainGame.Graph.GraphicsDevice, width, height);
+        Color[] colorData = new Color[width * height];
+        for (int i = 0; i < colorData.Length; i++)
+        {
+            colorData[i] = color;
+        }
+        texture.SetData(colorData);
+        return texture;
+    }
+
     private void AddConstantContent()
     {
         // generate background
-        Texture2D background = new(MainGame.Graph.GraphicsDevice, 16, 9);
-        Color[] colorData = new Color[16 * 9];
-        for (int i = 0; i < colorData.Length; i++)
-        {
-            colorData[i] = Color.White;
-        }
-        background.SetData(colorData);
-        LoadTexture(Input.Textures.BACKGROUND, background);
+        LoadTexture(Input.Textures.BACKGROUND, GeneratePlainTexture(16, 9, Color.Black));
+        // generate mainMenu side
+        LoadTexture(Input.Textures.MAIN_MENU_SIDE, GeneratePlainTexture(6, 9, Color.Black));
+
     }
 
     public void LoadTexture(Textures texture, string path)

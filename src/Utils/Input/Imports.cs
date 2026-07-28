@@ -5,7 +5,9 @@ namespace project_republics.Utils.Input;
 public enum Textures
 {
     AUTHOR_LOGO,
-    BACKGROUND
+    BACKGROUND,
+    MAIN_MENU_SIDE,
+    GAME_LOGO
 }
 
 public enum Fonts

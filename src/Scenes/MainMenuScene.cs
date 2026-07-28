@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using project_republics.Utils.Animations;
 using project_republics.Utils.Components.Sprites;
+using project_republics.Utils.Components.Texts;
 
 namespace project_republics.Scenes;
 
@@ -10,10 +11,20 @@ namespace project_republics.Scenes;
 public class MainMenuScene : IScene
 {
     private EaseInOutAnimation _showingScreenAnimation;
-    private Sprite _blackBackground;
+    private Sprite _blackBackground, _mainMenuSide;
+    private AlignedSprite _gameLogo;
+    private TextGroup _gameInfoTextGroup;
     public MainMenuScene()
     {
+        _gameLogo = new(Utils.Input.Textures.GAME_LOGO, new Vector2(300, 30), 0.5f, 0f){Scale=3f};
         _blackBackground = new(Utils.Input.Textures.BACKGROUND, Vector2.Zero){Color = Color.Black, Scale = 100f};
+        _mainMenuSide = new(Utils.Input.Textures.MAIN_MENU_SIDE, Vector2.Zero){Color = new Color(Color.Black, 0.7f), Scale = 100f};
+        _gameInfoTextGroup = new([
+            new ShadowedText(Utils.Input.Fonts.BASE, "Copyright Kkamildev", MainGame.Resolution, 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black},
+            new ShadowedText(Utils.Input.Fonts.BASE, "Project Republics", MainGame.Resolution - new Vector2(0, 80), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black},
+            new ShadowedText(Utils.Input.Fonts.BASE, "In development", MainGame.Resolution - new Vector2(0, 40), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black}
+        ]);
+
         _showingScreenAnimation = new(1f, () => {}, 1f, 0f);
     }
 
@@ -21,6 +32,9 @@ public class MainMenuScene : IScene
     public void Draw()
     {
         MainGame.Batch.Begin(samplerState:SamplerState.PointClamp, blendState:BlendState.NonPremultiplied);
+        _mainMenuSide.Draw();
+        _gameLogo.Draw();
+        _gameInfoTextGroup.Draw();
         _blackBackground.Draw();
         MainGame.Batch.End();
     }
