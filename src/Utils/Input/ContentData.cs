@@ -35,6 +35,7 @@ public class ContentData
         {
             {Textures.AUTHOR_LOGO, Path.Join(_baseTexturesPath, "UI", "studioLogo")},
             {Textures.GAME_LOGO, Path.Join(_baseTexturesPath, "UI", "gameLogo")},
+            {Textures.BUTTON1, Path.Join(_baseTexturesPath, "UI", "button1")},
         };
         // SOUNDS
         SoundsData = new()

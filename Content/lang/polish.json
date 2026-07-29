@@ -2,6 +2,9 @@
     "Author":"kkamildev",
     "DisplayName":"Polski",
     "Translations":{
-        "PLAY_BUTTON":"Zagraj"
+        "PLAY_BUTTON":"Zagraj",
+        "SETTINGS_BUTTON":"Ustawienia",
+        "CREDITS_BUTTON":"Autorzy",
+        "EXIT_BUTTON":"Wyjście"
     }
 }

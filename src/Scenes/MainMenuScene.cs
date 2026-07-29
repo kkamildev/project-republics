@@ -30,10 +30,18 @@ public class MainMenuScene : IScene
 
         _showingScreenAnimation = new(1f, () => {}, 1f, 0f);
         _mainButtonGroup = new([
-            new(new AlignedText(Utils.Input.Fonts.LARGE, "PLAY_BUTTON", new Vector2(10, 400), 0f, 0.5f){Color = Color.DimGray}, () => {}){ChangeColor = Color.White},
-            new(new AlignedText(Utils.Input.Fonts.LARGE, "Options", new Vector2(10, 500), 0f, 0.5f){Color = Color.DimGray}, () => {}){ChangeColor = Color.White},
-            new(new AlignedText(Utils.Input.Fonts.LARGE, "Credits", new Vector2(10, 600), 0f, 0.5f){Color = Color.DimGray}, () => {}){ChangeColor = Color.White},
-            new(new AlignedText(Utils.Input.Fonts.LARGE, "Exit", new Vector2(10, 700), 0f, 0.5f){Color = Color.DimGray}, MainGame.Shutdown){ChangeColor = Color.White}
+            new SpriteButton(new AlignedText(Utils.Input.Fonts.LARGE, "PLAY_BUTTON", new Vector2(300, 400), 0.5f, 0.5f){Color = Color.DimGray},
+             new AlignedSprite(Utils.Input.Textures.BUTTON1, new Vector2(300, 400), 0.5f, 0.5f){Scale = 3f},
+              () => {}){ChangeColor = Color.White},
+            new SpriteButton(new AlignedText(Utils.Input.Fonts.LARGE, "SETTINGS_BUTTON", new Vector2(300, 525), 0.5f, 0.5f){Color = Color.DimGray},
+             new AlignedSprite(Utils.Input.Textures.BUTTON1, new Vector2(300, 525), 0.5f, 0.5f){Scale = 3f},
+              () => {}){ChangeColor = Color.White},
+            new SpriteButton(new AlignedText(Utils.Input.Fonts.LARGE, "CREDITS_BUTTON", new Vector2(300, 650), 0.5f, 0.5f){Color = Color.DimGray},
+             new AlignedSprite(Utils.Input.Textures.BUTTON1, new Vector2(300, 650), 0.5f, 0.5f){Scale = 3f},
+              () => {}){ChangeColor = Color.White},
+            new SpriteButton(new AlignedText(Utils.Input.Fonts.LARGE, "EXIT_BUTTON", new Vector2(300, 775), 0.5f, 0.5f){Color = Color.DimGray},
+             new AlignedSprite(Utils.Input.Textures.BUTTON1, new Vector2(300, 775), 0.5f, 0.5f){Scale = 3f},
+              MainGame.Shutdown){ChangeColor = Color.White},
         ]){Active = true};
     }
 

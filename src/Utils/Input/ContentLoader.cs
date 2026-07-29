@@ -47,9 +47,9 @@ public class ContentLoader
     private void AddConstantContent()
     {
         // generate background
-        LoadTexture(Input.Textures.BACKGROUND, GeneratePlainTexture(16, 9, Color.Black));
+        LoadTexture(Input.Textures.BACKGROUND, GeneratePlainTexture(16, 9, Color.White));
         // generate mainMenu side
-        LoadTexture(Input.Textures.MAIN_MENU_SIDE, GeneratePlainTexture(6, 9, Color.Black));
+        LoadTexture(Input.Textures.MAIN_MENU_SIDE, GeneratePlainTexture(6, 9, Color.White));
 
     }
 
