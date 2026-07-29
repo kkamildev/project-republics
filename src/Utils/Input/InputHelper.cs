@@ -6,6 +6,7 @@ namespace project_republics.Utils.Input;
 
 public static class InputHelper
 {
+
     public static bool IsAnyMouseButtonPressed(MouseState mouseState)
     {
         return mouseState.LeftButton == ButtonState.Pressed ||

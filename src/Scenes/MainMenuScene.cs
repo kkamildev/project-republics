@@ -1,6 +1,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using project_republics.Components.UI.Buttons;
 using project_republics.Utils.Animations;
 using project_republics.Utils.Components.Sprites;
 using project_republics.Utils.Components.Texts;
@@ -14,6 +15,7 @@ public class MainMenuScene : IScene
     private Sprite _blackBackground, _mainMenuSide;
     private AlignedSprite _gameLogo;
     private TextGroup _gameInfoTextGroup;
+    private ButtonGroup _mainButtonGroup;
     public MainMenuScene()
     {
         _gameLogo = new(Utils.Input.Textures.GAME_LOGO, new Vector2(300, 30), 0.5f, 0f){Scale=3f};
@@ -26,6 +28,12 @@ public class MainMenuScene : IScene
         ]);
 
         _showingScreenAnimation = new(1f, () => {}, 1f, 0f);
+        _mainButtonGroup = new([
+            new(new AlignedText(Utils.Input.Fonts.LARGE, "Play", new Vector2(10, 400), 0f, 0.5f){Color = Color.DimGray}, () => {}){ChangeColor = Color.White},
+            new(new AlignedText(Utils.Input.Fonts.LARGE, "Options", new Vector2(10, 500), 0f, 0.5f){Color = Color.DimGray}, () => {}){ChangeColor = Color.White},
+            new(new AlignedText(Utils.Input.Fonts.LARGE, "Credits", new Vector2(10, 600), 0f, 0.5f){Color = Color.DimGray}, () => {}){ChangeColor = Color.White},
+            new(new AlignedText(Utils.Input.Fonts.LARGE, "Exit", new Vector2(10, 700), 0f, 0.5f){Color = Color.DimGray}, MainGame.Shutdown){ChangeColor = Color.White}
+        ]){Active = true};
     }
 
 
@@ -35,6 +43,7 @@ public class MainMenuScene : IScene
         _mainMenuSide.Draw();
         _gameLogo.Draw();
         _gameInfoTextGroup.Draw();
+        _mainButtonGroup.Draw();
         _blackBackground.Draw();
         MainGame.Batch.End();
     }

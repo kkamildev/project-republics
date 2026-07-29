@@ -4,5 +4,8 @@ namespace project_republics.Utils.Input;
 
 public enum Controls
 {
-    EXIT
+    EXIT,
+    ACTION_CLICK,
+    SELECT_DOWN,
+    SELECT_UP
 }

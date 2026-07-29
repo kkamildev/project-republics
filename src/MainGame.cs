@@ -21,12 +21,13 @@ public class MainGame : Game
     public static StorageLoader Storage{get;private set;}
     public static ContentLoader CL{get;private set;}
     public static LangLoader LL{get;private set;}
-
     public static Vector2 ScreenSize {get;private set;}
     public static Vector2 Resolution {get;private set;}
     public static float DeltaTime{get;private set;}
     private static IScene _currentScene;
     private RenderTarget2D _renderTarget;
+
+    private static Action _exitGame;
 
     public MainGame()
     {
@@ -36,6 +37,7 @@ public class MainGame : Game
         IsMouseVisible = true;
         Window.Title = "Project Republics";
         Window.IsBorderless = true;
+        _exitGame = Exit;
 
 
     }
@@ -118,5 +120,10 @@ public class MainGame : Game
             _currentScene.Dispose();
         }
         _currentScene = newScene;
+    }
+
+    public static void Shutdown()
+    {
+        _exitGame.Invoke();
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace project_republics.Utils.Input;
@@ -57,7 +58,10 @@ public class UserInputListener
     {
         // Const controls can't be edited from user side
         ControlMap[] constantControls = [
-            new ControlMap(){Control = Controls.EXIT, KeyboardKey = Keys.Escape}
+            new ControlMap(){Control = Controls.EXIT, KeyboardKey = Keys.Escape},
+            new ControlMap(){Control = Controls.ACTION_CLICK, KeyboardKey = Keys.Enter, MouseButton = MouseButtons.LEFT, PadKey = Buttons.A},
+            new ControlMap(){Control = Controls.SELECT_UP, KeyboardKey = Keys.Up, PadKey = Buttons.DPadUp},
+            new ControlMap(){Control = Controls.SELECT_DOWN, KeyboardKey = Keys.Down, PadKey = Buttons.DPadDown}
         ];
         _controls.UnionWith(constantControls);
     }
@@ -149,5 +153,11 @@ public class UserInputListener
                 _pressedControls.Remove(controlMap.Control);
             }
         }
+    }
+
+    public Vector2 GetMousePos()
+    {
+        Vector2 primaryPos = _mouseState.Position.ToVector2();
+        return primaryPos / MainGame.ScreenSize * MainGame.Resolution;
     }
 }
