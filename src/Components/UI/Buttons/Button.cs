@@ -8,7 +8,7 @@ using project_republics.Utils.Input;
 
 namespace project_republics.Components.UI.Buttons;
 
-public class Button
+public class Button : IDisposable
 {
     protected Text _text;
     protected Action _onclick;
@@ -31,6 +31,11 @@ public class Button
     public virtual void Draw()
     {
         _text.Draw();
+    }
+
+    public void Dispose()
+    {
+        _text.Dispose();
     }
 
     public bool Active

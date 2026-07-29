@@ -81,7 +81,6 @@ public class MainGame : Game
         _renderTarget = new(Graph.GraphicsDevice, (int)Resolution.X, (int)Resolution.Y);
 
         // other content
-        Input.InsertAction(Controls.EXIT, (hold) => Exit());
 
         ChangeScene(new StartIntroScene());
     }

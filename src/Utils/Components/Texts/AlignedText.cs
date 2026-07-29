@@ -22,13 +22,12 @@ public class AlignedText : Text
         MainGame.Batch.DrawString(MainGame.CL.Fonts[_font], Content, Position, Color, 0f, new Vector2(_textSize.X * _ax, _textSize.Y * _ay), Scale, SpriteEffects.None, LayerDepth);
     }
 
-    public override string Content
-    {
-        get => base.Content;
+    public override string TranslationKey {
+        get => base.TranslationKey;
         set
         {
-            _content = value;
-            _textSize = MainGame.CL.Fonts[_font].MeasureString(_content);
+            base.TranslationKey = value;
+            _textSize = MainGame.CL.Fonts[_font].MeasureString(_cache);
         }
     }
 

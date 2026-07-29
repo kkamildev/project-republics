@@ -21,6 +21,8 @@ public class LangLoader
     private readonly string _basePath = Path.Join("Content", "lang");
     private LangModel _langModel;
 
+    private event Action _onChangeLanguage;
+
     public LangLoader()
     {
         LoadLang(MainGame.Storage.Settings.LangName, (error) => throw new Exception($"{MainGame.Storage.Settings.LangName} file not found"));
@@ -37,6 +39,7 @@ public class LangLoader
             }
             string fileContent = File.ReadAllText(filePath);
             _langModel = JsonSerializer.Deserialize<LangModel>(fileContent);
+            _onChangeLanguage?.Invoke();
             MainGame.Storage.Settings.LangName = name;
             MainGame.Storage.SaveSettings();
         }catch(JsonException)
@@ -53,6 +56,18 @@ public class LangLoader
         get
         {
             return _langModel.Translations;
+        }
+    }
+
+    public Action OnChangeLanguage
+    {
+        get
+        {
+            return _onChangeLanguage;
+        }
+        set
+        {
+            _onChangeLanguage = value;
         }
     }
 

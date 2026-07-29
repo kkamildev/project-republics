@@ -52,6 +52,8 @@ public class StartIntroScene : IScene
 
     public void Dispose()
     {
+        _studioLogoText.Dispose();
+        _authorText.Dispose();
         MainGame.Input.RemoveAnyKeyPressedAction();
     }
 

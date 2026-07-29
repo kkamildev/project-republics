@@ -1,11 +1,12 @@
 
 
+using System;
 using Microsoft.Xna.Framework;
 using project_republics.Utils.Components.UI;
 
 namespace project_republics.Utils.Components.Texts;
 
-public class TextGroup : UIBase
+public class TextGroup : UIBase, IDisposable
 {
     protected readonly Text[] _texts;
 
@@ -19,6 +20,14 @@ public class TextGroup : UIBase
         foreach (Text text in _texts)
         {
             text.Draw();
+        }
+    }
+
+    public void Dispose()
+    {
+        foreach (Text text in _texts)
+        {
+            text.Dispose();
         }
     }
 

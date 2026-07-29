@@ -2,26 +2,42 @@
 using Microsoft.Xna.Framework;
 using project_republics.Utils.Input;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace project_republics.Utils.Components.Texts;
 
-public class Text
+public class Text : IDisposable
 {
     protected Fonts _font;
-    protected string _content;
+    protected string _cache;
+    protected string _translationKey;
     protected Vector2 _position;
+    private object[] _stringParams;
     public Color Color{get;set;}
     public float LayerDepth{get;set;}
     public float Scale{get;set;}
 
-    public Text(Fonts font, string content, Vector2 position)
+    public Text(Fonts font, string translationKey, Vector2 position)
     {
         _font = font;
-        Content = content;
+        _stringParams = [];
+        TranslationKey = translationKey;
         Position = position;
         LayerDepth = 1f;
         Scale = 1f;
         Color = Color.White;
+        MainGame.LL.OnChangeLanguage+=UpdateText;
+    }
+
+    private void UpdateText()
+    {
+        if(MainGame.LL.Translations.TryGetValue(_translationKey, out string value))
+        {
+            _cache = string.Format(value, StringParams);
+        } else
+        {
+            _cache = _translationKey;
+        }
     }
 
     public virtual void Draw()
@@ -29,15 +45,42 @@ public class Text
         MainGame.Batch.DrawString(MainGame.CL.Fonts[_font], Content, Position, Color, 0f, Vector2.Zero, Scale, SpriteEffects.None, LayerDepth);
     }
 
-    public virtual string Content
+    public void Dispose()
+    {
+        MainGame.LL.OnChangeLanguage-=UpdateText;
+    }
+
+    public object[] StringParams
     {
         get
         {
-            return _content;
+            return _stringParams;
         }
         set
         {
-            _content = value;
+            _stringParams = value;
+            UpdateText();
+        }
+    }
+
+    public string Content
+    {
+        get
+        {
+            return _cache;
+        }
+    }
+    public virtual string TranslationKey
+    {
+        get
+        {
+            return _translationKey;
+        }
+        set
+        {
+            _translationKey = value;
+            UpdateText();
+
         }
     }
 

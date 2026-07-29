@@ -11,11 +11,14 @@ public class ButtonGroup : IDisposable
     protected int _selectedIndex;
     protected bool _active;
 
+    public bool AllowHold{get;set;}
+
     public ButtonGroup(Button[] buttons)
     {
         _buttons = [..buttons];
         _active = false;
         _selectedIndex = 0;
+        AllowHold = false;
     }
     public ButtonGroup(Button[] buttons, int selectedIndex) : this(buttons)
     {
@@ -33,6 +36,10 @@ public class ButtonGroup : IDisposable
     public void Dispose()
     {
         Active = false;
+        foreach (Button button in _buttons)
+        {
+            button.Dispose();
+        }
     }
 
     public bool Active
@@ -77,7 +84,7 @@ public class ButtonGroup : IDisposable
                     }
 
                 });
-                MainGame.Input.InsertAction(Utils.Input.Controls.ACTION_CLICK, (hold) => {if(!hold) _buttons[_selectedIndex].OnClick.Invoke();});
+                MainGame.Input.InsertAction(Utils.Input.Controls.ACTION_CLICK, (hold) => {if(!hold || AllowHold) _buttons[_selectedIndex].OnClick.Invoke();});
             } else
             {
                 _buttons[_selectedIndex].Active = false;
