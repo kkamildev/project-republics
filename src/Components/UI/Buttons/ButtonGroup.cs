@@ -42,6 +42,40 @@ public class ButtonGroup : IDisposable
         }
     }
 
+    private void SelectUp(bool controlHold)
+    {
+        if(!controlHold)
+        {
+            if(SelectedIndex <= 0)
+            {
+                SelectedIndex = _buttons.Count - 1;
+            } else
+            {
+                SelectedIndex--;
+            }
+            
+        }
+    }
+    private void SelectDown(bool controlHold)
+    {
+        if(!controlHold)
+        {
+            if(SelectedIndex >= _buttons.Count - 1)
+            {
+                SelectedIndex = 0;
+            } else
+            {
+                SelectedIndex++;
+            }
+            
+        }
+    }
+
+    private void Click(bool controlHold)
+    {
+        if(!controlHold || AllowHold) _buttons[_selectedIndex].OnClick.Invoke();
+    }
+
     public bool Active
     {
         get
@@ -54,43 +88,15 @@ public class ButtonGroup : IDisposable
             if(_active)
             {
                 SelectedIndex = _selectedIndex;
-                MainGame.Input.InsertAction(Utils.Input.Controls.SELECT_UP, (hold) =>
-                {
-                    if(!hold)
-                    {
-                        if(SelectedIndex <= 0)
-                        {
-                            SelectedIndex = _buttons.Count - 1;
-                        } else
-                        {
-                            SelectedIndex--;
-                        }
-                        
-                    }
-
-                });
-                MainGame.Input.InsertAction(Utils.Input.Controls.SELECT_DOWN, (hold) =>
-                {
-                    if(!hold)
-                    {
-                        if(SelectedIndex >= _buttons.Count - 1)
-                        {
-                            SelectedIndex = 0;
-                        } else
-                        {
-                            SelectedIndex++;
-                        }
-                        
-                    }
-
-                });
-                MainGame.Input.InsertAction(Utils.Input.Controls.ACTION_CLICK, (hold) => {if(!hold || AllowHold) _buttons[_selectedIndex].OnClick.Invoke();});
+                MainGame.Input.SubscribeAction(Utils.Input.Controls.SELECT_UP, SelectUp);
+                MainGame.Input.SubscribeAction(Utils.Input.Controls.SELECT_DOWN, SelectDown);
+                MainGame.Input.SubscribeAction(Utils.Input.Controls.ACTION_CLICK, Click);
             } else
             {
                 _buttons[_selectedIndex].Active = false;
-                MainGame.Input.RemoveAction(Utils.Input.Controls.SELECT_DOWN);
-                MainGame.Input.RemoveAction(Utils.Input.Controls.SELECT_UP);
-                MainGame.Input.RemoveAction(Utils.Input.Controls.ACTION_CLICK);
+                MainGame.Input.UnSubscribeAction(Utils.Input.Controls.SELECT_UP, SelectUp);
+                MainGame.Input.UnSubscribeAction(Utils.Input.Controls.SELECT_DOWN, SelectDown);
+                MainGame.Input.UnSubscribeAction(Utils.Input.Controls.ACTION_CLICK, Click);
             }
         }
     }

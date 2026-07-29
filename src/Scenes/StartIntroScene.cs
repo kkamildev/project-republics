@@ -46,15 +46,20 @@ public class StartIntroScene : IScene
             MainPosition = MainGame.Resolution / 2
         };
         // inserting controls
-        MainGame.Input.InsertAnyKeyPressedAction(() => _animationAccelerated = true);
+        MainGame.Input.SubcribeAnyKeyPressedAction(AccelerateAnimation);
         
+    }
+
+    private void AccelerateAnimation()
+    {
+        _animationAccelerated = true;
     }
 
     public void Dispose()
     {
         _studioLogoText.Dispose();
         _authorText.Dispose();
-        MainGame.Input.RemoveAnyKeyPressedAction();
+        MainGame.Input.UnsubcribeAnyKeyPressedAction(AccelerateAnimation);
     }
 
     public void Draw()

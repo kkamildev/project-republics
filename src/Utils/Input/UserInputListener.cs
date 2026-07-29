@@ -38,7 +38,7 @@ public class UserInputListener
     }
 
     private readonly Dictionary<ControlMap, Action<bool>> _actions;
-    private Action _anyKeyPressedAction;
+    private event Action _anyKeyPressedAction;
     private KeyboardState _keyboardState;
     private MouseState _mouseState;
     private GamePadState _gamePadState;
@@ -66,32 +66,33 @@ public class UserInputListener
         _controls.UnionWith(constantControls);
     }
 
-    public void InsertAction(Controls control, Action<bool> action)
+    public void SubscribeAction(Controls control, Action<bool> action)
     {
         ControlMap controlMap = _controls.FirstOrDefault((controlMap) => controlMap.Control == control);
         if(controlMap != null)
         {
-            _actions[controlMap] = action;
+            if(!_actions.ContainsKey(controlMap)) _actions[controlMap] = null;
+            _actions[controlMap] += action;
         }
     }
 
-    public void InsertAnyKeyPressedAction(Action anyKeyPressedAction)
+    public void SubcribeAnyKeyPressedAction(Action anyKeyPressedAction)
     {
-        _anyKeyPressedAction = anyKeyPressedAction;
+        _anyKeyPressedAction += anyKeyPressedAction;
     }
 
-    public void RemoveAction(Controls control)
+    public void UnSubscribeAction(Controls control, Action<bool> action)
     {
         ControlMap controlMap = _controls.FirstOrDefault((controlMap) => controlMap.Control == control);
         if(controlMap != null)
         {
-            _actions[controlMap] = null;
+            _actions[controlMap] -= action;
         }
     }
 
-    public void RemoveAnyKeyPressedAction()
+    public void UnsubcribeAnyKeyPressedAction(Action anyKeyPressedAction)
     {
-        _anyKeyPressedAction = null;
+        _anyKeyPressedAction -= anyKeyPressedAction;
     }
 
 
@@ -136,7 +137,7 @@ public class UserInputListener
     {
         _keyboardState = Keyboard.GetState();
         _mouseState = Mouse.GetState();
-        _gamePadState = GamePad.GetState(Microsoft.Xna.Framework.PlayerIndex.One);
+        _gamePadState = GamePad.GetState(PlayerIndex.One);
 
         if(_keyboardState.GetPressedKeyCount() >= 1 || InputHelper.IsAnyMouseButtonPressed(_mouseState) || InputHelper.IsAnyPadButtonPressed(_gamePadState))
         {
