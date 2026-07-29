@@ -2,22 +2,17 @@
 
 using System;
 using Microsoft.Xna.Framework;
-using project_republics.Utils.Components.Sprites;
 using project_republics.Utils.Components.Texts;
-using project_republics.Utils.Input;
 
 namespace project_republics.Components.UI.Buttons;
 
 public class Button : IDisposable
 {
     protected Text _text;
-    protected Action _onclick;
-    protected Rectangle _bounds;
-    protected bool _active;
-    protected Color _mainTextColor;
-
+    private Action _onclick;
+    private bool _active;
+    private Color _mainTextColor;
     public Color ChangeColor{get;set;}
-    
 
     public Button(Text text, Action onclick)
     {
@@ -33,12 +28,17 @@ public class Button : IDisposable
         _text.Draw();
     }
 
+    public virtual void Update()
+    {
+        
+    }
+
     public void Dispose()
     {
         _text.Dispose();
     }
 
-    public bool Active
+    public virtual bool Active
     {
         get
         {
@@ -50,11 +50,9 @@ public class Button : IDisposable
             if(_active)
             {
                 _text.Color = ChangeColor;
-                _text.Scale = 1.2f;
             } else
             {
                 _text.Color = _mainTextColor;
-                _text.Scale = 1f;
             }
         }
     }
@@ -65,6 +63,4 @@ public class Button : IDisposable
             return _onclick;
         }
     }
-
-
 }

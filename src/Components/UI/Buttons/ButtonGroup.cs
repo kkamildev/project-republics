@@ -33,6 +33,14 @@ public class ButtonGroup : IDisposable
         }
     }
 
+    public void Update()
+    {
+        foreach (Button button in _buttons)
+        {
+            button.Update();
+        }
+    }
+
     public void Dispose()
     {
         Active = false;

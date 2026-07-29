@@ -53,6 +53,7 @@ public class MainMenuScene : IScene
     {
         _showingScreenAnimation.Update();
         _blackBackground.Color = new Color(_blackBackground.Color, _showingScreenAnimation.Progress);
+        _mainButtonGroup.Update();
     }
     
     public void Dispose()
