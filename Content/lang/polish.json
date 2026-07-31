@@ -6,6 +6,9 @@
         "SETTINGS_BUTTON":"Ustawienia",
         "CREDITS_BUTTON":"Autorzy",
         "EXIT_BUTTON":"Wyjście",
-        "SELECT_WORLD_TITLE":"Wybierz Świat"
+        "SELECT_WORLD_TITLE":"Wybierz Świat",
+        "SELECT_WORLD":"Wybierz",
+        "CREATE_WORLD":"Stwórz Nowy",
+        "BACK":"Powrót"
     }
 }

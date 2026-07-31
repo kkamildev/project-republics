@@ -15,20 +15,23 @@ public class PlayGameSide : UIBase, IDisposable
     private bool _active;
     private EaseInOutAnimation _showUIAnimation;
     private Action<bool> _backAction;
-    private Sprite _background;
-    private AlignedText _titleText;
+    private TitleBox _titleBox;
     private ButtonGroup _mainButtonGroup;
 
     public PlayGameSide(Action backAction)
     {
         _active = false;
-        _titleText = new(Utils.Input.Fonts.LARGER, "SELECT_WORLD_TITLE", new Vector2(MainGame.Resolution.X / 2, 50), 0.5f, 0);
-        _background = new RectSprite(Utils.Input.Textures.BACKGROUND, new Rectangle((int)MainGame.Resolution.X / 2, (int)MainGame.Resolution.Y / 2, 1600 / 5 * 4, 900 / 5 * 4), 0.5f, 0.5f, 0){Color = new Color(Color.Black, 0.7f)};
-        string[] texts = ["Select world", "Create new"];
+        _titleBox = new("SELECT_WORLD_TITLE", Utils.Input.Textures.BACKGROUND, new Rectangle((int)MainGame.Resolution.X / 2, (int)MainGame.Resolution.Y / 2, 1600 / 5 * 4, 900 / 5 * 4));
+        string[] texts = ["SELECT_WORLD", "CREATE_WORLD", "BACK"];
+        Action[] actions = [
+            () => {},
+            () => {},
+            () => _backAction.Invoke(false)
+        ];
         _mainButtonGroup = new([
             ..texts.Select((text, index) => new SpriteButton(new AlignedText(Utils.Input.Fonts.BASE, text, new Vector2(300, 200 + 100 * index), 0.5f, 0.5f){Color = Color.DimGray},
              new AlignedSprite(Utils.Input.Textures.BUTTON2, new Vector2(300, 200 + 100 * index), 0.5f, 0.5f){Scale = 3f},
-              () => {}){ChangeColor = Color.White})
+              actions[index]){ChangeColor = Color.White})
         ]);
         _backAction = (hold) =>
         {
@@ -40,8 +43,7 @@ public class PlayGameSide : UIBase, IDisposable
 
     public override void Draw()
     {
-        _background.Draw();
-        _titleText.Draw();
+        _titleBox.Draw();
         _mainButtonGroup.Draw();
     }
     public override void Update()
@@ -68,8 +70,10 @@ public class PlayGameSide : UIBase, IDisposable
                 _mainButtonGroup.Active = true;
                 _showUIAnimation = new(1f, () => {}, _showUIAnimation?.Progress ?? 1f, 0f);
                 MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, _backAction);
+                // Searching for worlds
             } else
             {
+                _mainButtonGroup.SelectedIndex = 0;
                 _mainButtonGroup.Active = false;
                 _showUIAnimation = new(1f, () => {}, _showUIAnimation?.Progress ?? 0, 1f);
                 MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, _backAction);
@@ -86,8 +90,7 @@ public class PlayGameSide : UIBase, IDisposable
                 button.Position-= base.MainPosition;
             }
             base.MainPosition = value;
-            _background.Position = MainGame.Resolution / 2 + base.MainPosition;
-            _titleText.Position = new Vector2(MainGame.Resolution.X / 2, 50) + base.MainPosition;
+            _titleBox.MainPosition = base.MainPosition;
             foreach (Button button in _mainButtonGroup.Buttons)
             {
                 button.Position+= base.MainPosition;
@@ -99,6 +102,6 @@ public class PlayGameSide : UIBase, IDisposable
     public void Dispose()
     {
         MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, _backAction);
-        _titleText.Dispose();
+        _titleBox.Dispose();
     }
 }

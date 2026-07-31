@@ -6,6 +6,9 @@
         "SETTINGS_BUTTON":"Settings",
         "CREDITS_BUTTON":"Credits",
         "EXIT_BUTTON":"Exit",
-        "SELECT_WORLD_TITLE":"Select World"
+        "SELECT_WORLD_TITLE":"Select World",
+        "SELECT_WORLD":"Select",
+        "CREATE_WORLD":"Create New",
+        "BACK":"Back"
     }
 }

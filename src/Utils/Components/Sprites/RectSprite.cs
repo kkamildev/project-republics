@@ -8,7 +8,7 @@ namespace project_republics.Utils.Components.Sprites;
 public class RectSprite : RotatedSprite
 {
     private Rectangle _rectangle;
-    public RectSprite(Textures textures, Rectangle rectangle, float ax, float ay, float startingRotation) : base(textures, Vector2.Zero, ax, ay, startingRotation)
+    public RectSprite(Textures textures, Rectangle rectangle, float ax, float ay, float startingRotation) : base(textures, new Vector2(rectangle.X, rectangle.Y), ax, ay, startingRotation)
     {
         _rectangle = rectangle;
     }
@@ -21,10 +21,11 @@ public class RectSprite : RotatedSprite
     public override Vector2 Position {
         get
         {
-            return new Vector2(_rectangle.X, _rectangle.Y);
+            return _position;
         }
         set
         {
+            _position = value;
             _rectangle.X = (int)value.X;
             _rectangle.Y = (int)value.Y;
         }
