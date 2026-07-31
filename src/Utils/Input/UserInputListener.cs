@@ -44,12 +44,14 @@ public class UserInputListener
     private GamePadState _gamePadState;
     private HashSet<Controls> _pressedControls;
     private HashSet<ControlMap> _controls;
+    private List<Action> _actionsToExec;
     
     public UserInputListener()
     {
         _pressedControls = [];
         _actions = [];
         _controls = [];
+        _actionsToExec = [];
         AddConstantControls();
         _controls.UnionWith(MainGame.Storage.Settings.Controls);
     }
@@ -58,7 +60,7 @@ public class UserInputListener
     {
         // Const controls can't be edited from user side
         ControlMap[] constantControls = [
-            new ControlMap(){Control = Controls.EXIT, KeyboardKey = Keys.Escape},
+            new ControlMap(){Control = Controls.EXIT, KeyboardKey = Keys.Escape, PadKey = Buttons.B},
             new ControlMap(){Control = Controls.ACTION_CLICK, KeyboardKey = Keys.Enter, MouseButton = MouseButtons.LEFT, PadKey = Buttons.A},
             new ControlMap(){Control = Controls.SELECT_UP, KeyboardKey = Keys.Up, PadKey = Buttons.DPadUp},
             new ControlMap(){Control = Controls.SELECT_DOWN, KeyboardKey = Keys.Down, PadKey = Buttons.DPadDown}
@@ -148,12 +150,18 @@ public class UserInputListener
         {
             if(CheckInput(controlMap))
             {
-                _actions[controlMap]?.Invoke(!_pressedControls.Add(controlMap.Control));
+                _actionsToExec.Add(() => _actions[controlMap]?.Invoke(!_pressedControls.Add(controlMap.Control)));
             } else
             {
                 _pressedControls.Remove(controlMap.Control);
             }
         }
+        // executing actions
+        foreach (Action action in _actionsToExec)
+        {
+            action?.Invoke();
+        }
+        _actionsToExec.Clear();
     }
 
     public Vector2 GetMousePos()

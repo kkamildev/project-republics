@@ -6,7 +6,6 @@ public enum Textures
 {
     AUTHOR_LOGO,
     BACKGROUND,
-    MAIN_MENU_SIDE,
     GAME_LOGO,
     BUTTON1
 }

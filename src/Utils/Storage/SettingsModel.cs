@@ -18,7 +18,7 @@ public class SettingsModel
         LangName = "english";
         ErrorLogging = true;
         Controls = [
-            new ControlMap(){Control = Input.Controls.EXIT, KeyboardKey = Keys.Q}
+            
         ];
     }
 

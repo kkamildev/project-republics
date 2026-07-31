@@ -1,6 +1,7 @@
 
 
 using System;
+using Microsoft.Xna.Framework;
 using project_republics.Utils.Components.Sprites;
 using project_republics.Utils.Components.Texts;
 
@@ -18,6 +19,15 @@ public class SpriteButton : Button
     {
         _sprite.Draw();
         base.Draw();
+    }
+
+    public override Vector2 Position {
+        get => base.Position;
+        set
+        {
+            base.Position = value;
+            _sprite.Position = value;
+        }
     }
 
     public float SpriteScale

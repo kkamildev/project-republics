@@ -38,6 +38,18 @@ public class Button : IDisposable
         _text.Dispose();
     }
 
+    public virtual Vector2 Position
+    {
+        get
+        {
+            return _text.Position;
+        }
+        set
+        {
+            _text.Position = value;
+        }
+    }
+
     public virtual bool Active
     {
         get

@@ -24,14 +24,14 @@ public class MainMenuSide : UIBase, IDisposable
         _gameLogo = new(Utils.Input.Textures.GAME_LOGO, new Vector2(300, 30), 0.5f, 0f){Scale=3f};
         _menuTip = new(Utils.Input.Fonts.BASE, "In development", new Vector2(550, 200), 0.5f, 0.5f, 0){Color = Color.Goldenrod, DegRotation = -10};
         _menuTipAnimation = new(1.3f, 0.3f, () => {}){Loop = true};
-        _mainMenuSide = new(Utils.Input.Textures.MAIN_MENU_SIDE, Vector2.Zero){Color = new Color(Color.Black, 0.7f), Scale = 100f};
+        _mainMenuSide = new RectSprite(Utils.Input.Textures.BACKGROUND, new Rectangle(0, 0, 600, 900), 0, 0, 0){Color = new Color(Color.Black, 0.7f)};
 
         string[] texts = ["PLAY_BUTTON", "SETTINGS_BUTTON", "CREDITS_BUTTON", "EXIT_BUTTON"];
         _mainButtonGroup = new([
             ..texts.Select((text, index) => new SpriteButton(new AlignedText(Utils.Input.Fonts.LARGE, text, new Vector2(300, 400 + 125 * index), 0.5f, 0.5f){Color = Color.DimGray},
              new AlignedSprite(Utils.Input.Textures.BUTTON1, new Vector2(300, 400 + 125 * index), 0.5f, 0.5f){Scale = 3f},
               actions[index]){ChangeColor = Color.White})
-        ]){Active = true};
+        ]);
     }
 
     public override void Draw()
@@ -53,10 +53,26 @@ public class MainMenuSide : UIBase, IDisposable
         get => base.MainPosition;
         set
         {
+            foreach (Button button in  _mainButtonGroup.Buttons)
+            {
+                button.Position-= base.MainPosition;
+            }
             base.MainPosition = value;
             _gameLogo.Position = new Vector2(300, 30) + _mainPosition;
             _menuTip.Position = new Vector2(550, 200) + _mainPosition;
             _mainMenuSide.Position = _mainPosition;
+            foreach (Button button in  _mainButtonGroup.Buttons)
+            {
+                button.Position+= base.MainPosition;
+            }
+        }
+    }
+
+    public ButtonGroup ButtonGroup
+    {
+        get
+        {
+            return _mainButtonGroup;
         }
     }
 

@@ -30,7 +30,7 @@ public class StartIntroScene : IScene
                 , 0f, 1f);
         }, 1f, 0f)
         , 0f, 1f);
-        _background = new(Utils.Input.Textures.BACKGROUND, Vector2.Zero){Color = Color.Black, Scale = 100f};
+        _background = new RectSprite(Utils.Input.Textures.BACKGROUND, new Rectangle(0, 0, 1600, 900), 0, 0, 0){Color = Color.Black};
         _studioLogo = new(Utils.Input.Textures.AUTHOR_LOGO, MainGame.Resolution / 2 + new Vector2(-210, 0), 0.5f, 0.5f){Scale = 0.15f};
         _studioLogoText = new([
             new AlignedText(Utils.Input.Fonts.LARGER, "Pixlesofte", new Vector2(60, -30), 0.5f, 1f){Color = Color.White},
