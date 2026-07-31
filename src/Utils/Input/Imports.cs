@@ -7,7 +7,8 @@ public enum Textures
     AUTHOR_LOGO,
     BACKGROUND,
     GAME_LOGO,
-    BUTTON1
+    BUTTON1,
+    BUTTON2
 }
 
 public enum Fonts

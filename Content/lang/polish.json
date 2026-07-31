@@ -5,6 +5,7 @@
         "PLAY_BUTTON":"Zagraj",
         "SETTINGS_BUTTON":"Ustawienia",
         "CREDITS_BUTTON":"Autorzy",
-        "EXIT_BUTTON":"Wyjście"
+        "EXIT_BUTTON":"Wyjście",
+        "SELECT_WORLD_TITLE":"Wybierz Świat"
     }
 }

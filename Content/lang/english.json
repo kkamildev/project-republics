@@ -5,6 +5,7 @@
         "PLAY_BUTTON":"Play",
         "SETTINGS_BUTTON":"Settings",
         "CREDITS_BUTTON":"Credits",
-        "EXIT_BUTTON":"Exit"
+        "EXIT_BUTTON":"Exit",
+        "SELECT_WORLD_TITLE":"Select World"
     }
 }
