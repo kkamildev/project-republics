@@ -10,7 +10,7 @@ namespace project_republics.Components.UI.Buttons;
 public class SpriteButton : Button
 {
     protected AlignedSprite _sprite;
-    public SpriteButton(Text text, AlignedSprite sprite, Action onclick) : base(text, onclick)
+    public SpriteButton(Text text, AlignedSprite sprite, Action onclick) : base(onclick, text)
     {
         _sprite = sprite;
     }
@@ -21,11 +21,11 @@ public class SpriteButton : Button
         base.Draw();
     }
 
-    public override Vector2 Position {
-        get => base.Position;
+    public override Vector2 MainPosition {
+        get => base.MainPosition;
         set
         {
-            base.Position = value;
+            base.MainPosition = value;
             _sprite.Position = value;
         }
     }

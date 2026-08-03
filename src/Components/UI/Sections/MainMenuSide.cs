@@ -53,17 +53,17 @@ public class MainMenuSide : UIBase, IDisposable
         get => base.MainPosition;
         set
         {
-            foreach (Button button in  _mainButtonGroup.Buttons)
+            foreach (BaseButton button in  _mainButtonGroup.Buttons)
             {
-                button.Position-= base.MainPosition;
+                button.MainPosition-= base.MainPosition;
             }
             base.MainPosition = value;
             _gameLogo.Position = new Vector2(300, 30) + _mainPosition;
             _menuTip.Position = new Vector2(550, 200) + _mainPosition;
             _mainMenuSide.Position = _mainPosition;
-            foreach (Button button in  _mainButtonGroup.Buttons)
+            foreach (BaseButton button in  _mainButtonGroup.Buttons)
             {
-                button.Position+= base.MainPosition;
+                button.MainPosition+= base.MainPosition;
             }
         }
     }

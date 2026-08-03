@@ -2,6 +2,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using project_republics.Components.UI.Buttons;
 using project_republics.Utils.Components.Sprites;
 using project_republics.Utils.Components.Texts;
 using project_republics.Utils.Components.UI;
@@ -10,9 +11,9 @@ using project_republics.Utils.Helpers;
 
 namespace project_republics.Components.UI.Models;
 
-public class WorldModel : UIBase, IDisposable
+public class WorldModel : BaseButton
 {
-    public class WorldData
+    public class WorldData : IComparable<WorldData>
     {
         public string Name{set;get;}
         public int Mode{set;get;}
@@ -21,6 +22,13 @@ public class WorldModel : UIBase, IDisposable
         public DateTime LastPlayed{set;get;}
         public string[] FlagPixelRows{get;set;}
         public string GlobalID{get;set;}
+
+        public int CompareTo(WorldData other)
+        {
+            if (other == null) return 1;
+        
+            return LastPlayed.CompareTo(other.LastPlayed);
+        }
     }
 
     public static readonly string[] Modes = ["NORMAL_MODE", "SANDBOX_MODE", "PEACEFUL_MODE", "HARDCODE_MODE"];
@@ -30,7 +38,7 @@ public class WorldModel : UIBase, IDisposable
     private RawTextureSprite _flagSprite;
     private Sprite _worldBackground;
     private TextGroup _texts;
-    public WorldModel(WorldData data)
+    public WorldModel(WorldData data) : base(() => {})
     {
         _data = data;
         try
@@ -95,7 +103,7 @@ public class WorldModel : UIBase, IDisposable
         }
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         _flagTexture.Dispose();
         _texts.Dispose();

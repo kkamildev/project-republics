@@ -1,9 +1,11 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Microsoft.Xna.Framework.Input;
+using project_republics.Components.UI.Models;
 using project_republics.Utils.Input;
 
 namespace project_republics.Utils.Storage;
@@ -26,6 +28,7 @@ public class StorageLoader
     private void CreateFileTree()
     {
         Directory.CreateDirectory(_appPath);
+        Directory.CreateDirectory(Path.Join(_appPath, "worlds"));
     }
 
     public void SaveSettings()
@@ -54,6 +57,34 @@ public class StorageLoader
             // loading default settings
             Settings = new();
         }
+    }
+
+    public List<WorldModel.WorldData> SearchForWorlds()
+    {
+        string dir = Path.Join(_appPath, "worlds");
+        if(!Directory.Exists(dir))
+        {
+            return [];
+        }
+        List<WorldModel.WorldData> data = [];
+        string[] directories = Directory.GetDirectories(dir);
+        foreach (string directory in directories)
+        {
+            try
+            {
+                if(File.Exists(Path.Join(directory, "metadata.json")))
+                {
+                    string fileContent = File.ReadAllText(Path.Join(directory, "metadata.json"));
+                    WorldModel.WorldData record = JsonSerializer.Deserialize<WorldModel.WorldData>(fileContent);
+                    data.Add(record);
+                }
+            }catch (Exception)
+            {
+                continue;
+            }
+        }
+        return data;
+        
     }
 
     public void SaveErrorLog(string errorContent)

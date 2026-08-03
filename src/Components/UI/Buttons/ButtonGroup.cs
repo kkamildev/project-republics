@@ -7,27 +7,27 @@ namespace project_republics.Components.UI.Buttons;
 
 public class ButtonGroup : IDisposable
 {
-    protected List<Button> _buttons;
+    protected List<BaseButton> _buttons;
     protected int _selectedIndex;
     protected bool _active;
 
     public bool AllowHold{get;set;}
 
-    public ButtonGroup(Button[] buttons)
+    public ButtonGroup(BaseButton[] buttons)
     {
         _buttons = [..buttons];
         _active = false;
         _selectedIndex = 0;
         AllowHold = false;
     }
-    public ButtonGroup(Button[] buttons, int selectedIndex) : this(buttons)
+    public ButtonGroup(BaseButton[] buttons, int selectedIndex) : this(buttons)
     {
         _selectedIndex = selectedIndex;
     }
 
     public void Draw()
     {
-        foreach (Button button in _buttons)
+        foreach (BaseButton button in _buttons)
         {
             button.Draw();
         }
@@ -35,7 +35,7 @@ public class ButtonGroup : IDisposable
 
     public void Update()
     {
-        foreach (Button button in _buttons)
+        foreach (BaseButton button in _buttons)
         {
             button.Update();
         }
@@ -44,7 +44,7 @@ public class ButtonGroup : IDisposable
     public void Dispose()
     {
         Active = false;
-        foreach (Button button in _buttons)
+        foreach (BaseButton button in _buttons)
         {
             button.Dispose();
         }
@@ -101,7 +101,7 @@ public class ButtonGroup : IDisposable
                 MainGame.Input.SubscribeAction(Utils.Input.Controls.ACTION_CLICK, Click);
             } else
             {
-                _buttons[_selectedIndex].Active = false;
+                if(_buttons.Count != 0) _buttons[_selectedIndex].Active = false;
                 MainGame.Input.UnSubscribeAction(Utils.Input.Controls.SELECT_UP, SelectUp);
                 MainGame.Input.UnSubscribeAction(Utils.Input.Controls.SELECT_DOWN, SelectDown);
                 MainGame.Input.UnSubscribeAction(Utils.Input.Controls.ACTION_CLICK, Click);
@@ -117,13 +117,13 @@ public class ButtonGroup : IDisposable
         }
         set
         {
-            _buttons[_selectedIndex].Active = false;
+            if(_buttons.Count != 0) _buttons[_selectedIndex].Active = false;
             _selectedIndex = value;
-            _buttons[_selectedIndex].Active = true;
+            if(_buttons.Count != 0) _buttons[_selectedIndex].Active = true;
         }
     }
 
-    public List<Button> Buttons
+    public List<BaseButton> Buttons
     {
         get
         {
