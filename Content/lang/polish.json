@@ -9,6 +9,7 @@
         "SELECT_WORLD_TITLE":"Wybierz Świat",
         "SELECT_WORLD":"Wybierz",
         "CREATE_WORLD":"Stwórz Nowy",
-        "BACK":"Powrót"
+        "BACK":"Powrót",
+        "WORLD_PLAYED_DATE":"Ostatnio grano: {0}"
     }
 }

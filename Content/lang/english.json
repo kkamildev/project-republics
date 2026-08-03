@@ -9,6 +9,7 @@
         "SELECT_WORLD_TITLE":"Select World",
         "SELECT_WORLD":"Select",
         "CREATE_WORLD":"Create New",
-        "BACK":"Back"
+        "BACK":"Back",
+        "WORLD_PLAYED_DATE":"Last played: {0}"
     }
 }

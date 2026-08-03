@@ -2,7 +2,7 @@
 
 using Microsoft.Xna.Framework.Input;
 
-namespace project_republics.Utils.Input;
+namespace project_republics.Utils.Helpers;
 
 public static class InputHelper
 {

@@ -15,7 +15,7 @@ public class RectSprite : RotatedSprite
 
     public override void Draw()
     {
-        MainGame.Batch.Draw(MainGame.CL.Textures[_texture], _rectangle, null, Color, _rotation, new Vector2(MainGame.CL.Textures[_texture].Width * _ax, MainGame.CL.Textures[_texture].Height * _ay), SpriteEffects.None, LayerDepth);
+        MainGame.Batch.Draw(MainGame.CL.Textures[_texture], new Rectangle((int)_position.X, (int)_position.Y, _rectangle.Width, _rectangle.Height), null, Color, _rotation, new Vector2(MainGame.CL.Textures[_texture].Width * _ax, MainGame.CL.Textures[_texture].Height * _ay), SpriteEffects.None, LayerDepth);
     }
 
     public override Vector2 Position {

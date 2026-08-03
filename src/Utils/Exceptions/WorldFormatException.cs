@@ -1,0 +1,19 @@
+
+
+using System;
+using project_republics.Components.UI.Models;
+
+namespace project_republics.Utils.Exceptions;
+
+public class WorldFormatException : Exception
+{
+    public WorldFormatException(WorldModel.WorldData worldData) : base("Exception during parsing world metadata->" + GetInfo(worldData))
+    {
+        
+    }
+
+    private static string GetInfo(WorldModel.WorldData worldData)
+    {
+        return $"Name: {worldData.Name}, CreatedAt: {worldData.CreatedAt:yyyy-MM-dd}, LastPlayed:{worldData.LastPlayed:yyyy-MM-dd}, Flag info:\n{string.Join("\n", worldData.FlagPixelRows)}";
+    }
+}

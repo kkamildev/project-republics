@@ -33,7 +33,13 @@ public class Text : IDisposable
     {
         if(MainGame.LL.Translations.TryGetValue(_translationKey, out string value))
         {
-            _cache = string.Format(value, StringParams);
+            if(_stringParams.Length == 0)
+            {
+                _cache = value;
+            } else
+            {
+                _cache = string.Format(value, StringParams);
+            }
         } else
         {
             _cache = _translationKey;

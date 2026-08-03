@@ -27,10 +27,10 @@ public class TitleBox : UIBase, IDisposable
     public override Vector2 MainPosition {
         get => base.MainPosition;
         set {
-            _background.Position -= value;
+            _background.Position -= base.MainPosition;
             _titleText.Position -= base.MainPosition;
             base.MainPosition = value;
-            _background.Position += value;
+            _background.Position += base.MainPosition;
             _titleText.Position += base.MainPosition;
         }
     }
