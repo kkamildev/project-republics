@@ -10,6 +10,12 @@
         "SELECT_WORLD":"Select",
         "CREATE_WORLD":"Create New",
         "BACK":"Back",
-        "WORLD_PLAYED_DATE":"Last played: {0}"
+        "WORLD_PLAYED_DATE":"Last played: {0}",
+        "ONLINE_NO":"Online: No",
+        "ONLINE_YES":"Online: Yes",
+        "NORMAL_MODE":"Normal Mode, {0}",
+        "SANDBOX_MODE":"Sandbox Mode, {0}",
+        "PEACEFUL_MODE":"Peaceful Mode, {0}",
+        "HARDCODE_MODE":"Hardcore Mode, {0}"
     }
 }

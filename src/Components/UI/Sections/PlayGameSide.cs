@@ -61,7 +61,10 @@ public class PlayGameSide : UIBase, IDisposable
             "#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16,#142A16"
         ];
 
-        _worldTest = new(new WorldModel.WorldData(){CreatedAt = DateTime.Now, LastPlayed = DateTime.Now, Name = "SUper world", FlagPixelRows = pixelLandscape })
+        _worldTest = new(new WorldModel.WorldData(){CreatedAt = DateTime.Now, LastPlayed = DateTime.Now, Name = "SUper world", FlagPixelRows = pixelLandscape,
+            Mode = 0,
+            RepublicName = "Poland"
+        })
         {
             MainPosition = new Vector2(575, 180)
         };

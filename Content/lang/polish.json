@@ -10,6 +10,12 @@
         "SELECT_WORLD":"Wybierz",
         "CREATE_WORLD":"Stwórz Nowy",
         "BACK":"Powrót",
-        "WORLD_PLAYED_DATE":"Ostatnio grano: {0}"
+        "WORLD_PLAYED_DATE":"Ostatnio grano: {0}",
+        "ONLINE_NO":"Online: Nie",
+        "ONLINE_YES":"Online: Tak",
+        "NORMAL_MODE":"Tryb Normalny, {0}",
+        "SANDBOX_MODE":"Tryb Dowolny, {0}",
+        "PEACEFUL_MODE":"Tryb Pokojowy, {0}",
+        "HARDCODE_MODE":"Tryb Hardcore, {0}"
     }
 }

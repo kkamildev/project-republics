@@ -1,6 +1,7 @@
 
 
 using System;
+using System.Linq;
 using project_republics.Components.UI.Models;
 
 namespace project_republics.Utils.Exceptions;
@@ -14,6 +15,9 @@ public class WorldFormatException : Exception
 
     private static string GetInfo(WorldModel.WorldData worldData)
     {
-        return $"Name: {worldData.Name}, CreatedAt: {worldData.CreatedAt:yyyy-MM-dd}, LastPlayed:{worldData.LastPlayed:yyyy-MM-dd}, Flag info:\n{string.Join("\n", worldData.FlagPixelRows)}";
+        return $@"Name: {worldData.Name}, CreatedAt: {worldData.CreatedAt:yyyy-MM-dd},
+         LastPlayed:{worldData.LastPlayed:yyyy-MM-dd}, Mode:{((WorldModel.Modes.Length >= worldData.Mode) ? "Unknown" : WorldModel.Modes[worldData.Mode])},
+            RepublicName:{worldData.RepublicName}, GlobalID:{worldData.GlobalID}
+          Flag info:\n{string.Join("\n", worldData.FlagPixelRows)}";
     }
 }

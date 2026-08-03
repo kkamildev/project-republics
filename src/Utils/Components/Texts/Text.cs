@@ -42,7 +42,13 @@ public class Text : IDisposable
             }
         } else
         {
-            _cache = _translationKey;
+            if(_stringParams.Length == 0)
+            {
+                _cache = _translationKey;
+            } else
+            {
+                _cache = string.Format(_translationKey, StringParams);
+            }
         }
     }
 
