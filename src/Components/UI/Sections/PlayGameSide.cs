@@ -9,7 +9,6 @@ using project_republics.Components.UI.Buttons;
 using System.Linq;
 using project_republics.Components.UI.Models;
 using System.Collections.Generic;
-using project_republics.Utils.Exceptions;
 
 namespace project_republics.Components.UI.Sections;
 

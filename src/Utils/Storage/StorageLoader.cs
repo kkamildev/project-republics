@@ -6,6 +6,7 @@ using System.IO;
 using System.Text.Json;
 using Microsoft.Xna.Framework.Input;
 using project_republics.Components.UI.Models;
+using project_republics.Utils.Helpers;
 using project_republics.Utils.Input;
 
 namespace project_republics.Utils.Storage;
@@ -76,6 +77,7 @@ public class StorageLoader
                 {
                     string fileContent = File.ReadAllText(Path.Join(directory, "metadata.json"));
                     WorldModel.WorldData record = JsonSerializer.Deserialize<WorldModel.WorldData>(fileContent);
+                    record.DirectoryPath = $"/{Path.GetFileName(directory)}".Truncate(20);
                     data.Add(record);
                 }
             }catch (Exception)

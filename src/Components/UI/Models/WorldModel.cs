@@ -15,19 +15,27 @@ public class WorldModel : BaseButton
 {
     public class WorldData : IComparable<WorldData>
     {
-        public string Name{set;get;}
-        public int Mode{set;get;}
-        public string RepublicName{set;get;}
-        public DateTime CreatedAt{set;get;}
-        public DateTime LastPlayed{set;get;}
+        public string Name{get;set;}
+        public int Mode{get;set;}
+        public string RepublicName{get;set;}
+        public string DirectoryPath{get;set;}
+        public DateTime CreatedAt{get;set;}
+        public DateTime LastPlayed{get;set;}
         public string[] FlagPixelRows{get;set;}
         public string GlobalID{get;set;}
 
         public int CompareTo(WorldData other)
         {
             if (other == null) return 1;
-        
-            return LastPlayed.CompareTo(other.LastPlayed);
+
+            int lastPlayedComparison = other.LastPlayed.CompareTo(LastPlayed);
+            
+            if (lastPlayedComparison != 0)
+            {
+                return lastPlayedComparison;
+            }
+
+            return string.Compare(Name, other.Name, StringComparison.OrdinalIgnoreCase);
         }
     }
 
@@ -62,6 +70,7 @@ public class WorldModel : BaseButton
             _texts = new([
                 new(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(160, 15)){ StringParams = [data.Name] },
                 new(Utils.Input.Fonts.SMALLER, "WORLD_PLAYED_DATE", new Vector2(160, 40)){ Color = Color.DimGray, StringParams = [data.LastPlayed.ToString("HH:mm yyyy-MM-dd")] },
+                new(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(460, 40)){ Color = Color.DimGray, StringParams = [data.DirectoryPath] },
                 new(Utils.Input.Fonts.SMALLER, data.GlobalID != null ? "ONLINE_YES" : "ONLINE_NO", new Vector2(160, 70)),
                 new(Utils.Input.Fonts.SMALLER, Modes[data.Mode], new Vector2(160, 100)){ StringParams = [data.RepublicName] }
             ]);
