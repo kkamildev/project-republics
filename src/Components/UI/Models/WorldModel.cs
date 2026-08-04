@@ -103,6 +103,20 @@ public class WorldModel : BaseButton
         }
     }
 
+    public override bool Active {
+        get => base.Active;
+        set {
+            base.Active = value;
+            if(base.Active)
+            {
+                _worldBackground.Color = Color.DimGray;
+            } else
+            {
+                _worldBackground.Color = Color.White;
+            }
+        }
+    }
+
     public override void Dispose()
     {
         _flagTexture.Dispose();

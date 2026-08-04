@@ -21,17 +21,31 @@ public class PlayGameSide : UIBase, IDisposable
     private TitleBox _titleBox;
     private ButtonGroup _mainButtonGroup;
 
-    private ButtonGroup _worlds;
+    private ScrollButtonGroup _worlds;
 
     public PlayGameSide(Action backAction)
     {
         _active = false;
 
-        _worlds = new([]);
+        _worlds = new([], 3, 1)
+        {
+            MoveVector = new Vector2(0, 200)
+        };
         _titleBox = new("SELECT_WORLD_TITLE", Utils.Input.Textures.BACKGROUND, new Rectangle((int)MainGame.Resolution.X / 2, (int)MainGame.Resolution.Y / 2, 1600 / 5 * 4, 900 / 5 * 4));
         string[] texts = ["SELECT_WORLD", "CREATE_WORLD", "BACK"];
         Action[] actions = [
-            () => {},
+            () => {
+                _worlds.Active = true;
+                _mainButtonGroup.Active = false;
+                void exitAction (bool hold) {
+                    _worlds.Active = false;
+                    _mainButtonGroup.Active = true;
+                    MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, _backAction);
+                    MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, exitAction);
+                }
+                MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, exitAction);
+                MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, _backAction);
+            },
             () => {},
             () => _backAction.Invoke(false)
         ];
@@ -42,8 +56,11 @@ public class PlayGameSide : UIBase, IDisposable
         ]);
         _backAction = (hold) =>
         {
-            backAction.Invoke();
-            Active = false;
+            if(!hold)
+            {
+                backAction.Invoke();
+                Active = false;
+            }
         };
         MainPosition = new Vector2(0, -900);
     }
@@ -65,6 +82,26 @@ public class PlayGameSide : UIBase, IDisposable
         _worlds.Update();
     }
 
+    private void SearchWorlds()
+    {
+        List<WorldModel.WorldData> data = MainGame.Storage.SearchForWorlds();
+        data.Sort();
+        _worlds.Dispose();
+        _worlds.SelectedIndex = 0;
+        _worlds.Buttons.Clear();
+        for(int i = 0;i<data.Count;i++)
+        {
+            WorldModel model = new(data[i]){MainPosition = new Vector2(575, 180 + 200 * i)};
+            _worlds.Buttons.Add(model);
+        }
+        MainPosition = new Vector2(0, -900);
+        if(_worlds.Buttons.Count > 0)
+        {
+            _worlds.SelectedIndex = 0;
+            _worlds.Active = false;
+        }
+    }
+
     public bool Active
     {
         get
@@ -80,21 +117,8 @@ public class PlayGameSide : UIBase, IDisposable
                 _showUIAnimation = new(1f, () => {}, _showUIAnimation?.Progress ?? 1f, 0f);
                 MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, _backAction);
                 // Searching for worlds
-                List<WorldModel.WorldData> data = MainGame.Storage.SearchForWorlds();
-                data.Sort();
-                _worlds.Dispose();
-                _worlds.Buttons.Clear();
                 MainPosition = new Vector2(0, 0);
-                for(int i = 0;i<data.Count;i++)
-                {
-                    WorldModel model = new(data[i]){MainPosition = new Vector2(575, 180 + 200 * i)};
-                    _worlds.Buttons.Add(model);
-                }
-                if(_worlds.Buttons.Count > 0)
-                {
-                    _worlds.SelectedIndex = 0;
-                }
-                MainPosition = new Vector2(0, -900);
+                SearchWorlds();
             } else
             {
                 _mainButtonGroup.SelectedIndex = 0;

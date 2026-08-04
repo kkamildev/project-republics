@@ -25,7 +25,7 @@ public class ButtonGroup : IDisposable
         _selectedIndex = selectedIndex;
     }
 
-    public void Draw()
+    public virtual void Draw()
     {
         foreach (BaseButton button in _buttons)
         {
@@ -33,7 +33,7 @@ public class ButtonGroup : IDisposable
         }
     }
 
-    public void Update()
+    public virtual void Update()
     {
         foreach (BaseButton button in _buttons)
         {
@@ -84,7 +84,7 @@ public class ButtonGroup : IDisposable
         if(!controlHold || AllowHold) _buttons[_selectedIndex].OnClick.Invoke();
     }
 
-    public bool Active
+    public virtual bool Active
     {
         get
         {
@@ -109,7 +109,7 @@ public class ButtonGroup : IDisposable
         }
     }
 
-    public int SelectedIndex
+    public virtual int SelectedIndex
     {
         get
         {
