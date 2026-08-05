@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using project_republics.Components.UI.Buttons;
 using project_republics.Utils.Components.Sprites;
 using project_republics.Utils.Components.Texts;
-using project_republics.Utils.Components.UI;
 using project_republics.Utils.Exceptions;
 using project_republics.Utils.Helpers;
 
@@ -40,15 +39,23 @@ public class WorldModel : BaseButton
     }
 
     public static readonly string[] Modes = ["NORMAL_MODE", "SANDBOX_MODE", "PEACEFUL_MODE", "HARDCODE_MODE"];
-
+    
+    private bool _choosen;
+    private ButtonGroup _worldOptions;
     private WorldData _data;
     private Texture2D _flagTexture = new(MainGame.Graph.GraphicsDevice, 33, 33);
     private RawTextureSprite _flagSprite;
     private Sprite _worldBackground;
     private TextGroup _texts;
-    public WorldModel(WorldData data) : base(() => {})
+    public WorldModel(WorldData data, Action onClick, Action onPlay) : base(onClick)
     {
+        _choosen = false;
         _data = data;
+        _worldOptions = new([
+            new Button(onPlay, new AlignedText(Utils.Input.Fonts.BASE, "PLAY_BUTTON", new Vector2(230, 72), 0.5f, 0.5f){Color = Color.DimGray}){ChangeColor = Color.White},
+            new Button(() => {}, new AlignedText(Utils.Input.Fonts.BASE, "EDIT_BUTTON", new Vector2(430, 72), 0.5f, 0.5f){Color = Color.DimGray}){ChangeColor = Color.White},
+            new Button(() => {}, new AlignedText(Utils.Input.Fonts.BASE, "DELETE_BUTTON", new Vector2(630, 72), 0.5f, 0.5f){Color = Color.DimGray}){ChangeColor = Color.DarkRed}
+        ]);
         try
         {
             // creating flag texture
@@ -89,7 +96,13 @@ public class WorldModel : BaseButton
     {
         _worldBackground.Draw();
         _flagSprite.Draw();
-        _texts.Draw();
+        if(_choosen)
+        {
+            _worldOptions.Draw();
+        } else
+        {
+            _texts.Draw();
+        }
     }
 
     public override void Update()
@@ -106,7 +119,15 @@ public class WorldModel : BaseButton
         {
             _flagSprite.Position-= base.MainPosition;
             _texts.MainPosition = value;
+            foreach(BaseButton button in _worldOptions.Buttons)
+            {
+                button.MainPosition-=base.MainPosition;
+            }
             base.MainPosition = value;
+            foreach(BaseButton button in _worldOptions.Buttons)
+            {
+                button.MainPosition+=base.MainPosition;
+            }
             _flagSprite.Position+= base.MainPosition;
             _worldBackground.Position = base.MainPosition;
         }
@@ -126,9 +147,39 @@ public class WorldModel : BaseButton
         }
     }
 
+    public bool Choosen
+    {
+        get
+        {
+            return _choosen;
+        }
+        set
+        {
+            _choosen = value;
+            if(_choosen)
+            {
+                _worldOptions.Active = true;
+                _worldBackground.Color = Color.DimGray;
+            } else
+            {
+                _worldOptions.Active = false;
+                _worldBackground.Color = Color.White;
+            }
+        }
+    }
+
+    public WorldData Data
+    {
+        get
+        {
+            return _data;
+        }
+    }
+
     public override void Dispose()
     {
         _flagTexture.Dispose();
         _texts.Dispose();
+        _worldOptions.Dispose();
     }
 }

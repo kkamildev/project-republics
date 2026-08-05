@@ -17,15 +17,13 @@ public class PlayGameSide : UIBase, IDisposable
     private bool _active;
     private EaseInOutAnimation _showUIAnimation;
     private Action<bool> _backAction;
+    private Action<WorldModel.WorldData> _playAction;
     private TitleBox _titleBox;
     private ButtonGroup _mainButtonGroup;
-
     private ScrollButtonGroup _worlds;
-
-    public PlayGameSide(Action backAction)
+    public PlayGameSide(Action backAction, Action<WorldModel.WorldData> playAction)
     {
         _active = false;
-
         _worlds = new([], 3, 1)
         {
             MoveVector = new Vector2(0, 200)
@@ -36,13 +34,7 @@ public class PlayGameSide : UIBase, IDisposable
             () => {
                 _worlds.Active = true;
                 _mainButtonGroup.Active = false;
-                void exitAction (bool hold) {
-                    _worlds.Active = false;
-                    _mainButtonGroup.Active = true;
-                    MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, _backAction);
-                    MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, exitAction);
-                }
-                MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, exitAction);
+                MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, ExitActionFromWorldSelect);
                 MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, _backAction);
             },
             () => {},
@@ -53,6 +45,7 @@ public class PlayGameSide : UIBase, IDisposable
              new AlignedSprite(Utils.Input.Textures.BUTTON2, new Vector2(300, 200 + 100 * index), 0.5f, 0.5f){Scale = 3f},
               actions[index]){ChangeColor = Color.White})
         ]);
+        _playAction = playAction;
         _backAction = (hold) =>
         {
             if(!hold)
@@ -81,6 +74,47 @@ public class PlayGameSide : UIBase, IDisposable
         _worlds.Update();
     }
 
+    private void ExitActionFromWorldSelect (bool hold) {
+        if(!hold)
+        {
+            _worlds.Active = false;
+            _mainButtonGroup.Active = true;
+            MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, _backAction);
+            MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, ExitActionFromWorldSelect);
+        }
+    }
+    private void ExitActionFromWorld(bool hold) {
+        if(!hold)
+        {
+            WorldModel choosenButton = (WorldModel)_worlds.Buttons.Find((button) => (button as WorldModel).Choosen);
+            choosenButton.Choosen = false;
+            _worlds.Active = true;
+            MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, ExitActionFromWorldSelect);
+            MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, ExitActionFromWorld);
+        }
+    }
+
+    private void ChooseWorld(int index)
+    {
+        foreach (WorldModel model in _worlds.Buttons)
+        {
+            model.Choosen = false;
+        }
+        WorldModel choosenModel = (WorldModel)_worlds.Buttons[index];
+        _worlds.Active = false;
+        choosenModel.Choosen = true;
+
+        MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, ExitActionFromWorldSelect);
+        MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, ExitActionFromWorld);
+    }
+
+    private void PlayWorld(int index)
+    {
+        WorldModel playedModel = (WorldModel)_worlds.Buttons[index];
+        MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, ExitActionFromWorld);
+        _playAction.Invoke(playedModel.Data);
+    }
+
     private void SearchWorlds()
     {
         List<WorldModel.WorldData> data = MainGame.Storage.SearchForWorlds();
@@ -90,7 +124,8 @@ public class PlayGameSide : UIBase, IDisposable
         _worlds.Buttons.Clear();
         for(int i = 0;i<data.Count;i++)
         {
-            WorldModel model = new(data[i]){MainPosition = new Vector2(575, 180 + 200 * i)};
+            int index = i;
+            WorldModel model = new(data[i], () => ChooseWorld(index), () => PlayWorld(index)){MainPosition = new Vector2(575, 180 + 200 * i)};
             _worlds.Buttons.Add(model);
         }
         MainPosition = new Vector2(0, -900);

@@ -4,10 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using Microsoft.Xna.Framework.Input;
 using project_republics.Components.UI.Models;
 using project_republics.Utils.Helpers;
-using project_republics.Utils.Input;
 
 namespace project_republics.Utils.Storage;
 

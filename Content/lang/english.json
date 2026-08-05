@@ -3,6 +3,8 @@
     "DisplayName":"English",
     "Translations":{
         "PLAY_BUTTON":"Play",
+        "EDIT_BUTTON":"Edit",
+        "DELETE_BUTTON":"Delete",
         "SETTINGS_BUTTON":"Settings",
         "CREDITS_BUTTON":"Credits",
         "EXIT_BUTTON":"Exit",

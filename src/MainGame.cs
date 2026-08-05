@@ -114,10 +114,7 @@ public class MainGame : Game
 
     public static void ChangeScene(IScene newScene)
     {
-        if(_currentScene != null)
-        {
-            _currentScene.Dispose();
-        }
+        _currentScene?.Dispose();
         _currentScene = newScene;
     }
 

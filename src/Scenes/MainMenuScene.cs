@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using project_republics.Components.UI.Buttons;
+using project_republics.Components.UI.Models;
 using project_republics.Components.UI.Sections;
 using project_republics.Utils.Animations;
 using project_republics.Utils.Components.Sprites;
@@ -26,7 +27,7 @@ public class MainMenuScene : IScene
             () => {},
             MainGame.Shutdown
         ]);
-        _playGameSide = new(() => ChangeCurrentView(0));
+        _playGameSide = new(() => ChangeCurrentView(0), OnPlayGame);
         ChangeCurrentView(0);  
         _showingScreenAnimation = new(1f, () => {}, 1f, 0f);
         _blackBackground = new RectSprite(Utils.Input.Textures.BACKGROUND, new Rectangle(0, 0, 1600, 900), 0, 0, 0){Color = Color.Black};
@@ -54,6 +55,11 @@ public class MainMenuScene : IScene
                 _showUIAnimation = new(1f, () => {}, _showUIAnimation?.Progress ?? 0f, 1f);
             break; 
         }
+    }
+
+    private void OnPlayGame(WorldModel.WorldData worldData)
+    {
+        
     }
 
 
