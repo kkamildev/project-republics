@@ -92,6 +92,7 @@ public class MainGame : Game
         DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         Input.Update();
 
+        _currentScene?.Update();
         if(TransitionScreen != null)
         {
             TransitionScreen.Update();
@@ -101,7 +102,6 @@ public class MainGame : Game
                 TransitionScreen = null;
             }
         }
-        _currentScene?.Update();
 
         base.Update(gameTime);
     }

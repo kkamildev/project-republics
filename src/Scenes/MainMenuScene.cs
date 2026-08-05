@@ -2,12 +2,10 @@
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using project_republics.Components.UI.Buttons;
 using project_republics.Components.UI.Models;
 using project_republics.Components.UI.Sections;
 using project_republics.Components.UI.TransitionScreens;
 using project_republics.Utils.Animations;
-using project_republics.Utils.Components.Sprites;
 using project_republics.Utils.Components.Texts;
 
 namespace project_republics.Scenes;
@@ -15,8 +13,7 @@ namespace project_republics.Scenes;
 
 public class MainMenuScene : IScene
 {
-    private EaseInOutAnimation _showingScreenAnimation, _showUIAnimation;
-    private Sprite _blackBackground;
+    private EaseInOutAnimation _showUIAnimation;
     private TextGroup _gameInfoTextGroup;
     private MainMenuSide _leftSide;
     private PlayGameSide _playGameSide;
@@ -33,8 +30,6 @@ public class MainMenuScene : IScene
         ]);
         _playGameSide = new(() => ChangeCurrentView(0), OnPlayGame);
         ChangeCurrentView(0);  
-        _showingScreenAnimation = new(1f, () => {}, 1f, 0f);
-        _blackBackground = new RectSprite(Utils.Input.Textures.BACKGROUND, new Rectangle(0, 0, 1600, 900), 0, 0, 0){Color = Color.Black};
 
         _gameInfoTextGroup = new([
             new ShadowedText(Utils.Input.Fonts.BASE, "Copyright Kkamildev", MainGame.Resolution - new Vector2(2, 0), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black},
@@ -84,7 +79,6 @@ public class MainMenuScene : IScene
         // play menu
         _playGameSide.Draw();
 
-        _blackBackground.Draw();
         MainGame.Batch.End();
     }
 
@@ -94,8 +88,6 @@ public class MainMenuScene : IScene
         {
             _leftSide.Update();
             _playGameSide.Update();
-            _showingScreenAnimation.Update();
-            _blackBackground.Color = new Color(_blackBackground.Color, _showingScreenAnimation.Progress);
 
             if(_showUIAnimation != null)
             {

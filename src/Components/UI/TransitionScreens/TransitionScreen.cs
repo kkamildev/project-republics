@@ -46,7 +46,7 @@ public abstract class TransitionScreen : IDisposable
         }
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         _currentTask.Dispose();
     }

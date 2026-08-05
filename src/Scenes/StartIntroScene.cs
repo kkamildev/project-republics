@@ -1,53 +1,48 @@
 
-
-using project_republics.Utils.Components.Texts;
-using Microsoft.Xna.Framework;
-using project_republics.Utils.Components.Sprites;
 using project_republics.Utils.Animations;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+using project_republics.Components.UI.TransitionScreens;
+using System.Threading.Tasks;
 
 namespace project_republics.Scenes;
 
 public class StartIntroScene : IScene
 {
-    private readonly Sprite _background;
-    private readonly TextGroup _studioLogoText, _authorText;
-    private readonly AlignedSprite _studioLogo;
-    private EaseInOutAnimation _animation;
-    private int _introStatus;
     private bool _animationAccelerated;
+    private bool _introFinished;
+    private IntroTransitionScreen _introTransition;
     public StartIntroScene()
     {
+        _introFinished = false;
+        _introTransition = new IntroTransitionScreen(new LinearAnimation(0.1f, () => {}, 0f, 1f),
+        new EaseInOutAnimation(1f, () => {}, 1f, 0f), IntroTask);
+        MainGame.TransitionScreen = _introTransition;
         _animationAccelerated = false;
-        _introStatus = 0;
-        _animation = new(2f, () =>
-            _animation = new(2f, () => {
-                _introStatus = 1;
-                _animation = new(2f, () =>
-                    _animation = new(2f, () => MainGame.ChangeScene(new MainMenuScene())
+        InitAnimation();
+
+        // inserting controls
+        MainGame.Input.SubcribeAnyKeyPressedAction(AccelerateAnimation);
+        
+    }
+
+    private void InitAnimation ()
+    {
+        _introTransition.IntroAnimation = new(2f, () =>
+            _introTransition.IntroAnimation = new(2f, () => {
+                _introTransition.IntroStatus = 1;
+                _introTransition.IntroAnimation = new(2f, () =>
+                    _introTransition.IntroAnimation = new(2f, () => {MainGame.ChangeScene(new MainMenuScene()); _introFinished = true;}
                     , 1f, 0f)
                 , 0f, 1f);
         }, 1f, 0f)
         , 0f, 1f);
-        _background = new RectSprite(Utils.Input.Textures.BACKGROUND, new Rectangle(0, 0, 1600, 900), 0, 0, 0){Color = Color.Black};
-        _studioLogo = new(Utils.Input.Textures.AUTHOR_LOGO, MainGame.Resolution / 2 + new Vector2(-210, 0), 0.5f, 0.5f){Scale = 0.15f};
-        _studioLogoText = new([
-            new AlignedText(Utils.Input.Fonts.LARGER, "Pixlesofte", new Vector2(60, -30), 0.5f, 1f){Color = Color.White},
-            new AlignedText(Utils.Input.Fonts.BASE, "The Software Studio", new Vector2(-60, 30), 0f, 1f){Color = Color.DimGray}
-        ]){
-            MainPosition = MainGame.Resolution / 2
-        };
-        _authorText = new([
-            new AlignedText(Utils.Input.Fonts.LARGE, "Created by", new Vector2(0, -100), 0.5f, 0.5f){Color = Color.DimGray},
-            new AlignedText(Utils.Input.Fonts.LARGER, "Kkamildev", new Vector2(0, 0), 0.5f, 0.5f){Color = Color.DarkRed},
-            new AlignedText(Utils.Input.Fonts.LARGE, "With passion", new Vector2(0, 100), 0.5f, 0.5f){Color = Color.DimGray},
-        ]){
-            MainPosition = MainGame.Resolution / 2
-        };
-        // inserting controls
-        MainGame.Input.SubcribeAnyKeyPressedAction(AccelerateAnimation);
-        
+    }
+
+    private async Task IntroTask()
+    {
+        while(!_introFinished)
+        {
+            await Task.Delay(1);
+        }
     }
 
     private void AccelerateAnimation()
@@ -57,54 +52,24 @@ public class StartIntroScene : IScene
 
     public void Dispose()
     {
-        _studioLogoText.Dispose();
-        _authorText.Dispose();
         MainGame.Input.UnsubcribeAnyKeyPressedAction(AccelerateAnimation);
     }
 
     public void Draw()
     {
-        MainGame.Batch.Begin(samplerState:SamplerState.PointClamp, blendState:BlendState.NonPremultiplied);
-        _background.Draw();
-        switch(_introStatus)
-        {
-            case 0:
-            _studioLogo.Draw();
-            _studioLogoText.Draw();
-            break;
-            case 1:
-            _authorText.Draw();
-            break;
-        }
-        MainGame.Batch.End();
+        
     }
 
     public void Update()
     {
-        _animation.Update();
+        _introTransition.IntroAnimation?.Update();
         if(_animationAccelerated)
         {
             for(int i = 0;i<4;i++)
             {
-                _animation.Update();
+                _introTransition.IntroAnimation?.Update();
             }
         }
         
-        switch(_introStatus)
-        {
-            case 0:
-                _studioLogo.Color = new Color(_studioLogo.Color, _animation.Progress);
-                foreach (Text text in _studioLogoText.Texts)
-                {
-                    text.Color = new Color(text.Color, _animation.Progress);
-                }
-            break;
-            case 1:
-            foreach (Text text in _authorText.Texts)
-            {
-                text.Color = new Color(text.Color, _animation.Progress);
-            }
-            break;
-        }
     }
 }
