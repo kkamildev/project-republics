@@ -1,9 +1,11 @@
 
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using project_republics.Components.UI.Buttons;
 using project_republics.Components.UI.Models;
 using project_republics.Components.UI.Sections;
+using project_republics.Components.UI.TransitionScreens;
 using project_republics.Utils.Animations;
 using project_republics.Utils.Components.Sprites;
 using project_republics.Utils.Components.Texts;
@@ -19,8 +21,10 @@ public class MainMenuScene : IScene
     private MainMenuSide _leftSide;
     private PlayGameSide _playGameSide;
     private int _currentView;
+    private bool _worldLoading;
     public MainMenuScene()
     {
+        _worldLoading = false;
         _leftSide = new([
             () => ChangeCurrentView(1),
             () => {},
@@ -59,7 +63,14 @@ public class MainMenuScene : IScene
 
     private void OnPlayGame(WorldModel.WorldData worldData)
     {
-        
+        MainGame.TransitionScreen = new WorldLoadingTransitionScreen(new LinearAnimation(0.5f, () => {}, 0f, 1f),
+         new LinearAnimation(0.5f, () => {}, 1f, 0f),
+         () => LoadGameScene(worldData));
+    }
+
+    private async Task LoadGameScene(WorldModel.WorldData worldData)
+    {
+        MainGame.ChangeScene(new GameScene());
     }
 
 
@@ -79,19 +90,22 @@ public class MainMenuScene : IScene
 
     public void Update()
     {
-        _leftSide.Update();
-        _playGameSide.Update();
-        _showingScreenAnimation.Update();
-        _blackBackground.Color = new Color(_blackBackground.Color, _showingScreenAnimation.Progress);
-
-        if(_showUIAnimation != null)
+        if(!_worldLoading)
         {
-            if(_showUIAnimation.BaseProgress < 1f)
+            _leftSide.Update();
+            _playGameSide.Update();
+            _showingScreenAnimation.Update();
+            _blackBackground.Color = new Color(_blackBackground.Color, _showingScreenAnimation.Progress);
+
+            if(_showUIAnimation != null)
             {
-                _leftSide.MainPosition = new Vector2(-800 * _showUIAnimation.Progress, 0);
-                _gameInfoTextGroup.MainPosition = new Vector2(300 * _showUIAnimation.Progress, 0);
+                if(_showUIAnimation.BaseProgress < 1f)
+                {
+                    _leftSide.MainPosition = new Vector2(-800 * _showUIAnimation.Progress, 0);
+                    _gameInfoTextGroup.MainPosition = new Vector2(300 * _showUIAnimation.Progress, 0);
+                }
+                _showUIAnimation.Update();
             }
-            _showUIAnimation.Update();
         }
     }
     

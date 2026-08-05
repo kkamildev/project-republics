@@ -3,6 +3,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using project_republics.Components.UI.TransitionScreens;
 using project_republics.Scenes;
 using project_republics.Utils.Animations;
 using project_republics.Utils.Components.Texts;
@@ -24,6 +25,7 @@ public class MainGame : Game
     public static Vector2 ScreenSize {get;private set;}
     public static Vector2 Resolution {get;private set;}
     public static float DeltaTime{get;private set;}
+    public static TransitionScreen TransitionScreen{get;set;}
     private static IScene _currentScene;
     private RenderTarget2D _renderTarget;
 
@@ -90,6 +92,15 @@ public class MainGame : Game
         DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         Input.Update();
 
+        if(TransitionScreen != null)
+        {
+            TransitionScreen.Update();
+            if(TransitionScreen.Finished)
+            {
+                TransitionScreen.Dispose();
+                TransitionScreen = null;
+            }
+        }
         _currentScene?.Update();
 
         base.Update(gameTime);
@@ -101,7 +112,11 @@ public class MainGame : Game
         GraphicsDevice.SetRenderTarget(_renderTarget);
         GraphicsDevice.Clear(Color.CornflowerBlue);
         // Draw logic Here
+        
         _currentScene?.Draw();
+        Batch.Begin(samplerState:SamplerState.PointClamp, blendState:BlendState.NonPremultiplied);
+        TransitionScreen?.Draw();
+        Batch.End();
 
         GraphicsDevice.SetRenderTarget(null);
 
