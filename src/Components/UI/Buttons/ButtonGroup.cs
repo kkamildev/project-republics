@@ -10,17 +10,27 @@ public class ButtonGroup : IDisposable
     protected List<BaseButton> _buttons;
     protected int _selectedIndex;
     protected bool _active;
+    private readonly bool _reversedControls;
 
     public bool AllowHold{get;set;}
 
     public ButtonGroup(BaseButton[] buttons)
     {
+        _reversedControls = false;
         _buttons = [..buttons];
         _active = false;
         _selectedIndex = 0;
         AllowHold = false;
     }
+    public ButtonGroup(BaseButton[] buttons, bool reversedControls) : this(buttons)
+    {
+        _reversedControls = reversedControls;
+    }
     public ButtonGroup(BaseButton[] buttons, int selectedIndex) : this(buttons)
+    {
+        _selectedIndex = selectedIndex;
+    }
+    public ButtonGroup(BaseButton[] buttons, int selectedIndex, bool reversedControls) : this(buttons, reversedControls)
     {
         _selectedIndex = selectedIndex;
     }
@@ -96,15 +106,29 @@ public class ButtonGroup : IDisposable
             if(_active)
             {
                 SelectedIndex = _selectedIndex;
-                MainGame.Input.SubscribeAction(Utils.Input.Controls.SELECT_UP, SelectUp);
-                MainGame.Input.SubscribeAction(Utils.Input.Controls.SELECT_DOWN, SelectDown);
                 MainGame.Input.SubscribeAction(Utils.Input.Controls.ACTION_CLICK, Click);
+                if(_reversedControls)
+                {
+                    MainGame.Input.SubscribeAction(Utils.Input.Controls.SELECT_LEFT, SelectUp);
+                    MainGame.Input.SubscribeAction(Utils.Input.Controls.SELECT_RIGHT, SelectDown);
+                } else
+                {
+                    MainGame.Input.SubscribeAction(Utils.Input.Controls.SELECT_UP, SelectUp);
+                    MainGame.Input.SubscribeAction(Utils.Input.Controls.SELECT_DOWN, SelectDown);
+                }
             } else
             {
                 if(_buttons.Count != 0) _buttons[_selectedIndex].Active = false;
-                MainGame.Input.UnSubscribeAction(Utils.Input.Controls.SELECT_UP, SelectUp);
-                MainGame.Input.UnSubscribeAction(Utils.Input.Controls.SELECT_DOWN, SelectDown);
                 MainGame.Input.UnSubscribeAction(Utils.Input.Controls.ACTION_CLICK, Click);
+                if(_reversedControls)
+                {
+                    MainGame.Input.UnSubscribeAction(Utils.Input.Controls.SELECT_LEFT, SelectUp);
+                    MainGame.Input.UnSubscribeAction(Utils.Input.Controls.SELECT_RIGHT, SelectDown);
+                } else
+                {
+                    MainGame.Input.UnSubscribeAction(Utils.Input.Controls.SELECT_UP, SelectUp);
+                    MainGame.Input.UnSubscribeAction(Utils.Input.Controls.SELECT_DOWN, SelectDown);
+                }
             }
         }
     }

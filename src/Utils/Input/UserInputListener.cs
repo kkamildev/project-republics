@@ -64,7 +64,9 @@ public class UserInputListener
             new ControlMap(){Control = Controls.EXIT, KeyboardKey = Keys.Escape, PadKey = Buttons.B},
             new ControlMap(){Control = Controls.ACTION_CLICK, KeyboardKey = Keys.Enter, MouseButton = MouseButtons.LEFT, PadKey = Buttons.A},
             new ControlMap(){Control = Controls.SELECT_UP, KeyboardKey = Keys.Up, PadKey = Buttons.DPadUp},
-            new ControlMap(){Control = Controls.SELECT_DOWN, KeyboardKey = Keys.Down, PadKey = Buttons.DPadDown}
+            new ControlMap(){Control = Controls.SELECT_DOWN, KeyboardKey = Keys.Down, PadKey = Buttons.DPadDown},
+            new ControlMap(){Control = Controls.SELECT_LEFT, KeyboardKey = Keys.Left, PadKey = Buttons.DPadLeft},
+            new ControlMap(){Control = Controls.SELECT_RIGHT, KeyboardKey = Keys.Right, PadKey = Buttons.DPadRight}
         ];
         _controls.UnionWith(constantControls);
     }
@@ -89,6 +91,7 @@ public class UserInputListener
         ControlMap controlMap = _controls.FirstOrDefault((controlMap) => controlMap.Control == control);
         if(controlMap != null)
         {
+            if(!_actions.ContainsKey(controlMap)) _actions[controlMap] = null;
             _actions[controlMap] -= action;
         }
     }

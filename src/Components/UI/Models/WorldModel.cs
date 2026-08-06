@@ -55,7 +55,7 @@ public class WorldModel : BaseButton
             new Button(onPlay, new AlignedText(Utils.Input.Fonts.BASE, "PLAY_BUTTON", new Vector2(230, 72), 0.5f, 0.5f){Color = Color.DimGray}){ChangeColor = Color.White},
             new Button(() => {}, new AlignedText(Utils.Input.Fonts.BASE, "EDIT_BUTTON", new Vector2(430, 72), 0.5f, 0.5f){Color = Color.DimGray}){ChangeColor = Color.White},
             new Button(() => {}, new AlignedText(Utils.Input.Fonts.BASE, "DELETE_BUTTON", new Vector2(630, 72), 0.5f, 0.5f){Color = Color.DimGray}){ChangeColor = Color.DarkRed}
-        ]);
+        ], true);
         try
         {
             // creating flag texture
