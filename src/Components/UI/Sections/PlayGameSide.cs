@@ -9,7 +9,7 @@ using project_republics.Components.UI.Buttons;
 using System.Linq;
 using project_republics.Components.UI.Models;
 using System.Collections.Generic;
-using project_republics.Utils.Components.Network;
+using project_republics.Components.UI.Forms;
 
 namespace project_republics.Components.UI.Sections;
 
@@ -22,6 +22,7 @@ public class PlayGameSide : UIBase, IDisposable
     private TitleBox _titleBox;
     private ButtonGroup _mainButtonGroup;
     private ScrollButtonGroup _worlds;
+    private CreateWorldForm _createWorldForm;
     public PlayGameSide(Action backAction, Action<WorldModel.WorldData> playAction)
     {
         _active = false;
@@ -38,7 +39,11 @@ public class PlayGameSide : UIBase, IDisposable
                 MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, ExitActionFromWorldSelect);
                 MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, _backAction);
             },
-            () => {},
+            () => {
+                _createWorldForm.Active = true;
+                _mainButtonGroup.Active = false;
+                MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, _backAction);
+            },
             () => {},
             () => {},
             () => _backAction.Invoke(false)
@@ -48,6 +53,15 @@ public class PlayGameSide : UIBase, IDisposable
              new AlignedSprite(Utils.Input.Textures.BUTTON2, new Vector2(300, 200 + 100 * index), 0.5f, 0.5f){Scale = 3f},
               actions[index]){ChangeColor = Color.White})
         ]);
+        _createWorldForm = new((worldModel) => {}, (hold) =>
+        {
+            if(!hold)
+            {
+                _mainButtonGroup.Active = true;
+                _createWorldForm.Active = false;
+                MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, _backAction);
+            }
+        }); 
         _playAction = playAction;
         _backAction = (hold) =>
         {
@@ -57,15 +71,20 @@ public class PlayGameSide : UIBase, IDisposable
                 Active = false;
             }
         };
+        
         MainGame.Storage.Account.MainPosition = new Vector2(0, 400);
         MainPosition = new Vector2(0, -900);
     }
 
     public override void Draw()
     {
-        _titleBox.Draw();
-        _mainButtonGroup.Draw();
-        _worlds.Draw();
+        if(!_createWorldForm.Active)
+        {
+            _titleBox.Draw();
+            _mainButtonGroup.Draw();
+            _worlds.Draw();
+        }
+        _createWorldForm.Draw();
         MainGame.Storage.Account.Draw();
     }
     public override void Update()
@@ -78,6 +97,7 @@ public class PlayGameSide : UIBase, IDisposable
             MainGame.Storage.Account.MainPosition = new Vector2(0, 400 * _showUIAnimation.Progress);
         }
         _worlds.Update();
+        _createWorldForm.Update();
     }
 
     private void ExitActionFromWorldSelect (bool hold) {

@@ -11,6 +11,7 @@
         "SELECT_WORLD_TITLE":"Select World",
         "SELECT_WORLD":"Select",
         "CREATE_WORLD":"Create New",
+        "CREATE_NEW_WORLD_TITLE":"Create New World",
         "BACK":"Back",
         "CONNECT_WORLD":"Connect New",
         "WORLD_PLAYED_DATE":"Last played: {0}",
