@@ -12,12 +12,23 @@
         "SELECT_WORLD":"Wybierz",
         "CREATE_WORLD":"Stwórz Nowy",
         "BACK":"Powrót",
+        "CONNECT_WORLD":"Połącz Nowy",
+        "ACCOUNT":"Konto",
         "WORLD_PLAYED_DATE":"Ostatnio grano: {0}",
         "ONLINE_NO":"Online: Nie",
         "ONLINE_YES":"Online: Tak",
         "NORMAL_MODE":"Tryb Normalny, {0}",
         "SANDBOX_MODE":"Tryb Dowolny, {0}",
         "PEACEFUL_MODE":"Tryb Pokojowy, {0}",
-        "HARDCODE_MODE":"Tryb Hardcore, {0}"
+        "HARDCODE_MODE":"Tryb Hardcore, {0}",
+
+        "CONNECTING_ACCOUNT_1":"Łączenie",
+        "CONNECTING_ACCOUNT_2":"Z kontem",
+        "CONNECTING_ACCOUNT_3":"Proszę czekać",
+        "ERROR_ACCOUNT_1":"Brak podłączonego konta",
+        "ERROR_ACCOUNT_2":"lub bład konta",
+        "ERROR_ACCOUNT_3":"Sprawdź konto",
+        "SUCCESS_ACCOUNT_1":"Konto podłączone",
+        "SUCCESS_ACCOUNT_2":"Witaj {0}"
     }
 }

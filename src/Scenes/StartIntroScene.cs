@@ -1,7 +1,7 @@
 
 using project_republics.Utils.Animations;
-using project_republics.Components.UI.TransitionScreens;
 using System.Threading.Tasks;
+using project_republics.Utils.Components.TransitionScreens;
 
 namespace project_republics.Scenes;
 
@@ -30,7 +30,11 @@ public class StartIntroScene : IScene
             _introTransition.IntroAnimation = new(2f, () => {
                 _introTransition.IntroStatus = 1;
                 _introTransition.IntroAnimation = new(2f, () =>
-                    _introTransition.IntroAnimation = new(2f, () => {MainGame.ChangeScene(new MainMenuScene()); _introFinished = true;}
+                    _introTransition.IntroAnimation = new(2f, () => {
+                        MainGame.Storage.Account = new();
+                        MainGame.ChangeScene(new MainMenuScene());
+                        _introFinished = true;
+                        }
                     , 1f, 0f)
                 , 0f, 1f);
         }, 1f, 0f)

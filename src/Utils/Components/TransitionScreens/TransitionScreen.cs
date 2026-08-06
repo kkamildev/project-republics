@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using project_republics.Utils.Animations;
 
-namespace project_republics.Components.UI.TransitionScreens;
+namespace project_republics.Utils.Components.TransitionScreens;
 
 public abstract class TransitionScreen : IDisposable
 {

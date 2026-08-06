@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using project_republics.Components.UI.Models;
 using project_republics.Components.UI.Sections;
-using project_republics.Components.UI.TransitionScreens;
 using project_republics.Utils.Animations;
 using project_republics.Utils.Components.Texts;
+using project_republics.Utils.Components.TransitionScreens;
 
 namespace project_republics.Scenes;
 
@@ -33,9 +33,10 @@ public class MainMenuScene : IScene
 
         _gameInfoTextGroup = new([
             new ShadowedText(Utils.Input.Fonts.BASE, "Copyright Kkamildev", MainGame.Resolution - new Vector2(2, 0), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black},
-            new ShadowedText(Utils.Input.Fonts.BASE, "Project Republics", MainGame.Resolution - new Vector2(2, 80), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black},
-            new ShadowedText(Utils.Input.Fonts.BASE, "In development", MainGame.Resolution - new Vector2(2, 40), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black}
+            new ShadowedText(Utils.Input.Fonts.BASE, "In development", MainGame.Resolution - new Vector2(2, 40), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black},
+            new ShadowedText(Utils.Input.Fonts.BASE, "Project Republics", MainGame.Resolution - new Vector2(2, 80), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black}
         ]);
+        MainGame.Storage.Account.ConnectToAccount();
 
     }
 

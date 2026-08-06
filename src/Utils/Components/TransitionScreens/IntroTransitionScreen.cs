@@ -6,7 +6,7 @@ using project_republics.Utils.Animations;
 using project_republics.Utils.Components.Sprites;
 using project_republics.Utils.Components.Texts;
 
-namespace project_republics.Components.UI.TransitionScreens;
+namespace project_republics.Utils.Components.TransitionScreens;
 
 public class IntroTransitionScreen : TransitionScreen
 {
@@ -18,19 +18,19 @@ public class IntroTransitionScreen : TransitionScreen
     public IntroTransitionScreen(Animation inAnimation, Animation outAnimation, Func<Task> taskFactory) : base(inAnimation, outAnimation, taskFactory)
     {
         _introStatus = 0;
-        _background = new(Utils.Input.Textures.BACKGROUND, new Rectangle(0, 0, (int)MainGame.Resolution.X, (int)MainGame.Resolution.Y), 0, 0, 0){Color = Color.Black};
+        _background = new(Input.Textures.BACKGROUND, new Rectangle(0, 0, (int)MainGame.Resolution.X, (int)MainGame.Resolution.Y), 0, 0, 0){Color = Color.Black};
 
-        _studioLogo = new(Utils.Input.Textures.AUTHOR_LOGO, MainGame.Resolution / 2 + new Vector2(-210, 0), 0.5f, 0.5f){Scale = 0.15f};
+        _studioLogo = new(Input.Textures.AUTHOR_LOGO, MainGame.Resolution / 2 + new Vector2(-210, 0), 0.5f, 0.5f){Scale = 0.15f};
         _studioLogoText = new([
-            new AlignedText(Utils.Input.Fonts.LARGER, "Pixlesofte", new Vector2(60, -30), 0.5f, 1f){Color = Color.White},
-            new AlignedText(Utils.Input.Fonts.BASE, "The Software Studio", new Vector2(-60, 30), 0f, 1f){Color = Color.DimGray}
+            new AlignedText(Input.Fonts.LARGER, "Pixlesofte", new Vector2(60, -30), 0.5f, 1f){Color = Color.White},
+            new AlignedText(Input.Fonts.BASE, "The Software Studio", new Vector2(-60, 30), 0f, 1f){Color = Color.DimGray}
         ]){
             MainPosition = MainGame.Resolution / 2
         };
         _authorText = new([
-            new AlignedText(Utils.Input.Fonts.LARGE, "Created by", new Vector2(0, -100), 0.5f, 0.5f){Color = Color.DimGray},
-            new AlignedText(Utils.Input.Fonts.LARGER, "Kkamildev", new Vector2(0, 0), 0.5f, 0.5f){Color = Color.DarkRed},
-            new AlignedText(Utils.Input.Fonts.LARGE, "With passion", new Vector2(0, 100), 0.5f, 0.5f){Color = Color.DimGray},
+            new AlignedText(Input.Fonts.LARGE, "Created by", new Vector2(0, -100), 0.5f, 0.5f){Color = Color.DimGray},
+            new AlignedText(Input.Fonts.LARGER, "Kkamildev", new Vector2(0, 0), 0.5f, 0.5f){Color = Color.DarkRed},
+            new AlignedText(Input.Fonts.LARGE, "With passion", new Vector2(0, 100), 0.5f, 0.5f){Color = Color.DimGray},
         ]){
             MainPosition = MainGame.Resolution / 2
         };

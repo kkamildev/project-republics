@@ -9,6 +9,7 @@ using project_republics.Components.UI.Buttons;
 using System.Linq;
 using project_republics.Components.UI.Models;
 using System.Collections.Generic;
+using project_republics.Utils.Components.Network;
 
 namespace project_republics.Components.UI.Sections;
 
@@ -29,7 +30,7 @@ public class PlayGameSide : UIBase, IDisposable
             MoveVector = new Vector2(0, 200)
         };
         _titleBox = new("SELECT_WORLD_TITLE", Utils.Input.Textures.BACKGROUND, new Rectangle((int)MainGame.Resolution.X / 2, (int)MainGame.Resolution.Y / 2, 1600 / 5 * 4, 900 / 5 * 4));
-        string[] texts = ["SELECT_WORLD", "CREATE_WORLD", "BACK"];
+        string[] texts = ["SELECT_WORLD", "CREATE_WORLD", "CONNECT_WORLD", "ACCOUNT", "BACK"];
         Action[] actions = [
             () => {
                 _worlds.Active = true;
@@ -37,6 +38,8 @@ public class PlayGameSide : UIBase, IDisposable
                 MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, ExitActionFromWorldSelect);
                 MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, _backAction);
             },
+            () => {},
+            () => {},
             () => {},
             () => _backAction.Invoke(false)
         ];
@@ -54,6 +57,7 @@ public class PlayGameSide : UIBase, IDisposable
                 Active = false;
             }
         };
+        MainGame.Storage.Account.MainPosition = new Vector2(0, 400);
         MainPosition = new Vector2(0, -900);
     }
 
@@ -62,6 +66,7 @@ public class PlayGameSide : UIBase, IDisposable
         _titleBox.Draw();
         _mainButtonGroup.Draw();
         _worlds.Draw();
+        MainGame.Storage.Account.Draw();
     }
     public override void Update()
     {
@@ -70,6 +75,7 @@ public class PlayGameSide : UIBase, IDisposable
         {
             _showUIAnimation.Update();
             MainPosition = new Vector2(0, -900 * _showUIAnimation.Progress);
+            MainGame.Storage.Account.MainPosition = new Vector2(0, 400 * _showUIAnimation.Progress);
         }
         _worlds.Update();
     }

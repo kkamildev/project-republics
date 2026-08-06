@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using project_republics.Components.UI.Models;
+using project_republics.Utils.Components.Network;
 using project_republics.Utils.Helpers;
 
 namespace project_republics.Utils.Storage;
@@ -13,14 +14,13 @@ public class StorageLoader
 {
     private readonly string _appPath;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
-
     public SettingsModel Settings{get; private set;}
-    
+    public Account Account{get;set;}
+
     public StorageLoader(string appName)
     {
         _jsonSerializerOptions = new JsonSerializerOptions(){WriteIndented = true};
         _appPath = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), appName);
-
         CreateFileTree();
     }
 

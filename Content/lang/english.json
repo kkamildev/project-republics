@@ -12,12 +12,22 @@
         "SELECT_WORLD":"Select",
         "CREATE_WORLD":"Create New",
         "BACK":"Back",
+        "CONNECT_WORLD":"Connect New",
         "WORLD_PLAYED_DATE":"Last played: {0}",
         "ONLINE_NO":"Online: No",
         "ONLINE_YES":"Online: Yes",
         "NORMAL_MODE":"Normal Mode, {0}",
         "SANDBOX_MODE":"Sandbox Mode, {0}",
         "PEACEFUL_MODE":"Peaceful Mode, {0}",
-        "HARDCODE_MODE":"Hardcore Mode, {0}"
+        "HARDCODE_MODE":"Hardcore Mode, {0}",
+
+        "CONNECTING_ACCOUNT_1":"Connecting",
+        "CONNECTING_ACCOUNT_2":"To the account",
+        "CONNECTING_ACCOUNT_3":"Please wait",
+        "ERROR_ACCOUNT_1":"No account linked",
+        "ERROR_ACCOUNT_2":"Or error appeared",
+        "ERROR_ACCOUNT_3":"Check account",
+        "SUCCESS_ACCOUNT_1":"Account connected",
+        "SUCCESS_ACCOUNT_2":"Welcome {0}"
     }
 }

@@ -5,7 +5,7 @@ using project_republics.Utils.Animations;
 using project_republics.Utils.Components.Sprites;
 using Microsoft.Xna.Framework;
 
-namespace project_republics.Components.UI.TransitionScreens;
+namespace project_republics.Utils.Components.TransitionScreens;
 
 public class WorldLoadingTransitionScreen : TransitionScreen
 {
