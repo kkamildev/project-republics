@@ -22,6 +22,7 @@ public class PlayGameSide : UIBase, IDisposable
     private TitleBox _titleBox;
     private ButtonGroup _mainButtonGroup;
     private ScrollButtonGroup _worlds;
+    private AlignedText _noWorldsText;
     private CreateWorldForm _createWorldForm;
     public PlayGameSide(Action backAction, Action<WorldModel.WorldData> playAction)
     {
@@ -31,6 +32,9 @@ public class PlayGameSide : UIBase, IDisposable
             MoveVector = new Vector2(0, 200)
         };
         _titleBox = new("SELECT_WORLD_TITLE", Utils.Input.Textures.BACKGROUND, new Rectangle((int)MainGame.Resolution.X / 2, (int)MainGame.Resolution.Y / 2, 1600 / 5 * 4, 900 / 5 * 4));
+
+        _noWorldsText = new(Utils.Input.Fonts.LARGE, "No saved worlds", new Vector2(MainGame.Resolution.X / 2 + 200, MainGame.Resolution.Y / 2), 0.5f, 0.5f);
+
         string[] texts = ["SELECT_WORLD", "CREATE_WORLD", "CONNECT_WORLD", "ACCOUNT", "BACK"];
         Action[] actions = [
             () => {
@@ -56,7 +60,7 @@ public class PlayGameSide : UIBase, IDisposable
         _createWorldForm = new((worldModel) => {}, (hold) =>
         {
             if(!hold)
-            {
+            {   
                 _mainButtonGroup.Active = true;
                 _createWorldForm.Active = false;
                 MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, _backAction);
@@ -83,6 +87,10 @@ public class PlayGameSide : UIBase, IDisposable
             _titleBox.Draw();
             _mainButtonGroup.Draw();
             _worlds.Draw();
+            if(_worlds.Buttons.Count == 0)
+            {
+                _noWorldsText.Draw();
+            }
         }
         _createWorldForm.Draw();
         MainGame.Storage.Account.Draw();
@@ -134,6 +142,15 @@ public class PlayGameSide : UIBase, IDisposable
         MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, ExitActionFromWorld);
     }
 
+    private void DeleteWorld(int index)
+    {
+        WorldModel choosenModel = (WorldModel)_worlds.Buttons[index];
+        ExitActionFromWorld(false);
+        MainGame.Storage.DeleteWorld(choosenModel.Data);
+        SearchWorlds();
+        _worlds.Active = true;
+    }
+
     private void PlayWorld(int index)
     {
         WorldModel playedModel = (WorldModel)_worlds.Buttons[index];
@@ -151,7 +168,7 @@ public class PlayGameSide : UIBase, IDisposable
         for(int i = 0;i<data.Count;i++)
         {
             int index = i;
-            WorldModel model = new(data[i], () => ChooseWorld(index), () => PlayWorld(index)){MainPosition = new Vector2(575, 180 + 200 * i)};
+            WorldModel model = new(data[i], () => ChooseWorld(index), () => PlayWorld(index), () => DeleteWorld(index)){MainPosition = new Vector2(575, 180 + 200 * i)};
             _worlds.Buttons.Add(model);
         }
         MainPosition = new Vector2(0, -900);
@@ -201,8 +218,10 @@ public class PlayGameSide : UIBase, IDisposable
             {
                 button.MainPosition-= base.MainPosition;
             }
+            _noWorldsText.Position -= base.MainPosition;
             base.MainPosition = value;
             _titleBox.MainPosition = base.MainPosition;
+            _noWorldsText.Position += base.MainPosition;
             foreach (BaseButton button in _worlds.Buttons)
             {
                 button.MainPosition+= base.MainPosition;
@@ -221,5 +240,6 @@ public class PlayGameSide : UIBase, IDisposable
         _titleBox.Dispose();
         _mainButtonGroup.Dispose();
         _worlds.Dispose();
+        _noWorldsText.Dispose();
     }
 }

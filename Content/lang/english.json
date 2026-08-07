@@ -2,6 +2,8 @@
     "Author":"kkamildev",
     "DisplayName":"English",
     "Translations":{
+        "NO":"No",
+        "YES":"Yes",
         "PLAY_BUTTON":"Play",
         "EDIT_BUTTON":"Edit",
         "DELETE_BUTTON":"Delete",
@@ -21,6 +23,12 @@
         "SANDBOX_MODE":"Sandbox Mode, {0}",
         "PEACEFUL_MODE":"Peaceful Mode, {0}",
         "HARDCODE_MODE":"Hardcore Mode, {0}",
+        "CREATE_WORLD_NAME":"World name",
+        "CREATE_WORLD_MODE":"Mode",
+        "CREATE_WORLD_REPUBLIC":"Republic name",
+        "CREATE_WORLD_REPUBLIC_FLAG":"Republic flag",
+        "CREATE_WORLD_FINISH":"Finish",
+        "ARE_YOU_SURE":"Are you sure?",
 
         "CONNECTING_ACCOUNT_1":"Connecting",
         "CONNECTING_ACCOUNT_2":"To the account",

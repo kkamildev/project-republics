@@ -41,20 +41,32 @@ public class WorldModel : BaseButton
     public static readonly string[] Modes = ["NORMAL_MODE", "SANDBOX_MODE", "PEACEFUL_MODE", "HARDCODE_MODE"];
     
     private bool _choosen;
-    private ButtonGroup _worldOptions;
+    private ButtonGroup _worldOptions, _deleteOptions;
+    private AlignedText _deleteSureText;
     private WorldData _data;
     private Texture2D _flagTexture = new(MainGame.Graph.GraphicsDevice, 33, 33);
     private RawTextureSprite _flagSprite;
     private Sprite _worldBackground;
     private TextGroup _texts;
-    public WorldModel(WorldData data, Action onClick, Action onPlay) : base(onClick)
+    public WorldModel(WorldData data, Action onClick, Action onPlay, Action onDelete) : base(onClick)
     {
         _choosen = false;
         _data = data;
+        _deleteSureText = new(Utils.Input.Fonts.BASE, "ARE_YOU_SURE", new Vector2(430, 42), 0.5f, 0.5f);
         _worldOptions = new([
             new Button(onPlay, new AlignedText(Utils.Input.Fonts.BASE, "PLAY_BUTTON", new Vector2(230, 72), 0.5f, 0.5f){Color = Color.DimGray}){ChangeColor = Color.White},
             new Button(() => {}, new AlignedText(Utils.Input.Fonts.BASE, "EDIT_BUTTON", new Vector2(430, 72), 0.5f, 0.5f){Color = Color.DimGray}){ChangeColor = Color.White},
-            new Button(() => {}, new AlignedText(Utils.Input.Fonts.BASE, "DELETE_BUTTON", new Vector2(630, 72), 0.5f, 0.5f){Color = Color.DimGray}){ChangeColor = Color.DarkRed}
+            new Button(() => {
+                _worldOptions.Active = false;
+                _deleteOptions.Active = true;
+            }, new AlignedText(Utils.Input.Fonts.BASE, "DELETE_BUTTON", new Vector2(630, 72), 0.5f, 0.5f){Color = Color.DimGray}){ChangeColor = Color.DarkRed}
+        ], true);
+        _deleteOptions = new([
+            new Button(onDelete, new AlignedText(Utils.Input.Fonts.BASE, "YES", new Vector2(230, 82), 0.5f, 0.5f){Color = Color.DimGray}){ChangeColor = Color.White},
+            new Button(() => {
+                _worldOptions.Active = true;
+                _deleteOptions.Active = false;
+            }, new AlignedText(Utils.Input.Fonts.BASE, "NO", new Vector2(630, 82), 0.5f, 0.5f){Color = Color.DimGray}){ChangeColor = Color.White}
         ], true);
         try
         {
@@ -77,7 +89,7 @@ public class WorldModel : BaseButton
             _texts = new([
                 new(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(160, 15)){ StringParams = [data.Name] },
                 new(Utils.Input.Fonts.SMALLER, "WORLD_PLAYED_DATE", new Vector2(160, 40)){ Color = Color.DimGray, StringParams = [data.LastPlayed.ToString("HH:mm yyyy-MM-dd")] },
-                new(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(460, 40)){ Color = Color.DimGray, StringParams = [data.DirectoryPath] },
+                new(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(460, 40)){ Color = Color.DimGray, StringParams = ["/" + data.DirectoryPath.Truncate(20)] },
                 new(Utils.Input.Fonts.SMALLER, data.GlobalID != null ? "ONLINE_YES" : "ONLINE_NO", new Vector2(160, 70)),
                 new(Utils.Input.Fonts.SMALLER, Modes[data.Mode], new Vector2(160, 100)){ StringParams = [data.RepublicName] }
             ]);
@@ -98,7 +110,14 @@ public class WorldModel : BaseButton
         _flagSprite.Draw();
         if(_choosen)
         {
-            _worldOptions.Draw();
+            if(_deleteOptions.Active)
+            {
+                _deleteOptions.Draw();
+                _deleteSureText.Draw();
+            } else
+            {
+                _worldOptions.Draw();
+            }
         } else
         {
             _texts.Draw();
@@ -119,15 +138,25 @@ public class WorldModel : BaseButton
         {
             _flagSprite.Position-= base.MainPosition;
             _texts.MainPosition = value;
+            _deleteSureText.Position-=base.MainPosition;
             foreach(BaseButton button in _worldOptions.Buttons)
             {
                 button.MainPosition-=base.MainPosition;
             }
+            foreach(BaseButton button in _deleteOptions.Buttons)
+            {
+                button.MainPosition-=base.MainPosition;
+            }
             base.MainPosition = value;
+             foreach(BaseButton button in _deleteOptions.Buttons)
+            {
+                button.MainPosition+=base.MainPosition;
+            }
             foreach(BaseButton button in _worldOptions.Buttons)
             {
                 button.MainPosition+=base.MainPosition;
             }
+            _deleteSureText.Position+=base.MainPosition;
             _flagSprite.Position+= base.MainPosition;
             _worldBackground.Position = base.MainPosition;
         }
@@ -163,6 +192,7 @@ public class WorldModel : BaseButton
             } else
             {
                 _worldOptions.Active = false;
+                _deleteOptions.Active = false;
                 _worldBackground.Color = Color.White;
             }
         }
@@ -181,5 +211,7 @@ public class WorldModel : BaseButton
         _flagTexture.Dispose();
         _texts.Dispose();
         _worldOptions.Dispose();
+        _deleteOptions.Dispose();
+        _deleteSureText.Dispose();
     }
 }

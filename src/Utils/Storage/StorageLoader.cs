@@ -75,7 +75,7 @@ public class StorageLoader
                 {
                     string fileContent = File.ReadAllText(Path.Join(directory, "metadata.json"));
                     WorldModel.WorldData record = JsonSerializer.Deserialize<WorldModel.WorldData>(fileContent);
-                    record.DirectoryPath = $"/{Path.GetFileName(directory)}".Truncate(20);
+                    record.DirectoryPath = Path.GetFileName(directory);
                     data.Add(record);
                 }
             }catch (Exception)
@@ -84,7 +84,10 @@ public class StorageLoader
             }
         }
         return data;
-        
+    }
+    public void DeleteWorld(WorldModel.WorldData worldData)
+    {
+        Directory.Delete(Path.Join(_appPath, "worlds", worldData.DirectoryPath), true);
     }
 
     public void SaveErrorLog(string errorContent)

@@ -66,7 +66,7 @@ public class ButtonGroup : IDisposable
         {
             if(SelectedIndex <= 0)
             {
-                SelectedIndex = _buttons.Count - 1;
+                SelectedIndex = Math.Max(_buttons.Count - 1, 0);
             } else
             {
                 SelectedIndex--;
@@ -91,7 +91,16 @@ public class ButtonGroup : IDisposable
 
     private void Click(bool controlHold)
     {
-        if(!controlHold || AllowHold) _buttons[_selectedIndex].OnClick.Invoke();
+        try
+        {
+            if(_buttons.Count - 1 >= _selectedIndex)
+            {
+                if(!controlHold || AllowHold) _buttons[_selectedIndex].OnClick.Invoke();
+            }
+        } catch(Exception)
+        {
+            throw new Exception($"{_buttons.Count} : {_selectedIndex}");
+        }
     }
 
     public virtual bool Active

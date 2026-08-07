@@ -2,6 +2,8 @@
     "Author":"kkamildev",
     "DisplayName":"Polski",
     "Translations":{
+        "NO":"Nie",
+        "YES":"Tak",
         "PLAY_BUTTON":"Zagraj",
         "EDIT_BUTTON":"Edytuj",
         "DELETE_BUTTON":"Usuń",
@@ -22,6 +24,12 @@
         "SANDBOX_MODE":"Tryb Dowolny, {0}",
         "PEACEFUL_MODE":"Tryb Pokojowy, {0}",
         "HARDCODE_MODE":"Tryb Hardcore, {0}",
+        "CREATE_WORLD_NAME":"Nazwa świata",
+        "CREATE_WORLD_MODE":"Tryb",
+        "CREATE_WORLD_REPUBLIC":"Nazwa republiki",
+        "CREATE_WORLD_REPUBLIC_FLAG":"Flaga republiki",
+        "CREATE_WORLD_FINISH":"Zakończ",
+        "ARE_YOU_SURE":"Jesteś pewien?",
 
         "CONNECTING_ACCOUNT_1":"Łączenie",
         "CONNECTING_ACCOUNT_2":"Z kontem",
