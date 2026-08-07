@@ -21,8 +21,8 @@ public class MainMenuSide : UIBase, IDisposable
 
     public MainMenuSide(Action[] actions)
     {
-        _gameLogo = new(Utils.Input.Textures.GAME_LOGO, new Vector2(300, 30), 0.5f, 0f){Scale=3f};
-        _menuTip = new(Utils.Input.Fonts.BASE, "In development", new Vector2(550, 200), 0.5f, 0.5f, 0){Color = Color.Goldenrod, DegRotation = -10};
+        _gameLogo = new(Utils.Input.Textures.GAME_LOGO, new Vector2(300, 50), 0.5f, 0f){Scale=3f};
+        _menuTip = new(Utils.Input.Fonts.BASE, "In development", new Vector2(550, 220), 0.5f, 0.5f, 0){Color = Color.Goldenrod, DegRotation = -10};
         _menuTipAnimation = new(1.3f, 0.3f, () => {}){Loop = true};
         _mainMenuSide = new RectSprite(Utils.Input.Textures.BACKGROUND, new Rectangle(0, 0, 600, 900), 0, 0, 0){Color = new Color(Color.Black, 0.7f)};
 
@@ -58,8 +58,8 @@ public class MainMenuSide : UIBase, IDisposable
                 button.MainPosition-= base.MainPosition;
             }
             base.MainPosition = value;
-            _gameLogo.Position = new Vector2(300, 30) + _mainPosition;
-            _menuTip.Position = new Vector2(550, 200) + _mainPosition;
+            _gameLogo.Position = new Vector2(300, 50) + _mainPosition;
+            _menuTip.Position = new Vector2(550, 220) + _mainPosition;
             _mainMenuSide.Position = _mainPosition;
             foreach (BaseButton button in  _mainButtonGroup.Buttons)
             {
