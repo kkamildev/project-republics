@@ -7,6 +7,7 @@ using project_republics.Components.UI.Buttons;
 using System.Linq;
 using project_republics.Utils.Components.Texts;
 using project_republics.Utils.Components.Sprites;
+using project_republics.Components.UI.Labels;
 
 namespace project_republics.Components.UI.Forms;
 
@@ -14,6 +15,7 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
 {
     private TitleBox _titleBox;
     private ButtonGroup _mainButtonGroup;
+    private InputField _inputField;
     public CreateWorldForm(Action<WorldModel.WorldData> onSubmit, Action<bool> backAction) : base(onSubmit, backAction)
     {
         _titleBox = new("CREATE_NEW_WORLD_TITLE", Utils.Input.Textures.BACKGROUND, new Rectangle((int)MainGame.Resolution.X / 2, (int)MainGame.Resolution.Y / 2, 1600 / 5 * 4, 900 / 5 * 4));
@@ -31,10 +33,14 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
             () => _backAction.Invoke(false)
         ];
         _mainButtonGroup = new([
-            ..texts.Select((text, index) => new SpriteButton(new AlignedText(Utils.Input.Fonts.BASE, text, new Vector2(300, 200 + 100 * index), 0.5f, 0.5f){Color = Color.DimGray},
+            ..texts.Select((text, index) => new SpriteButton(new AlignedText(Utils.Input.Fonts.SMALL, text, new Vector2(300, 200 + 100 * index), 0.5f, 0.5f){Color = Color.DimGray},
              new AlignedSprite(Utils.Input.Textures.BUTTON2, new Vector2(300, 200 + 100 * index), 0.5f, 0.5f){Scale = 3f},
               actions[index]){ChangeColor = Color.White})
         ]);
+        _inputField = new("Name of your world", new Vector2(500, 200))
+        {
+            Active = true
+        };
     }
 
     public override void Draw()
@@ -43,6 +49,7 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
         {
             _titleBox.Draw();
             _mainButtonGroup.Draw();
+            _inputField.Draw();
         }
     }
 
@@ -50,6 +57,7 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
     {
         if(_active)
         {
+            _inputField.Update();
             _mainButtonGroup.Update();
         }
     }
@@ -57,6 +65,7 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
     public override void Dispose()
     {
         _titleBox.Dispose();
+        _inputField.Update();
     }
 
 

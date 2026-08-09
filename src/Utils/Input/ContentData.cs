@@ -38,6 +38,7 @@ public class ContentData
             {Textures.BUTTON1, Path.Join(_baseTexturesPath, "UI", "button1")},
             {Textures.BUTTON2, Path.Join(_baseTexturesPath, "UI", "button2")},
             {Textures.WORLD_LABEL, Path.Join(_baseTexturesPath, "UI", "worldLabel")},
+            {Textures.INPUT_FIELD, Path.Join(_baseTexturesPath, "UI", "inputField")},
         };
         // SOUNDS
         SoundsData = new()
