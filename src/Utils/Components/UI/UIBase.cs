@@ -8,17 +8,10 @@ public abstract class UIBase
 {
     protected Color _mainColor;
     protected Vector2 _mainPosition;
-    protected Action _onClose;
-
     public UIBase()
     {
         _mainColor = Color.White;
         _mainPosition = Vector2.Zero;
-    }
-
-    public UIBase(Action action) : this()
-    {
-        
     }
 
     public virtual void Draw()

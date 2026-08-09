@@ -9,6 +9,7 @@ public enum Textures
     GAME_LOGO,
     BUTTON1,
     BUTTON2,
+    BUTTON3,
     WORLD_LABEL,
     INPUT_FIELD
 }

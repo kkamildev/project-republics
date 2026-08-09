@@ -7,6 +7,7 @@ using project_republics.Scenes;
 using project_republics.Utils.Animations;
 using project_republics.Utils.Components.Texts;
 using project_republics.Utils.Components.TransitionScreens;
+using project_republics.Utils.Components.UI;
 using project_republics.Utils.Exceptions;
 using project_republics.Utils.Input;
 using project_republics.Utils.Storage;
@@ -26,6 +27,7 @@ public class MainGame : Game
     public static Vector2 Resolution {get;private set;}
     public static float DeltaTime{get;private set;}
     public static TransitionScreen TransitionScreen{get;set;}
+    public static VirtualKeyboard VirtualKeyboard{get;set;}
     private static IScene _currentScene;
     private RenderTarget2D _renderTarget;
 
@@ -83,6 +85,7 @@ public class MainGame : Game
         _renderTarget = new(Graph.GraphicsDevice, (int)Resolution.X, (int)Resolution.Y);
 
         // other content
+        VirtualKeyboard = new();
 
         ChangeScene(new StartIntroScene());
     }
@@ -93,6 +96,7 @@ public class MainGame : Game
         Input.Update();
 
         _currentScene?.Update();
+        VirtualKeyboard.Update();
         if(TransitionScreen != null)
         {
             TransitionScreen.Update();
@@ -115,6 +119,7 @@ public class MainGame : Game
         
         _currentScene?.Draw();
         Batch.Begin(samplerState:SamplerState.PointClamp, blendState:BlendState.NonPremultiplied);
+        VirtualKeyboard.Draw();
         TransitionScreen?.Draw();
         Batch.End();
 

@@ -29,7 +29,7 @@ public sealed class InputField : UIBase, IDisposable
         {
             Color = Color.DimGray
         };
-        _contentText = new(Utils.Input.Fonts.BASE, "{0}{1}", new Vector2(256 * 3 / 2, 31 * 3 / 2), 0.5f, 0.5f)
+        _contentText = new(Utils.Input.Fonts.BASE, "{0}{1}", new Vector2(20, 31 * 3 / 2), 0f, 0.5f)
         {
             StringParams = ["", ""]
         };
@@ -71,6 +71,9 @@ public sealed class InputField : UIBase, IDisposable
         if(_contentText.StringParams[0].ToString().Length != 0)
         {
             _contentText.StringParams = [_contentText.StringParams[0].ToString()[..^1], ""];
+        } else
+        {
+            _contentText.StringParams = ["", ""];
         }
         _writingAnimation.Reset();
     }
@@ -113,6 +116,8 @@ public sealed class InputField : UIBase, IDisposable
         set
         {
             _active = value;
+            _writingAnimation.Reset();
+            _contentText.StringParams = [_contentText.StringParams[0], ""];
         }
     }
 

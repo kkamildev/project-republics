@@ -22,7 +22,13 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
         string[] texts = ["CREATE_WORLD_NAME", "CREATE_WORLD_MODE", "CREATE_WORLD_REPUBLIC", "CREATE_WORLD_REPUBLIC_FLAG", "CREATE_WORLD_FINISH", "BACK"];
         Action[] actions = [
             () => {
-                
+                _mainButtonGroup.Active = false;
+                MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, _backAction);
+                MainGame.VirtualKeyboard.SetActive(true, _inputField, () => {
+                    MainGame.VirtualKeyboard.SetActive(false, null, null);
+                    _mainButtonGroup.Active = true;
+                    MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, _backAction);
+                });
             },
             () => {
                 
@@ -37,9 +43,9 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
              new AlignedSprite(Utils.Input.Textures.BUTTON2, new Vector2(300, 200 + 100 * index), 0.5f, 0.5f){Scale = 3f},
               actions[index]){ChangeColor = Color.White})
         ]);
-        _inputField = new("Name of your world", new Vector2(500, 200))
+        _inputField = new("WORLD_NAME_PLACEHOLDER", new Vector2(600, 200))
         {
-            Active = true
+            Active = false
         };
     }
 

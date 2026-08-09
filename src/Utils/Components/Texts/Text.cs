@@ -62,7 +62,7 @@ public class Text : IDisposable
         MainGame.LL.OnChangeLanguage-=UpdateText;
     }
 
-    public object[] StringParams
+    public virtual object[] StringParams
     {
         get
         {

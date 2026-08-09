@@ -29,6 +29,7 @@
         "CREATE_WORLD_REPUBLIC_FLAG":"Republic flag",
         "CREATE_WORLD_FINISH":"Finish",
         "ARE_YOU_SURE":"Are you sure?",
+        "WORLD_NAME_PLACEHOLDER":"Name of your world",
 
         "CONNECTING_ACCOUNT_1":"Connecting",
         "CONNECTING_ACCOUNT_2":"To the account",

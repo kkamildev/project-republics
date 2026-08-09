@@ -37,6 +37,7 @@ public class ContentData
             {Textures.GAME_LOGO, Path.Join(_baseTexturesPath, "UI", "gameLogo")},
             {Textures.BUTTON1, Path.Join(_baseTexturesPath, "UI", "button1")},
             {Textures.BUTTON2, Path.Join(_baseTexturesPath, "UI", "button2")},
+            {Textures.BUTTON3, Path.Join(_baseTexturesPath, "UI", "button3")},
             {Textures.WORLD_LABEL, Path.Join(_baseTexturesPath, "UI", "worldLabel")},
             {Textures.INPUT_FIELD, Path.Join(_baseTexturesPath, "UI", "inputField")},
         };

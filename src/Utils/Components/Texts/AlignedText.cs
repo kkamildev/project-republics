@@ -30,6 +30,14 @@ public class AlignedText : Text
             _textSize = MainGame.CL.Fonts[_font].MeasureString(_cache);
         }
     }
+    public override object[] StringParams {
+        get => base.StringParams;
+        set
+        {
+            base.StringParams = value;
+            _textSize = MainGame.CL.Fonts[_font].MeasureString(_cache);
+        }
+    }
 
     public Vector2 TextSize
     {

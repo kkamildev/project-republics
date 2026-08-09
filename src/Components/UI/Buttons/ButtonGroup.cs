@@ -91,15 +91,9 @@ public class ButtonGroup : IDisposable
 
     private void Click(bool controlHold)
     {
-        try
+        if(_buttons.Count - 1 >= _selectedIndex)
         {
-            if(_buttons.Count - 1 >= _selectedIndex)
-            {
-                if(!controlHold || AllowHold) _buttons[_selectedIndex].OnClick.Invoke();
-            }
-        } catch(Exception)
-        {
-            throw new Exception($"{_buttons.Count} : {_selectedIndex}");
+            if(!controlHold || AllowHold) _buttons[_selectedIndex].OnClick.Invoke();
         }
     }
 
