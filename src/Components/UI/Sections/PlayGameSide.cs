@@ -57,7 +57,7 @@ public class PlayGameSide : UIBase, IDisposable
              new AlignedSprite(Utils.Input.Textures.BUTTON2, new Vector2(300, 200 + 100 * index), 0.5f, 0.5f){Scale = 3f},
               actions[index]){ChangeColor = Color.White})
         ]);
-        _createWorldForm = new((worldModel) => {}, (hold) =>
+        _createWorldForm = new(PlayWorld, (hold) =>
         {
             if(!hold)
             {   
@@ -65,7 +65,7 @@ public class PlayGameSide : UIBase, IDisposable
                 _createWorldForm.Active = false;
                 MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, _backAction);
             }
-        }, _worlds.Buttons); 
+        }); 
         _playAction = playAction;
         _backAction = (hold) =>
         {
@@ -156,6 +156,11 @@ public class PlayGameSide : UIBase, IDisposable
         WorldModel playedModel = (WorldModel)_worlds.Buttons[index];
         MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, ExitActionFromWorld);
         _playAction.Invoke(playedModel.Data);
+    }
+    private void PlayWorld(WorldModel.WorldData data)
+    {
+        MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, ExitActionFromWorld);
+        _playAction.Invoke(data);
     }
 
     private void SearchWorlds()

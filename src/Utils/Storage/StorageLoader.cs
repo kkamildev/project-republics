@@ -85,6 +85,20 @@ public class StorageLoader
         }
         return data;
     }
+
+    public void UpdateWorldScheme(WorldModel.WorldData worldData)
+    {
+        string dir = Path.Join(_appPath, "worlds", worldData.DirectoryPath);
+        if (!Directory.Exists(dir))
+        {
+            Directory.CreateDirectory(dir);   
+        }
+        worldData.LastPlayed = DateTime.Now;
+        worldData.DirectoryPath = null;
+        string jsonText = JsonSerializer.Serialize(worldData, _jsonSerializerOptions);
+        File.WriteAllText(Path.Join(dir, "metadata.json"), jsonText);
+
+    }
     public void DeleteWorld(WorldModel.WorldData worldData)
     {
         Directory.Delete(Path.Join(_appPath, "worlds", worldData.DirectoryPath), true);

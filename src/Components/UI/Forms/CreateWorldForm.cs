@@ -18,12 +18,18 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
     private ButtonGroup _mainButtonGroup;
     private InputField _worldNameinputField, _republicNameInputField;
     private Text _nameSimilarWarningText;
-    private List<BaseButton> _availableWorlds;
+    private TextGroup _modeTextGroup;
+    private FlagModel _flag;
     private bool _worldNameSimilarity;
-    public CreateWorldForm(Action<WorldModel.WorldData> onSubmit, Action<bool> backAction, List<BaseButton> availableWorlds) : base(onSubmit, backAction)
+    private int _currentModeIndex;
+    public CreateWorldForm(Action<WorldModel.WorldData> onSubmit, Action<bool> backAction) : base(onSubmit, backAction)
     {
-        _availableWorlds = availableWorlds;
+        _currentModeIndex = 0;
         _titleBox = new("CREATE_NEW_WORLD_TITLE", Utils.Input.Textures.BACKGROUND, new Rectangle((int)MainGame.Resolution.X / 2, (int)MainGame.Resolution.Y / 2, 1600 / 5 * 4, 900 / 5 * 4));
+        _modeTextGroup = new([
+            new Text(Utils.Input.Fonts.BASE, WorldModel.Modes[_currentModeIndex], new Vector2(600, 620)){StringParams = [""], Color = Color.DarkCyan},
+            new Text(Utils.Input.Fonts.SMALL, WorldModel.Modes[_currentModeIndex] + "_DESC", new Vector2(630, 670)){}
+        ]);
         string[] texts = ["CREATE_WORLD_NAME", "CREATE_WORLD_MODE", "CREATE_WORLD_REPUBLIC", "CREATE_WORLD_REPUBLIC_FLAG", "CREATE_WORLD_FINISH", "BACK"];
         Action[] actions = [
             () => {
@@ -37,7 +43,13 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
                 });
             },
             () => {
-                
+                _currentModeIndex++;
+                if(_currentModeIndex >= WorldModel.Modes.Length) {
+                    _currentModeIndex = 0;
+                }
+                _modeTextGroup.Texts[0].TranslationKey = WorldModel.Modes[_currentModeIndex];
+                _modeTextGroup.Texts[1].TranslationKey = WorldModel.Modes[_currentModeIndex] + "_DESC";
+                _modeTextGroup.Texts[0].Color = WorldModel.ModesColors[_currentModeIndex];
             },
             () => {
                 _mainButtonGroup.Active = false;
@@ -49,7 +61,7 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
                 });
             },
             () => {},
-            () => {},
+            SubmitForm,
             () => _backAction.Invoke(false)
         ];
         _mainButtonGroup = new([
@@ -62,15 +74,17 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
             Active = false,
             MaxCharactersCount = 30
         };
-        _republicNameInputField = new("CREATE_WORLD_REPUBLIC", "REPUBLIC_NAME_PLACEHOLDER", new Vector2(600, 400))
+        _republicNameInputField = new("CREATE_WORLD_REPUBLIC", "REPUBLIC_NAME_PLACEHOLDER", new Vector2(600, 470))
         {
             Active = false,
             MaxCharactersCount = 30
         };
-        _nameSimilarWarningText = new(Utils.Input.Fonts.BASE, "WORLD_ALREADY_EXIST", new Vector2(600, 300))
+        _nameSimilarWarningText = new(Utils.Input.Fonts.BASE, "WORLD_ALREADY_EXIST", new Vector2(630, 300))
         {
             Color = new(166, 19, 8),
         };
+        _flag = new(new string[33*33], new Vector2(630, 350)){DefaultColor = Color.Black};
+        _flag.Sprite.Scale = 3f;
     }
 
     public override void Draw()
@@ -81,6 +95,8 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
             _mainButtonGroup.Draw();
             _worldNameinputField.Draw();
             _republicNameInputField.Draw();
+            _modeTextGroup.Draw();
+            _flag.Draw();
             if(_worldNameSimilarity) _nameSimilarWarningText.Draw();
         }
     }
@@ -97,11 +113,11 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
 
     private void SearchSimilarWorldName()
     {
-        WorldModel world;
-        foreach (BaseButton baseButton in _availableWorlds)
+        List<WorldModel.WorldData> worldsData = MainGame.Storage.SearchForWorlds();
+
+        foreach (WorldModel.WorldData data in worldsData)
         {
-            world = baseButton as WorldModel;
-            if(world.Data.DirectoryPath == _worldNameinputField.Content)
+            if(data.DirectoryPath == _worldNameinputField.Content)
             {
                 _worldNameSimilarity = true;
                 return;
@@ -110,12 +126,34 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
         _worldNameSimilarity = false;
     }
 
+    private void SubmitForm()
+    {
+        SearchSimilarWorldName();
+        if(_worldNameSimilarity || _worldNameinputField.Content.Length == 0 || _republicNameInputField.Content.Length == 0)
+        {
+            return;
+        }
+        _onSubmit.Invoke(new WorldModel.WorldData()
+        {
+            Name = _worldNameinputField.Content,
+            RepublicName = _republicNameInputField.Content,
+            DirectoryPath = _worldNameinputField.Content,
+            CreatedAt = DateTime.Now,
+            LastPlayed = DateTime.Now,
+            Mode = _currentModeIndex,
+            FlagPixelRows = _flag.ToHexRows()
+        });
+
+    }
+
     public override void Dispose()
     {
         _titleBox.Dispose();
         _worldNameinputField.Dispose();
         _republicNameInputField.Dispose();
         _nameSimilarWarningText.Dispose();
+        _modeTextGroup.Dispose();
+        _flag.Dispose();
     }
 
 

@@ -66,6 +66,7 @@ public class MainMenuScene : IScene
 
     private async Task LoadGameScene(WorldModel.WorldData worldData)
     {
+        MainGame.Storage.UpdateWorldScheme(worldData);
         MainGame.ChangeScene(new GameScene());
     }
 
