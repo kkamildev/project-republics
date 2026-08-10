@@ -10,6 +10,7 @@ public enum Textures
     BUTTON1,
     BUTTON2,
     BUTTON3,
+    BUTTON4,
     WORLD_LABEL,
     INPUT_FIELD
 }

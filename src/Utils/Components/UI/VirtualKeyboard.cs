@@ -57,7 +57,13 @@ public sealed class VirtualKeyboard : UIBase, IDisposable
             for(int j = 0;j<keysInCol.Length;j++)
             {
                 int index = keyButtons.Count;
-                keyButtons.Add(new(keysInCol[j], new Vector2(75 * i, 75 * j), () => HandleClick(index)){ChangeColor = Color.White});
+                if(_keysColsUnshifted.Length - 1 == i)
+                {
+                    keyButtons.Add(new(keysInCol[j], Input.Textures.BUTTON4, new Vector2(80 * i, 75 * j), () => HandleClick(index)){ChangeColor = Color.White});
+                } else
+                {
+                    keyButtons.Add(new(keysInCol[j], new Vector2(75 * i, 75 * j), () => HandleClick(index)){ChangeColor = Color.White});
+                }
             }
         }
 
@@ -109,7 +115,7 @@ public sealed class VirtualKeyboard : UIBase, IDisposable
         {
             if(_buttonGrid.SelectedIndex - 4 < 0)
             {
-                _buttonGrid.SelectedIndex = _buttonGrid.Buttons.Count - 1 + _buttonGrid.SelectedIndex - 4;
+                _buttonGrid.SelectedIndex = _buttonGrid.Buttons.Count + _buttonGrid.SelectedIndex - 4;
             } else
             {
                 _buttonGrid.SelectedIndex-= 4;
@@ -122,7 +128,7 @@ public sealed class VirtualKeyboard : UIBase, IDisposable
         {
             if(_buttonGrid.SelectedIndex + 4 >= _buttonGrid.Buttons.Count)
             {
-                _buttonGrid.SelectedIndex = 4 - (_buttonGrid.Buttons.Count - 1 - _buttonGrid.SelectedIndex);
+                _buttonGrid.SelectedIndex = 4 - (_buttonGrid.Buttons.Count - _buttonGrid.SelectedIndex);
             } else
             {
                 _buttonGrid.SelectedIndex+= 4;

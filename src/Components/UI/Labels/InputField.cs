@@ -12,7 +12,7 @@ namespace project_republics.Components.UI.Labels;
 public sealed class InputField : UIBase, IDisposable
 {
 
-    private AlignedText _contentText, _placeholderText;
+    private AlignedText _contentText, _placeholderText, _titleText;
     private Sprite _inputFieldSprite;
     private Animation _writingAnimation;
     private bool _active;
@@ -41,9 +41,15 @@ public sealed class InputField : UIBase, IDisposable
         MaxCharactersCount = 100;
     }
 
+    public InputField(string titleText, string placeholderText, Vector2 position) : this(placeholderText, position)
+    {
+        _titleText = new(Utils.Input.Fonts.SMALL, titleText, new Vector2(20, -10) + position, 0f, 0f);
+    }
+
     public override void Draw()
     {
         _inputFieldSprite.Draw();
+        _titleText?.Draw();
         if(!_active && _contentText.Content.Length == 0)
         {
             _placeholderText.Draw();
@@ -100,8 +106,16 @@ public sealed class InputField : UIBase, IDisposable
         {
             _placeholderText.Position-= base.MainPosition;
             _contentText.Position-=base.MainPosition;
+            if(_titleText != null)
+            {
+                _titleText.Position -= base.MainPosition;
+            }
             base.MainPosition = value;
             _inputFieldSprite.Position = value;
+            if(_titleText != null)
+            {
+                _titleText.Position += base.MainPosition;
+            }
             _contentText.Position+=base.MainPosition;
             _placeholderText.Position+= base.MainPosition;
         }
@@ -133,5 +147,6 @@ public sealed class InputField : UIBase, IDisposable
     {
         _placeholderText.Dispose();
         _contentText.Dispose();
+        _titleText?.Dispose();
     }
 }

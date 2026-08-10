@@ -65,7 +65,7 @@ public class PlayGameSide : UIBase, IDisposable
                 _createWorldForm.Active = false;
                 MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, _backAction);
             }
-        }); 
+        }, _worlds.Buttons); 
         _playAction = playAction;
         _backAction = (hold) =>
         {

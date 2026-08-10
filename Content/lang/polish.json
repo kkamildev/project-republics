@@ -31,6 +31,8 @@
         "CREATE_WORLD_FINISH":"Zakończ",
         "ARE_YOU_SURE":"Jesteś pewien?",
         "WORLD_NAME_PLACEHOLDER":"Nazwa twojego świata",
+        "REPUBLIC_NAME_PLACEHOLDER":"Nazwa twojej republiki",
+        "WORLD_ALREADY_EXIST":"Ten świat już istnieje!",
 
         "CONNECTING_ACCOUNT_1":"Łączenie",
         "CONNECTING_ACCOUNT_2":"Z kontem",

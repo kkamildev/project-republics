@@ -8,6 +8,7 @@ using System.Linq;
 using project_republics.Utils.Components.Texts;
 using project_republics.Utils.Components.Sprites;
 using project_republics.Components.UI.Labels;
+using System.Collections.Generic;
 
 namespace project_republics.Components.UI.Forms;
 
@@ -15,25 +16,38 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
 {
     private TitleBox _titleBox;
     private ButtonGroup _mainButtonGroup;
-    private InputField _inputField;
-    public CreateWorldForm(Action<WorldModel.WorldData> onSubmit, Action<bool> backAction) : base(onSubmit, backAction)
+    private InputField _worldNameinputField, _republicNameInputField;
+    private Text _nameSimilarWarningText;
+    private List<BaseButton> _availableWorlds;
+    private bool _worldNameSimilarity;
+    public CreateWorldForm(Action<WorldModel.WorldData> onSubmit, Action<bool> backAction, List<BaseButton> availableWorlds) : base(onSubmit, backAction)
     {
+        _availableWorlds = availableWorlds;
         _titleBox = new("CREATE_NEW_WORLD_TITLE", Utils.Input.Textures.BACKGROUND, new Rectangle((int)MainGame.Resolution.X / 2, (int)MainGame.Resolution.Y / 2, 1600 / 5 * 4, 900 / 5 * 4));
         string[] texts = ["CREATE_WORLD_NAME", "CREATE_WORLD_MODE", "CREATE_WORLD_REPUBLIC", "CREATE_WORLD_REPUBLIC_FLAG", "CREATE_WORLD_FINISH", "BACK"];
         Action[] actions = [
             () => {
                 _mainButtonGroup.Active = false;
                 MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, _backAction);
-                MainGame.VirtualKeyboard.SetActive(true, _inputField, () => {
+                MainGame.VirtualKeyboard.SetActive(true, _worldNameinputField, () => {
                     MainGame.VirtualKeyboard.SetActive(false, null, null);
                     _mainButtonGroup.Active = true;
+                    SearchSimilarWorldName();
                     MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, _backAction);
                 });
             },
             () => {
                 
             },
-            () => {},
+            () => {
+                _mainButtonGroup.Active = false;
+                MainGame.Input.UnSubscribeAction(Utils.Input.Controls.EXIT, _backAction);
+                MainGame.VirtualKeyboard.SetActive(true, _republicNameInputField, () => {
+                    MainGame.VirtualKeyboard.SetActive(false, null, null);
+                    _mainButtonGroup.Active = true;
+                    MainGame.Input.SubscribeAction(Utils.Input.Controls.EXIT, _backAction);
+                });
+            },
             () => {},
             () => {},
             () => _backAction.Invoke(false)
@@ -43,9 +57,19 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
              new AlignedSprite(Utils.Input.Textures.BUTTON2, new Vector2(300, 200 + 100 * index), 0.5f, 0.5f){Scale = 3f},
               actions[index]){ChangeColor = Color.White})
         ]);
-        _inputField = new("WORLD_NAME_PLACEHOLDER", new Vector2(600, 200))
+        _worldNameinputField = new("CREATE_WORLD_NAME", "WORLD_NAME_PLACEHOLDER", new Vector2(600, 200))
         {
-            Active = false
+            Active = false,
+            MaxCharactersCount = 30
+        };
+        _republicNameInputField = new("CREATE_WORLD_REPUBLIC", "REPUBLIC_NAME_PLACEHOLDER", new Vector2(600, 400))
+        {
+            Active = false,
+            MaxCharactersCount = 30
+        };
+        _nameSimilarWarningText = new(Utils.Input.Fonts.BASE, "WORLD_ALREADY_EXIST", new Vector2(600, 300))
+        {
+            Color = new(166, 19, 8),
         };
     }
 
@@ -55,7 +79,9 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
         {
             _titleBox.Draw();
             _mainButtonGroup.Draw();
-            _inputField.Draw();
+            _worldNameinputField.Draw();
+            _republicNameInputField.Draw();
+            if(_worldNameSimilarity) _nameSimilarWarningText.Draw();
         }
     }
 
@@ -63,15 +89,33 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
     {
         if(_active)
         {
-            _inputField.Update();
+            _worldNameinputField.Update();
+            _republicNameInputField.Update();
             _mainButtonGroup.Update();
         }
+    }
+
+    private void SearchSimilarWorldName()
+    {
+        WorldModel world;
+        foreach (BaseButton baseButton in _availableWorlds)
+        {
+            world = baseButton as WorldModel;
+            if(world.Data.DirectoryPath == _worldNameinputField.Content)
+            {
+                _worldNameSimilarity = true;
+                return;
+            }
+        }
+        _worldNameSimilarity = false;
     }
 
     public override void Dispose()
     {
         _titleBox.Dispose();
-        _inputField.Update();
+        _worldNameinputField.Dispose();
+        _republicNameInputField.Dispose();
+        _nameSimilarWarningText.Dispose();
     }
 
 
@@ -87,6 +131,7 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
             {
                 _mainButtonGroup.Active = false;
                 _mainButtonGroup.SelectedIndex = 0;
+                _worldNameinputField.Clear();
             }
         }
     }
