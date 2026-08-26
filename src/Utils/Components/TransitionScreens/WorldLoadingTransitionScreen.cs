@@ -12,7 +12,7 @@ public class WorldLoadingTransitionScreen : TransitionScreen
     private RectSprite _background;
     public WorldLoadingTransitionScreen(Animation inAnimation, Animation outAnimation, Func<Task> taskFactory) : base(inAnimation, outAnimation, taskFactory)
     {
-        _background = new(Utils.Input.Textures.BACKGROUND, new Rectangle(0, 0, (int)MainGame.Resolution.X, (int)MainGame.Resolution.Y), 0, 0, 0){Color = Color.Black};
+        _background = new(Input.Textures.BACKGROUND, new Rectangle(0, 0, (int)MainGame.Resolution.X, (int)MainGame.Resolution.Y), 0, 0, 0){Color = Color.Black};
     }
 
     public override void Draw()

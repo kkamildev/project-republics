@@ -2,13 +2,9 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using project_republics.Scenes;
-using project_republics.Utils.Animations;
-using project_republics.Utils.Components.Texts;
 using project_republics.Utils.Components.TransitionScreens;
 using project_republics.Utils.Components.UI;
-using project_republics.Utils.Exceptions;
 using project_republics.Utils.Input;
 using project_republics.Utils.Storage;
 
@@ -26,6 +22,7 @@ public class MainGame : Game
     public static Vector2 ScreenSize {get;private set;}
     public static Vector2 Resolution {get;private set;}
     public static float DeltaTime{get;private set;}
+    public static Random Random{get; private set;}
     public static TransitionScreen TransitionScreen{get;set;}
     public static VirtualKeyboard VirtualKeyboard{get;set;}
     private static IScene _currentScene;
@@ -85,6 +82,7 @@ public class MainGame : Game
         _renderTarget = new(Graph.GraphicsDevice, (int)Resolution.X, (int)Resolution.Y);
 
         // other content
+        Random = new();
         VirtualKeyboard = new();
 
         ChangeScene(new StartIntroScene());

@@ -34,6 +34,10 @@ public abstract class TransitionScreen : IDisposable
             }
             if(_currentTask.IsCompleted)
             {
+                if (_currentTask.IsFaulted)
+                {
+                    throw _currentTask.Exception;
+                }
                 _outAnimation.Update();
             }
         }

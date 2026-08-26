@@ -32,7 +32,7 @@ public class Account : UIBase, IDisposable
     }
 
 
-    public async void ConnectToAccount()
+    public async Task ConnectToAccount()
     {
         AccountResponse response = await NetworkHelper.RunWithTimeout(GetAccount, 1000 * 5, new AccountResponse(){Success = false, Message = "TIMEOUT"});
         _data = response;
@@ -42,7 +42,7 @@ public class Account : UIBase, IDisposable
     private async Task<AccountResponse> GetAccount()
     {
         // simulating request
-        await Task.Delay(3000);
+        await Task.Delay(1000);
         return new AccountResponse(){Success = true, ID = "hH1ug3t89871", AccountData = new Dictionary<string, string>(){{"username", "NULLA"}}, Message="Success"};
     }
     

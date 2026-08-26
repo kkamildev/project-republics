@@ -80,7 +80,7 @@ public class WorldModel : BaseButton
                 new(Utils.Input.Fonts.SMALLER, "WORLD_PLAYED_DATE", new Vector2(160, 40)){ Color = Color.DimGray, StringParams = [data.LastPlayed.ToString("HH:mm yyyy-MM-dd")] },
                 new(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(460, 40)){ Color = Color.DimGray, StringParams = ["/" + data.DirectoryPath.Truncate(20)] },
                 new(Utils.Input.Fonts.SMALLER, data.GlobalID != null ? "ONLINE_YES" : "ONLINE_NO", new Vector2(160, 70)),
-                new(Utils.Input.Fonts.SMALLER, Modes[data.Mode], new Vector2(160, 100)){ StringParams = [", " + data.RepublicName] }
+                new(Utils.Input.Fonts.SMALLER, Modes[data.Mode], new Vector2(160, 100)){ StringParams = [", " + data.RepublicName], Color = ModesColors[data.Mode]}
             ]);
 
             if(data.GlobalID != null)

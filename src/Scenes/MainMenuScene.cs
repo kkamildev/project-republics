@@ -36,7 +36,7 @@ public class MainMenuScene : IScene
             new ShadowedText(Utils.Input.Fonts.BASE, "In development", MainGame.Resolution - new Vector2(2, 40), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black},
             new ShadowedText(Utils.Input.Fonts.BASE, "Project Republics", MainGame.Resolution - new Vector2(2, 80), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black}
         ]);
-        MainGame.Storage.Account.ConnectToAccount();
+        _ = MainGame.Storage.Account.ConnectToAccount();
 
     }
 

@@ -94,7 +94,6 @@ public class StorageLoader
             Directory.CreateDirectory(dir);   
         }
         worldData.LastPlayed = DateTime.Now;
-        worldData.DirectoryPath = null;
         string jsonText = JsonSerializer.Serialize(worldData, _jsonSerializerOptions);
         File.WriteAllText(Path.Join(dir, "metadata.json"), jsonText);
 
@@ -114,6 +113,21 @@ public class StorageLoader
         } else
         {
             File.WriteAllText(logPath, errorContent);
+        }
+    }
+
+    public string AppPath
+    {
+        get
+        {
+            return _appPath;
+        }
+    }
+    public JsonSerializerOptions JsonSerializerOptions
+    {
+        get
+        {
+            return _jsonSerializerOptions;
         }
     }
 }
