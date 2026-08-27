@@ -12,9 +12,12 @@ namespace project_republics;
 
 public class MainGame : Game
 {
+
+    public const string VERSION = "In progress";
+    public const string TITLE = "Project Republics";
+    public const string COPYRIGHT = "Copyright Kkamildev";
     public static GraphicsDeviceManager Graph {get;private set;}
     public static SpriteBatch Batch {get;private set;}
-
     public static UserInputListener Input{get;private set;}
     public static StorageLoader Storage{get;private set;}
     public static ContentLoader CL{get;private set;}
@@ -36,11 +39,9 @@ public class MainGame : Game
         Content.RootDirectory = "Content";
         // game config
         IsMouseVisible = true;
-        Window.Title = "Project Republics";
+        Window.Title = TITLE;
         Window.IsBorderless = true;
         _exitGame = Exit;
-
-
     }
 
     protected override void Initialize()

@@ -19,4 +19,12 @@ public class Player
     {
         _data = data;
     }
+
+    public PlayerData Data
+    {
+        get
+        {
+            return _data;
+        }
+    }
 }

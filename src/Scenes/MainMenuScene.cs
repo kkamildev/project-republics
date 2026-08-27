@@ -32,9 +32,13 @@ public class MainMenuScene : IScene
         ChangeCurrentView(0);  
 
         _gameInfoTextGroup = new([
-            new ShadowedText(Utils.Input.Fonts.BASE, "Copyright Kkamildev", MainGame.Resolution - new Vector2(2, 0), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black},
-            new ShadowedText(Utils.Input.Fonts.BASE, "In development", MainGame.Resolution - new Vector2(2, 40), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black},
-            new ShadowedText(Utils.Input.Fonts.BASE, "Project Republics", MainGame.Resolution - new Vector2(2, 80), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black}
+            new ShadowedText(Utils.Input.Fonts.BASE, "{0}", MainGame.Resolution - new Vector2(2, 0), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black,
+             StringParams = [MainGame.COPYRIGHT]},
+            new ShadowedText(Utils.Input.Fonts.BASE, "{0}", MainGame.Resolution - new Vector2(2, 40), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black,
+            StringParams = [MainGame.VERSION]},
+            new ShadowedText(Utils.Input.Fonts.BASE, "{0}", MainGame.Resolution - new Vector2(2, 80), 1f, 1f, 0f, new Vector2(2)){Color = Color.GhostWhite, ShadowColor = Color.Black,
+            StringParams = [MainGame.TITLE]
+            }
         ]);
         _ = MainGame.Storage.Account.ConnectToAccount();
 
