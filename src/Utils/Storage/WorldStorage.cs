@@ -56,10 +56,10 @@ public class WorldStorage
             Player.PlayerData defaultPlayerData = new()
             {
                 Username = "Guest",
-                SectorX = MainGame.Random.Next(0, WorldContainer.MAP_WIDTH),
-                SectorY = MainGame.Random.Next(0, WorldContainer.MAP_HEIGHT),
-                X = MainGame.Random.Next(0, WorldContainer.SECTOR_WIDTH),
-                Y = MainGame.Random.Next(0, WorldContainer.SECTOR_HEIGHT)
+                SectorX = MainGame.Random.Next(0, WorldContainer.MAP_SIDE),
+                SectorY = MainGame.Random.Next(0, WorldContainer.MAP_SIDE),
+                X = MainGame.Random.Next(0, WorldContainer.CHUNK_SIDE * WorldContainer.SECTOR_CHUNKS_SIDE),
+                Y = MainGame.Random.Next(0, WorldContainer.CHUNK_SIDE * WorldContainer.SECTOR_CHUNKS_SIDE)
             };
 
             File.WriteAllText(fileToFind, JsonSerializer.Serialize(defaultPlayerData, MainGame.Storage.JsonSerializerOptions));
