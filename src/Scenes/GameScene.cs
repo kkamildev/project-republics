@@ -11,23 +11,22 @@ namespace project_republics.Scenes;
 
 public class GameScene : IScene
 {
-    private readonly WorldModel.WorldData _worldData;
     private readonly WorldStorage _storage;
-    private readonly WorldContainer _world;
+    private WorldContainer _world;
     private Player _player;
     private DebugMenu _debugMenu;
 
     public GameScene(WorldModel.WorldData data)
     {
-        _worldData = data;
-        _storage = new(_worldData);
-        _world = new(_storage);
+        _storage = new(data);
     }
 
     public async Task PrepareGame()
     {
         // preparing Logic
         _player = await _storage.LoadPlayer(MainGame.Storage.Account);
+        _world = new(_storage, _player);
+        await _world.PrepareWorld();
         _debugMenu = new(_player);
     }
 

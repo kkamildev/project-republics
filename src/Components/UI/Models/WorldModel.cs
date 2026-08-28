@@ -1,7 +1,6 @@
 
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using project_republics.Components.UI.Buttons;
 using project_republics.Utils.Components.Sprites;
 using project_republics.Utils.Components.Texts;
@@ -16,6 +15,7 @@ public class WorldModel : BaseButton
     {
         public string Name{get;set;}
         public int Mode{get;set;}
+        public int Seed{get;set;}
         public string RepublicName{get;set;}
         public string DirectoryPath{get;set;}
         public DateTime CreatedAt{get;set;}

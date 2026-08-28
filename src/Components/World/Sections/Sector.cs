@@ -5,10 +5,20 @@ namespace project_republics.Components.World.Sections;
 
 public class Sector
 {
-    private Vector2 _position;
+    private ByteVector2 _position;
     private Chunk[,] _chunks;
-    public Sector()
+    public Sector(ByteVector2 position)
     {
-        _chunks = new Chunk[WorldContainer.SECTOR_CHUNKS_SIDE, WorldContainer.SECTOR_CHUNKS_SIDE];
+        _position = position;   
+    }
+
+    public void Draw()
+    {
+        
+    }
+
+    public void Update()
+    {
+        
     }
 }

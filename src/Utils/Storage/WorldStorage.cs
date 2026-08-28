@@ -12,9 +12,11 @@ namespace project_republics.Utils.Storage;
 
 public class WorldStorage
 {
+    private readonly WorldModel.WorldData _metadata;
     private readonly string _worldPath;
     public WorldStorage(WorldModel.WorldData data)
     {
+        _metadata = data;
         _worldPath = Path.Join(MainGame.Storage.AppPath, "worlds", data.DirectoryPath);
     }
 
@@ -64,6 +66,14 @@ public class WorldStorage
 
             File.WriteAllText(fileToFind, JsonSerializer.Serialize(defaultPlayerData, MainGame.Storage.JsonSerializerOptions));
             return defaultPlayerData;
+        }
+    }
+
+    public WorldModel.WorldData Metadata
+    {
+        get
+        {
+            return _metadata;
         }
     }
 }

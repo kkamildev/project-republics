@@ -9,6 +9,7 @@ using project_republics.Utils.Components.Texts;
 using project_republics.Utils.Components.Sprites;
 using project_republics.Components.UI.Labels;
 using System.Collections.Generic;
+using project_republics.Utils.Helpers;
 
 namespace project_republics.Components.UI.Forms;
 
@@ -137,6 +138,7 @@ public class CreateWorldForm : BaseForm<WorldModel.WorldData>
         {
             Name = _worldNameinputField.Content,
             RepublicName = _republicNameInputField.Content,
+            Seed = PerlinHelper.GenerateSeed(21),
             DirectoryPath = _worldNameinputField.Content,
             CreatedAt = DateTime.Now,
             LastPlayed = DateTime.Now,
