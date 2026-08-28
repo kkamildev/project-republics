@@ -27,7 +27,7 @@ public class GameScene : IScene
         _player = await _storage.LoadPlayer(MainGame.Storage.Account);
         _world = new(_storage, _player);
         await _world.PrepareWorld();
-        _debugMenu = new(_player);
+        _debugMenu = new(_player, _storage);
     }
 
     public void Draw()

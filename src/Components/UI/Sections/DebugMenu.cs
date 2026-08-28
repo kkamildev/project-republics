@@ -9,6 +9,7 @@ using project_republics.Utils.Components.Texts;
 using project_republics.Utils.Components.UI;
 using project_republics.Utils.Diagnostics;
 using project_republics.Utils.States;
+using project_republics.Utils.Storage;
 
 namespace project_republics.Components.UI.Sections;
 
@@ -21,20 +22,21 @@ public class DebugMenu : UIBase, IDisposable
     private RectSprite _background;
     private bool _active;
     private Player _playerRef;
-    public DebugMenu(Player player)
+    public DebugMenu(Player player, WorldStorage worldStorage)
     {
         _playerRef = player;
         _fpsCounter = new();
         MainGame.Input.SubscribeAction(Utils.Input.Controls.DEBUG_OPEN, MenuAction);
         _texts = new([
             new Text(Utils.Input.Fonts.SMALLER, "{0} {1}", new Vector2(10)){StringParams=[MainGame.TITLE, MainGame.VERSION]},
-            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(10, 40)){StringParams=["FPS: " + _fpsCounter.Fps]},
-            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(10, 80)){StringParams=[$"Sector (X:{_playerRef.Data.SectorX}, Y:{_playerRef.Data.SectorY})"]},
-            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(20, 110)){StringParams=[$"Position (X:{_playerRef.Data.X}, Y:{_playerRef.Data.Y})"], Color = Color.DimGray},
+            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(10, 60)){StringParams=["FPS: " + _fpsCounter.Fps]},
+            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(10, 85)){StringParams=["SEED: " + worldStorage.Metadata.Seed]},
+            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(10, 120)){StringParams=[$"Sector (X:{_playerRef.Data.SectorX}, Y:{_playerRef.Data.SectorY})"]},
+            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(20, 145)){StringParams=[$"Position (X:{_playerRef.Data.X}, Y:{_playerRef.Data.Y})"], Color = Color.DimGray},
         ]);
         _fpsState = new((newValue) => _texts.Texts[1].StringParams = [newValue]);
-        _sectorPosState = new((newValue) => _texts.Texts[2].StringParams = [newValue]);
-        _playerPosState = new((newValue) => _texts.Texts[3].StringParams = [newValue]);
+        _sectorPosState = new((newValue) => _texts.Texts[3].StringParams = [newValue]);
+        _playerPosState = new((newValue) => _texts.Texts[4].StringParams = [newValue]);
         _background = new(Utils.Input.Textures.BACKGROUND, new Rectangle(0, 0, 400, (int)MainGame.Resolution.Y), 0, 0, 0){Color = new Color(Color.Black, 0.75f)};
         MainPosition = new Vector2(-400, 0);
     }
