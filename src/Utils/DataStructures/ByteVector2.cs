@@ -1,6 +1,7 @@
 
 
 using System;
+using Microsoft.Xna.Framework;
 
 public struct ByteVector2
 {
@@ -41,6 +42,8 @@ public struct ByteVector2
     public float Length() => MathF.Sqrt(LengthSquared());
 
     public ByteVector2 Clamp(byte min, byte max) => new(Math.Clamp(X, min, max), Math.Clamp(Y, min, max));
+
+    public Vector2 ToVector2() => new(X, Y);
 
     public override string ToString() => $"({X}, {Y})";
 }

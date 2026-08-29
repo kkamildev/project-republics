@@ -12,7 +12,8 @@ public enum Textures
     BUTTON3,
     BUTTON4,
     WORLD_LABEL,
-    INPUT_FIELD
+    INPUT_FIELD,
+    GRASS_TILE
 }
 
 public enum Fonts

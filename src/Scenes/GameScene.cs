@@ -33,12 +33,14 @@ public class GameScene : IScene
     public void Draw()
     {
         MainGame.Batch.Begin(samplerState:SamplerState.PointClamp, blendState:BlendState.NonPremultiplied);
+        _world.Draw();
         _debugMenu.Draw();
         MainGame.Batch.End();
     }
 
     public void Update()
     {
+        _world.Update();
         _debugMenu.Update();
     }
     public void Dispose()

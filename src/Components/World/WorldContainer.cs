@@ -24,7 +24,7 @@ public class WorldContainer
 
     public async Task PrepareWorld()
     {
-        _sectors.Add(new Sector(new ByteVector2(0, 0)));
+        _sectors.Add(await Sector.GenSector(this, new ByteVector2(0, 0)));
         _activeSector = _sectors[0];
     }
 
