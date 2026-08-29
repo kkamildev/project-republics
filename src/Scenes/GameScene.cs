@@ -46,5 +46,6 @@ public class GameScene : IScene
     public void Dispose()
     {
         _debugMenu.Dispose();
+        _player.Dispose();
     }
 }

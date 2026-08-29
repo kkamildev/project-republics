@@ -24,6 +24,17 @@ public class Chunk
         }
     }
 
+    public void SetPositionToTiles(Vector2 newPosition)
+    {
+        for(int i = 0;i<_tiles.GetLength(0);i++)
+        {
+            for(int j = 0;j<_tiles.GetLength(1);j++)
+            {
+                _tiles[i, j].Position = newPosition;
+            }
+        }
+    }
+
     public void Draw()
     {
         for(int i = 0;i<_tiles.GetLength(0);i++)

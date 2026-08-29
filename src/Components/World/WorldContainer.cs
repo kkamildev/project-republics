@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using project_republics.Components.World.Sections;
 using project_republics.Utils.Storage;
 
@@ -11,6 +12,7 @@ public class WorldContainer
     public const byte CHUNK_SIDE = 16;
     public const byte SECTOR_CHUNKS_SIDE = 64;
     public const byte MAP_SIDE = 25;
+    public const int PLAYER_MOVEMENT_SPEED = 700;
     private readonly List<Sector> _sectors;
     private Sector _activeSector;
     private readonly WorldStorage _storage;
@@ -20,12 +22,18 @@ public class WorldContainer
         _mainPlayerRef = mainPlayer;
         _storage = worldStorage;
         _sectors = [];
+        _mainPlayerRef.OnChangePosition = OnChangePlayerPosition;
     }
 
     public async Task PrepareWorld()
     {
         _sectors.Add(await Sector.GenSector(this, new ByteVector2(0, 0)));
         _activeSector = _sectors[0];
+    }
+
+    private void OnChangePlayerPosition(Vector2 newPosition)
+    {
+        _activeSector.SetViewPosition(newPosition);
     }
 
     public void Draw()

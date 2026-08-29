@@ -8,6 +8,7 @@ public class Sector
 {
     private readonly WorldContainer _worldRef;
     private ByteVector2 _position;
+    private Vector2 _viewPosition;
     private Chunk[,] _chunks;
     private Sector(WorldContainer worldRef, ByteVector2 position)
     {
@@ -28,6 +29,18 @@ public class Sector
     {
         _chunks[0, 0] = new Chunk(this, new ByteVector2(0, 0));
         _chunks[0, 1] = new Chunk(this, new ByteVector2(1, 0));
+    }
+
+    public void SetViewPosition(Vector2 position)
+    {
+        _viewPosition = position;
+        for(int i = 0;i<_chunks.GetLength(0);i++)
+        {
+            for(int j = 0;j<_chunks.GetLength(1);j++)
+            {
+                _chunks[i, j]?.SetPositionToTiles(_viewPosition);
+            }
+        }
     }
 
     public void Draw()

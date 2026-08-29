@@ -10,5 +10,10 @@ public enum Controls
     SELECT_UP,
     SELECT_LEFT,
     SELECT_RIGHT,
-    DEBUG_OPEN
+    DEBUG_OPEN,
+    MOVE_UP,
+    MOVE_DOWN,
+    MOVE_LEFT,
+    MOVE_RIGHT,
+    TOGGLE_MOVEMENT_SPEED
 }
