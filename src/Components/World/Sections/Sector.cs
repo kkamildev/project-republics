@@ -56,6 +56,12 @@ public class Sector
 
     public void Update()
     {
-        
+        for(int i = 0;i<_chunks.GetLength(0);i++)
+        {
+            for(int j = 0;j<_chunks.GetLength(1);j++)
+            {
+                _chunks[i, j]?.Update();
+            }
+        }
     }
 }

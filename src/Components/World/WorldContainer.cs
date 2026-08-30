@@ -28,7 +28,13 @@ public class WorldContainer
     public async Task PrepareWorld()
     {
         _sectors.Add(await Sector.GenSector(this, new ByteVector2(0, 0)));
-        _activeSector = _sectors[0];
+        SwitchToActiveSector(_sectors[0], _mainPlayerRef.Position);
+    }
+
+    private void SwitchToActiveSector(Sector sector, Vector2 position)
+    {
+        _activeSector = sector;
+        _activeSector.SetViewPosition(position);
     }
 
     private void OnChangePlayerPosition(Vector2 newPosition)

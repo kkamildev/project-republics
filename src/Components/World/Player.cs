@@ -24,7 +24,7 @@ public class Player : IDisposable
     {
         _speedMultiplier = 1f;
         _data = data;
-        _position = new Vector2(_data.X, _data.Y);
+        _position = new Vector2(_data.X, _data.Y) * 32;
         MainGame.Input.SubscribeAction(Utils.Input.Controls.MOVE_UP, UpAction);
         MainGame.Input.SubscribeAction(Utils.Input.Controls.MOVE_DOWN, DownAction);
         MainGame.Input.SubscribeAction(Utils.Input.Controls.MOVE_LEFT, LeftAction);
@@ -37,6 +37,10 @@ public class Player : IDisposable
         if(OnChangePosition != null)
         {
             _position.Y-= WorldContainer.PLAYER_MOVEMENT_SPEED * MainGame.DeltaTime * _speedMultiplier;
+            if(_position.Y < 0)
+            {
+                _position.Y = 0;
+            }
             MoveAction();
         }
     }
@@ -45,6 +49,10 @@ public class Player : IDisposable
         if(OnChangePosition != null)
         {
             _position.Y+= WorldContainer.PLAYER_MOVEMENT_SPEED * MainGame.DeltaTime * _speedMultiplier;
+            if(_position.Y > WorldContainer.SECTOR_CHUNKS_SIDE * WorldContainer.CHUNK_SIDE * 32)
+            {
+                _position.Y = WorldContainer.SECTOR_CHUNKS_SIDE * WorldContainer.CHUNK_SIDE * 32;
+            }
             MoveAction();
         }
     }
@@ -53,6 +61,10 @@ public class Player : IDisposable
         if(OnChangePosition != null)
         {
             _position.X-= WorldContainer.PLAYER_MOVEMENT_SPEED * MainGame.DeltaTime * _speedMultiplier;
+            if(_position.X < 0)
+            {
+                _position.X = 0;
+            }
             MoveAction();
         }
     }
@@ -61,6 +73,10 @@ public class Player : IDisposable
         if(OnChangePosition != null)
         {
             _position.X+= WorldContainer.PLAYER_MOVEMENT_SPEED * MainGame.DeltaTime * _speedMultiplier;
+            if(_position.X > WorldContainer.SECTOR_CHUNKS_SIDE * WorldContainer.CHUNK_SIDE * 32)
+            {
+                _position.X = WorldContainer.SECTOR_CHUNKS_SIDE * WorldContainer.CHUNK_SIDE * 32;
+            }
             MoveAction();
         }
     }

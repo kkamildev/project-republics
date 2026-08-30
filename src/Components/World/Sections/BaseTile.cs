@@ -14,7 +14,7 @@ public class BaseTile
     public BaseTile(Chunk chunkRef, Vector2 inChunkPosition, Textures texture)
     {
         _chunkRef = chunkRef;
-        _primaryPosition = (_chunkRef.Position.ToVector2() * WorldContainer.CHUNK_SIDE + inChunkPosition) * 32;
+        _primaryPosition = (_chunkRef.Position.ToVector2() * WorldContainer.CHUNK_SIDE + inChunkPosition) * 32 + MainGame.Resolution / 2;
         _sprite = new(texture, _primaryPosition)
         {
             Scale = 2f
@@ -25,7 +25,18 @@ public class BaseTile
         _sprite.Draw();
     }
 
-    public Vector2 Position
+
+    public virtual void UpdateGraph()
+    {
+        
+    }
+
+    public virtual void Update()
+    {
+        
+    }
+
+    public virtual Vector2 Position
     {
         set
         {
