@@ -16,27 +16,29 @@ namespace project_republics.Components.UI.Sections;
 public class DebugMenu : UIBase, IDisposable
 {
     private readonly FpsCounter _fpsCounter;
-    private readonly ValueState<string> _fpsState, _sectorPosState, _playerPosState;
+    private readonly ValueState<string> _fpsState, _sectorPosState, _playerPosState, _visibleChunksState;
     private EaseInOutAnimation _animation;
     private TextGroup _texts;
     private RectSprite _background;
     private bool _active;
-    private Player _playerRef;
-    public DebugMenu(Player player, WorldStorage worldStorage)
+    private WorldContainer _worldRef;
+    public DebugMenu(WorldContainer worldRef)
     {
-        _playerRef = player;
+        _worldRef = worldRef;
         _fpsCounter = new();
         MainGame.Input.SubscribeAction(Utils.Input.Controls.DEBUG_OPEN, MenuAction);
         _texts = new([
             new Text(Utils.Input.Fonts.SMALLER, "{0} {1}", new Vector2(10)){StringParams=[MainGame.TITLE, MainGame.VERSION]},
             new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(10, 60)){StringParams=["FPS: " + _fpsCounter.Fps]},
-            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(10, 85)){StringParams=["SEED: " + worldStorage.Metadata.Seed]},
-            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(10, 120)){StringParams=[$"Sector (X:{_playerRef.Data.SectorX}, Y:{_playerRef.Data.SectorY})"]},
-            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(20, 145)){StringParams=[$"Position (X:{_playerRef.Data.X}, Y:{_playerRef.Data.Y})"], Color = Color.DimGray},
+            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(10, 85)){StringParams=["SEED: " + _worldRef.Storage.Metadata.Seed]},
+            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(10, 120)){StringParams=[$"Sector (X:{_worldRef.MasterPlayer.Data.SectorX}, Y:{_worldRef.MasterPlayer.Data.SectorY})"]},
+            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(20, 145)){StringParams=[$"Position (X:{_worldRef.MasterPlayer.Data.X}, Y:{_worldRef.MasterPlayer.Data.Y})"], Color = Color.DimGray},
+            new Text(Utils.Input.Fonts.SMALLER, "{0}", new Vector2(10, 185)){StringParams = [$"VCH: {_worldRef.VisibleChunks}"]}
         ]);
         _fpsState = new((newValue) => _texts.Texts[1].StringParams = [newValue]);
         _sectorPosState = new((newValue) => _texts.Texts[3].StringParams = [newValue]);
         _playerPosState = new((newValue) => _texts.Texts[4].StringParams = [newValue]);
+        _visibleChunksState = new((newValue) => _texts.Texts[5].StringParams = [newValue]);
         _background = new(Utils.Input.Textures.BACKGROUND, new Rectangle(0, 0, 400, (int)MainGame.Resolution.Y), 0, 0, 0){Color = new Color(Color.Black, 0.75f)};
         MainPosition = new Vector2(-400, 0);
     }
@@ -54,8 +56,9 @@ public class DebugMenu : UIBase, IDisposable
         {
             _fpsCounter.Update();
             _fpsState.CurrentValue = "FPS: " + _fpsCounter.Fps;
-            _sectorPosState.CurrentValue = $"Sector (X:{_playerRef.Data.SectorX}, Y:{_playerRef.Data.SectorY})";
-            _playerPosState.CurrentValue = $"Position (X:{_playerRef.Data.X}, Y:{_playerRef.Data.Y})";
+            _sectorPosState.CurrentValue = $"Sector (X:{_worldRef.MasterPlayer.Data.SectorX}, Y:{_worldRef.MasterPlayer.Data.SectorY})";
+            _playerPosState.CurrentValue = $"Position (X:{_worldRef.MasterPlayer.Data.X}, Y:{_worldRef.MasterPlayer.Data.Y})";
+            _visibleChunksState.CurrentValue = $"VCH: {_worldRef.VisibleChunks}";
         }
         if(_animation != null)
         {

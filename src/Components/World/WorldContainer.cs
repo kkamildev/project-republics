@@ -13,12 +13,14 @@ public class WorldContainer
     public const byte SECTOR_CHUNKS_SIDE = 64;
     public const byte MAP_SIDE = 25;
     public const int PLAYER_MOVEMENT_SPEED = 700;
+    private int _visibleChunks;
     private readonly List<Sector> _sectors;
     private Sector _activeSector;
     private readonly WorldStorage _storage;
     private readonly Player _mainPlayerRef;
     public WorldContainer(WorldStorage worldStorage, Player mainPlayer)
     {
+        _visibleChunks = 0;
         _mainPlayerRef = mainPlayer;
         _storage = worldStorage;
         _sectors = [];
@@ -33,13 +35,25 @@ public class WorldContainer
 
     private void SwitchToActiveSector(Sector sector, Vector2 position)
     {
+        _visibleChunks = 0;
         _activeSector = sector;
-        _activeSector.SetViewPosition(position);
+        OnChangePlayerPosition(position);
     }
 
     private void OnChangePlayerPosition(Vector2 newPosition)
     {
-        _activeSector.SetViewPosition(newPosition);
+        _activeSector.SetViewPosition(newPosition, OnChangeChunkVisibility);
+    }
+
+    private void OnChangeChunkVisibility(bool visible)
+    {
+        if(visible)
+        {
+            _visibleChunks++;
+        } else
+        {
+            _visibleChunks--;
+        }
     }
 
     public void Draw()
@@ -50,5 +64,29 @@ public class WorldContainer
     public void Update()
     {
         _activeSector.Update();
+    }
+
+    public int VisibleChunks
+    {
+        get
+        {
+            return _visibleChunks;
+        }
+    }
+
+    public WorldStorage Storage
+    {
+        get
+        {
+            return _storage;
+        }
+    }
+
+    public Player MasterPlayer
+    {
+        get
+        {
+            return _mainPlayerRef;
+        }
     }
 }

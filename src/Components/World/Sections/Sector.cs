@@ -1,4 +1,5 @@
 
+using System;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
@@ -31,14 +32,14 @@ public class Sector
         _chunks[0, 1] = new Chunk(this, new ByteVector2(1, 0));
     }
 
-    public void SetViewPosition(Vector2 position)
+    public void SetViewPosition(Vector2 position, Action<bool> onChangeChunkVisibility)
     {
         _viewPosition = position;
         for(int i = 0;i<_chunks.GetLength(0);i++)
         {
             for(int j = 0;j<_chunks.GetLength(1);j++)
             {
-                _chunks[i, j]?.SetPositionToTiles(_viewPosition);
+                _chunks[i, j]?.SetPositionToTiles(_viewPosition, onChangeChunkVisibility);
             }
         }
     }
@@ -64,4 +65,5 @@ public class Sector
             }
         }
     }
+
 }

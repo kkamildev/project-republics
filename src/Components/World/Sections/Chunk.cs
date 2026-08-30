@@ -1,5 +1,6 @@
 
 
+using System;
 using Microsoft.Xna.Framework;
 using project_republics.Utils.Input;
 
@@ -13,7 +14,7 @@ public class Chunk
     private bool _visible;
     public Chunk(Sector sectorRef, ByteVector2 position)
     {
-        _visible = true;
+        _visible = false;
         _sectorRef = sectorRef;
         _position = position;
         _tiles = new BaseTile[WorldContainer.CHUNK_SIDE, WorldContainer.CHUNK_SIDE];
@@ -26,19 +27,19 @@ public class Chunk
         }
     }
 
-    public void SetPositionToTiles(Vector2 newPosition)
+    public void SetPositionToTiles(Vector2 newPosition, Action<bool> onChangeChunkVisibility)
     {
         Vector2 chunkPosition = newPosition / 32 / WorldContainer.CHUNK_SIDE;
 
         if(Vector2.Distance(chunkPosition, _position.ToVector2()) > 5f)
         {
+            if(_visible) onChangeChunkVisibility.Invoke(false);
             _visible = false;
         } else
         {
+            if(!_visible) onChangeChunkVisibility.Invoke(true);
             _visible = true;
         }
-
-
         if(_visible)
         {
             for(int i = 0;i<_tiles.GetLength(0);i++)
