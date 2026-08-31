@@ -29,6 +29,7 @@ public class WorldContainer
 
     public async Task PrepareWorld()
     {
+        // TODO: generate all sectors in the map
         _sectors.Add(await Sector.GenSector(this, new ByteVector2(0, 0)));
         SwitchToActiveSector(_sectors[0], _mainPlayerRef.Position);
     }

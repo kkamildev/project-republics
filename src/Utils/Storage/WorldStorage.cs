@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using project_republics.Components.UI.Models;
 using project_republics.Components.World;
+using project_republics.Components.World.Sections;
 using project_republics.Utils.Components.Network;
 
 namespace project_republics.Utils.Storage;
@@ -19,6 +20,20 @@ public class WorldStorage
         _metadata = data;
         _worldPath = Path.Join(MainGame.Storage.AppPath, "worlds", data.DirectoryPath);
     }
+
+    public async Task<SectorData> FindSector(ByteVector2 position)
+    {
+        string sectorsDirPath = Path.Join(_worldPath, "sectors");
+        if(!File.Exists(sectorsDirPath)) Directory.CreateDirectory(sectorsDirPath);
+
+        string sectorPath = Path.Join(sectorsDirPath, $"{position.X}-{position.Y}.sec");
+        if(!File.Exists(sectorsDirPath))
+        {
+            return null;
+        }
+        string data = await File.ReadAllTextAsync(sectorPath);
+        return SectorData.Parse(data);
+    } 
 
     public async Task<Player> LoadPlayer(Account account)
     {
