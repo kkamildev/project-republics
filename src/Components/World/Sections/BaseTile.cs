@@ -1,12 +1,14 @@
 
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using project_republics.Utils.Components.Sprites;
+using project_republics.Utils.Exceptions;
 using project_republics.Utils.Input;
 
 namespace project_republics.Components.World.Sections;
 
-public class BaseTile
+public class BaseTile : IWorldObject
 {
     private readonly Chunk _chunkRef;
     private Sprite _sprite;
@@ -20,6 +22,12 @@ public class BaseTile
             Scale = 2f
         };
     }
+
+    public BaseTile()
+    {
+        
+    }
+
     public virtual void Draw()
     {
         _sprite.Draw();
@@ -34,6 +42,23 @@ public class BaseTile
     public virtual void Update()
     {
         
+    }
+
+    public string Serialize()
+    {
+        return $"0>{_sprite.Texture}";
+    }
+
+    public IWorldObject Parse(Chunk chunkRef, Vector2 inChunkPosition, string data)
+    {
+        try
+        {
+            string[] args = data.Split(",");
+            return new BaseTile(chunkRef, inChunkPosition, (Textures)int.Parse(args[0]));
+        } catch(Exception)
+        {
+            throw new WorldObjectParseException("Tile", data);
+        }
     }
 
     public virtual Vector2 Position

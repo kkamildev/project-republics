@@ -27,7 +27,7 @@ public class Sector
         SectorData data = await worldRef.Storage.FindSector(position);
         if(data == null)
         {
-            // generating sector
+            data = worldRef.WorldGen.GenSector(position);
         }
         Sector sector = new(worldRef, position, data);
         await sector.GenChunks();

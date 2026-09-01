@@ -94,4 +94,12 @@ public class WorldContainer
             return _mainPlayerRef;
         }
     }
+
+    public WorldGen WorldGen
+    {
+        get
+        {
+            return _worldGenerator;
+        }
+    }
 }
