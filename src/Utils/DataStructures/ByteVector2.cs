@@ -3,6 +3,8 @@
 using System;
 using Microsoft.Xna.Framework;
 
+namespace project_republics.Utils.DataStructures;
+
 public struct ByteVector2
 {
     public byte X;

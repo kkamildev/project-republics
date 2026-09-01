@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using project_republics.Components.World.Sections;
+using project_republics.Utils.DataStructures;
 using project_republics.Utils.Storage;
 
 namespace project_republics.Components.World;
@@ -13,10 +14,12 @@ public class WorldContainer
     public const byte SECTOR_CHUNKS_SIDE = 64;
     public const byte MAP_SIDE = 25;
     public const int PLAYER_MOVEMENT_SPEED = 700;
+    public const int PLAYER_GRAPH_RENDER_RANGE = 3;
     private int _visibleChunks;
     private readonly List<Sector> _sectors;
     private Sector _activeSector;
     private readonly WorldStorage _storage;
+    private readonly WorldGen _worldGenerator;
     private readonly Player _mainPlayerRef;
     public WorldContainer(WorldStorage worldStorage, Player mainPlayer)
     {
@@ -24,6 +27,7 @@ public class WorldContainer
         _mainPlayerRef = mainPlayer;
         _storage = worldStorage;
         _sectors = [];
+        _worldGenerator = new(_storage.Metadata.Seed);
         _mainPlayerRef.OnChangePosition = OnChangePlayerPosition;
     }
 

@@ -2,6 +2,7 @@
 
 using System;
 using Microsoft.Xna.Framework;
+using project_republics.Utils.DataStructures;
 using project_republics.Utils.Input;
 
 namespace project_republics.Components.World.Sections;
@@ -10,14 +11,16 @@ public class Chunk
 {
     private readonly Sector _sectorRef;
     private ByteVector2 _position;
-    private BaseTile[,] _tiles;
+    private readonly BaseTile[,] _tiles;
     private bool _visible;
-    public Chunk(Sector sectorRef, ByteVector2 position)
+    public Chunk(Sector sectorRef, ByteVector2 position, string chunkData)
     {
         _visible = false;
         _sectorRef = sectorRef;
         _position = position;
         _tiles = new BaseTile[WorldContainer.CHUNK_SIDE, WorldContainer.CHUNK_SIDE];
+
+        // TODO: Create parser
         for(int i = 0;i<16;i++)
         {
             for(int j = 0;j<16;j++)
@@ -31,7 +34,7 @@ public class Chunk
     {
         Vector2 chunkPosition = newPosition / 32 / WorldContainer.CHUNK_SIDE;
 
-        if(Vector2.Distance(chunkPosition, _position.ToVector2()) > 5f)
+        if(Vector2.Distance(chunkPosition, _position.ToVector2()) > 3f)
         {
             if(_visible) onChangeChunkVisibility.Invoke(false);
             _visible = false;

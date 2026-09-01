@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using project_republics.Utils.DataStructures;
 
 namespace project_republics.Components.World.Sections;
 
@@ -35,8 +36,14 @@ public class Sector
 
     public async Task GenChunks()
     {
-        _chunks[0, 0] = new Chunk(this, new ByteVector2(0, 0));
-        _chunks[0, 1] = new Chunk(this, new ByteVector2(1, 0));
+        // TODO: splite data to chunk
+        for(int i = 0;i<_chunks.GetLength(0);i++)
+        {
+            for(int j = 0;j<_chunks.GetLength(1);j++)
+            {
+                _chunks[i, j] = new Chunk(this, new ByteVector2((byte)i, (byte)j), "");
+            }
+        }
     }
 
     public void SetViewPosition(Vector2 position, Action<bool> onChangeChunkVisibility)
@@ -70,6 +77,14 @@ public class Sector
             {
                 _chunks[i, j]?.Update();
             }
+        }
+    }
+
+    public SectorData Data
+    {
+        get
+        {
+            return _data;
         }
     }
 
