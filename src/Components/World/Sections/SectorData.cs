@@ -10,7 +10,7 @@ public class SectorData
     public string[] ChunksData{get;set;}
 
 
-    public static SectorData Parse(string data)
+    public static SectorData Parse(string[] dataLines)
     {
         // TODO: create a parser
         return new SectorData();

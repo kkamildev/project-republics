@@ -14,9 +14,8 @@ public class WorldContainer
     public const byte SECTOR_CHUNKS_SIDE = 64;
     public const byte MAP_SIDE = 25;
     public const int PLAYER_MOVEMENT_SPEED = 700;
-    public const int PLAYER_GRAPH_RENDER_RANGE = 3;
+    public const int PLAYER_GRAPH_RENDER_RANGE = 4;
     private int _visibleChunks;
-    private readonly List<Sector> _sectors;
     private Sector _activeSector;
     private readonly WorldStorage _storage;
     private readonly WorldGen _worldGenerator;
@@ -26,16 +25,23 @@ public class WorldContainer
         _visibleChunks = 0;
         _mainPlayerRef = mainPlayer;
         _storage = worldStorage;
-        _sectors = [];
         _worldGenerator = new(_storage.Metadata.Seed);
         _mainPlayerRef.OnChangePosition = OnChangePlayerPosition;
     }
 
     public async Task PrepareWorld()
     {
-        // TODO: generate all sectors in the map
-        _sectors.Add(await Sector.GenSector(this, new ByteVector2(0, 0)));
-        SwitchToActiveSector(_sectors[0], _mainPlayerRef.Position);
+        await SetSector();
+    }
+
+    public async Task SetSector()
+    {
+        ByteVector2 sectorPos = new(_mainPlayerRef.Data.SectorX, _mainPlayerRef.Data.SectorY);
+        if(_activeSector != null)
+        {
+            // TODO: saving sector data
+        }
+        SwitchToActiveSector(await Sector.GenSector(this, sectorPos), _mainPlayerRef.Position);
     }
 
     private void SwitchToActiveSector(Sector sector, Vector2 position)
@@ -63,12 +69,12 @@ public class WorldContainer
 
     public void Draw()
     {
-        _activeSector.Draw();
+        _activeSector?.Draw();
     }
 
     public void Update()
     {
-        _activeSector.Update();
+        _activeSector?.Update();
     }
 
     public int VisibleChunks

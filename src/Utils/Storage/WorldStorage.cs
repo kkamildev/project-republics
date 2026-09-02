@@ -32,7 +32,7 @@ public class WorldStorage
         {
             return null;
         }
-        string data = await File.ReadAllTextAsync(sectorPath);
+        string[] data = await File.ReadAllLinesAsync(sectorPath);
         return SectorData.Parse(data);
     } 
 
@@ -74,8 +74,8 @@ public class WorldStorage
             Player.PlayerData defaultPlayerData = new()
             {
                 Username = "Guest",
-                SectorX = MainGame.Random.Next(0, WorldContainer.MAP_SIDE),
-                SectorY = MainGame.Random.Next(0, WorldContainer.MAP_SIDE),
+                SectorX = (byte)MainGame.Random.Next(0, WorldContainer.MAP_SIDE),
+                SectorY = (byte)MainGame.Random.Next(0, WorldContainer.MAP_SIDE),
                 X = MainGame.Random.Next(0, WorldContainer.CHUNK_SIDE * WorldContainer.SECTOR_CHUNKS_SIDE),
                 Y = MainGame.Random.Next(0, WorldContainer.CHUNK_SIDE * WorldContainer.SECTOR_CHUNKS_SIDE)
             };

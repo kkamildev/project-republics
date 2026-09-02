@@ -23,12 +23,8 @@ public class Sector
 
     public static async Task<Sector> GenSector(WorldContainer worldRef, ByteVector2 position)
     {
-        // TODO: creating reading from storage actual is this sector exist
         SectorData data = await worldRef.Storage.FindSector(position);
-        if(data == null)
-        {
-            data = worldRef.WorldGen.GenSector(position);
-        }
+        data ??= worldRef.WorldGen.GenSector(position);
         Sector sector = new(worldRef, position, data);
         await sector.GenChunks();
         return sector;
@@ -36,12 +32,19 @@ public class Sector
 
     public async Task GenChunks()
     {
-        // TODO: splite data to chunk
+        string currentChunk;
         for(int i = 0;i<_chunks.GetLength(0);i++)
         {
             for(int j = 0;j<_chunks.GetLength(1);j++)
             {
-                _chunks[i, j] = new Chunk(this, new ByteVector2((byte)i, (byte)j), "");
+                try
+                {
+                    currentChunk = _data.ChunksData[i * _chunks.GetLength(0) + j];
+                } catch(Exception)
+                {
+                    throw new Exception((i * _chunks.GetLength(0) + j).ToString());
+                }
+                _chunks[i, j] = new Chunk(this, new ByteVector2((byte)i, (byte)j), currentChunk);
             }
         }
     }
@@ -85,6 +88,14 @@ public class Sector
         get
         {
             return _data;
+        }
+    }
+
+    public WorldContainer WorldRef
+    {
+        get
+        {
+            return _worldRef;
         }
     }
 

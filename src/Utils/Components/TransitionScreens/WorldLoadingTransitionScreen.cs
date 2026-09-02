@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using project_republics.Utils.Animations;
 using project_republics.Utils.Components.Sprites;
 using Microsoft.Xna.Framework;
+using project_republics.Utils.Exceptions;
 
 namespace project_republics.Utils.Components.TransitionScreens;
 
@@ -21,6 +22,7 @@ public class WorldLoadingTransitionScreen : TransitionScreen
     }
     public override void Update()
     {
+        base.Update();
         if(_currentTask == null)
         {
             _background.Color = new Color(_background.Color, _inAnimation.Progress);
@@ -28,6 +30,5 @@ public class WorldLoadingTransitionScreen : TransitionScreen
         {
             _background.Color = new Color(_background.Color, _outAnimation.Progress);
         }
-        base.Update();
     }
 }

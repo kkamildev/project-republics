@@ -3,6 +3,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using project_republics.Utils.DataStructures;
+using project_republics.Utils.Exceptions;
 using project_republics.Utils.Input;
 
 namespace project_republics.Components.World.Sections;
@@ -20,21 +21,44 @@ public class Chunk
         _position = position;
         _tiles = new BaseTile[WorldContainer.CHUNK_SIDE, WorldContainer.CHUNK_SIDE];
 
-        // TODO: Create parser
-        for(int i = 0;i<16;i++)
+        ParseChunk(chunkData);
+        
+    }
+    private void ParseChunk(string chunkData)
+    {
+        // TODO: Create full parser
+        string[] blocks = chunkData.Split(";");
+        string[] blockData;
+        IWorldObject objectSingleton;
+        for(int i = 0;i<WorldContainer.CHUNK_SIDE;i++)
         {
-            for(int j = 0;j<16;j++)
+            for(int j = 0;j<WorldContainer.CHUNK_SIDE;j++)
             {
-                _tiles[i, j] = new BaseTile(this, new Vector2(j, i), Textures.GRASS_TILE);
+                blockData = blocks[i * WorldContainer.CHUNK_SIDE + j].Split(">");
+                objectSingleton = GetObjectToParse(blockData);
+                _tiles[i, j] = objectSingleton.Parse(this, new Vector2(j, i), blockData[1]) as BaseTile;
             }
         }
+        
     }
+    private IWorldObject GetObjectToParse(string[] blockData)
+    {
+        try
+        {
+            int objectId = int.Parse(blockData[0]);
+            return _sectorRef.WorldRef.WorldGen.GetWorldObjectSingleton(objectId);
+        } catch(Exception)
+        {
+            throw new NotSupportedWorldObjectException(string.Join('>', blockData));
+        }
+    }
+
 
     public void SetPositionToTiles(Vector2 newPosition, Action<bool> onChangeChunkVisibility)
     {
         Vector2 chunkPosition = newPosition / 32 / WorldContainer.CHUNK_SIDE;
 
-        if(Vector2.Distance(chunkPosition, _position.ToVector2()) > 3f)
+        if(Vector2.Distance(chunkPosition, _position.ToVector2()) > WorldContainer.PLAYER_GRAPH_RENDER_RANGE)
         {
             if(_visible) onChangeChunkVisibility.Invoke(false);
             _visible = false;

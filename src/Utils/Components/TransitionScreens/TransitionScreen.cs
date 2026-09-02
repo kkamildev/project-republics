@@ -25,13 +25,9 @@ public abstract class TransitionScreen : IDisposable
 
     public virtual void Update()
     {
-        _inAnimation.Update();
         if(_inAnimation.BaseProgress >= 1)
         {
-            if(_currentTask == null)
-            {
-                _currentTask = _taskFactory();
-            }
+            _currentTask ??= Task.Run(() => _taskFactory());
             if(_currentTask.IsCompleted)
             {
                 if (_currentTask.IsFaulted)
@@ -41,6 +37,7 @@ public abstract class TransitionScreen : IDisposable
                 _outAnimation.Update();
             }
         }
+        _inAnimation.Update();
     }
 
     public bool Finished {

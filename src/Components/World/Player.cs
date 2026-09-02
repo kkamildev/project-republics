@@ -10,8 +10,8 @@ public class Player : IDisposable
     public class PlayerData
     {
         public string Username{get;set;}
-        public int SectorX{get;set;}
-        public int SectorY{get;set;}
+        public byte SectorX{get;set;}
+        public byte SectorY{get;set;}
         public int X{get;set;}
         public int Y{get;set;}
     }

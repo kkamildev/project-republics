@@ -63,8 +63,8 @@ public class MainMenuScene : IScene
 
     private void OnPlayGame(WorldModel.WorldData worldData)
     {
-        MainGame.TransitionScreen = new WorldLoadingTransitionScreen(new LinearAnimation(0.5f, () => {}, 0f, 1f),
-         new LinearAnimation(0.5f, () => {}, 1f, 0f),
+        MainGame.TransitionScreen = new WorldLoadingTransitionScreen(new EaseInOutAnimation(0.5f, () => {}, 0f, 1f),
+         new EaseInOutAnimation(0.5f, () => {}, 1f, 0f),
          () => LoadGameScene(worldData));
     }
 

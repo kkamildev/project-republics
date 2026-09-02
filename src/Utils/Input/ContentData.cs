@@ -42,6 +42,7 @@ public class ContentData
             {Textures.WORLD_LABEL, Path.Join(_baseTexturesPath, "UI", "worldLabel")},
             {Textures.INPUT_FIELD, Path.Join(_baseTexturesPath, "UI", "inputField")},
             {Textures.GRASS_TILE, Path.Join(_baseTexturesPath, "Tiles", "grass")},
+            {Textures.DARK_GRASS_TILE, Path.Join(_baseTexturesPath, "Tiles", "darkGrass")},
         };
         // SOUNDS
         SoundsData = new()

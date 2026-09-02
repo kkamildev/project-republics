@@ -92,17 +92,20 @@ public class MainGame : Game
     protected override void Update(GameTime gameTime)
     {
         DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+        DeltaTime = Math.Min(DeltaTime, 0.05f);
         Input.Update();
 
         _currentScene?.Update();
         VirtualKeyboard.Update();
         if(TransitionScreen != null)
         {
-            TransitionScreen.Update();
             if(TransitionScreen.Finished)
             {
                 TransitionScreen.Dispose();
                 TransitionScreen = null;
+            } else
+            {
+                TransitionScreen.Update();
             }
         }
 
