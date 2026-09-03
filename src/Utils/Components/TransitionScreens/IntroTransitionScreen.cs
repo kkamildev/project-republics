@@ -51,7 +51,7 @@ public class IntroTransitionScreen : TransitionScreen
     }
     public override void Update()
     {
-        if(_currentTask != null)
+        if(!_asyncState.Empty)
         {
             _background.Color = new Color(_background.Color, _outAnimation.Progress);
         }

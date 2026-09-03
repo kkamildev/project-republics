@@ -2,19 +2,19 @@
 using System;
 using System.Threading.Tasks;
 using project_republics.Utils.Animations;
+using project_republics.Utils.States;
 
 namespace project_republics.Utils.Components.TransitionScreens;
 
 public abstract class TransitionScreen : IDisposable
 {
     protected Animation _inAnimation, _outAnimation;
-    protected Func<Task> _taskFactory;
-    protected Task _currentTask;
+    protected AsyncState _asyncState;
     public TransitionScreen(Animation inAnimation, Animation outAnimation, Func<Task> taskFactory)
     {
         _inAnimation = inAnimation;
         _outAnimation = outAnimation;
-        _taskFactory = taskFactory;
+        _asyncState = new(taskFactory);
     }
 
 
@@ -27,13 +27,9 @@ public abstract class TransitionScreen : IDisposable
     {
         if(_inAnimation.BaseProgress >= 1)
         {
-            _currentTask ??= Task.Run(() => _taskFactory());
-            if(_currentTask.IsCompleted)
+            if(_asyncState.Empty) _asyncState.Run();
+            if(_asyncState.Completed)
             {
-                if (_currentTask.IsFaulted)
-                {
-                    throw _currentTask.Exception;
-                }
                 _outAnimation.Update();
             }
         }
@@ -49,6 +45,6 @@ public abstract class TransitionScreen : IDisposable
 
     public virtual void Dispose()
     {
-        _currentTask.Dispose();
+        _asyncState.Dispose();
     }
 }

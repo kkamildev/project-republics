@@ -44,7 +44,7 @@ public class Sector
                 {
                     throw new Exception((i * _chunks.GetLength(0) + j).ToString());
                 }
-                _chunks[i, j] = new Chunk(this, new ByteVector2((byte)i, (byte)j), currentChunk);
+                _chunks[i, j] = new Chunk(this, new ByteVector2((byte)j, (byte)i), currentChunk);
             }
         }
     }

@@ -1,7 +1,9 @@
 
+using System;
 using Microsoft.Xna.Framework;
 using project_republics.Components.World.Sections;
 using project_republics.Utils.DataStructures;
+using project_republics.Utils.Exceptions;
 using project_republics.Utils.Generators;
 
 namespace project_republics.Components.World;
@@ -9,8 +11,9 @@ namespace project_republics.Components.World;
 public sealed class WorldGen
 {
     private readonly IWorldObject[] _singletonArray;
-    private readonly PerlinNoise _perlin;
     private readonly int _seed;
+    private readonly PerlinNoise _perlin;
+    private Vector2 _position;
     public WorldGen(int seed)
     {
         _seed = seed;
@@ -36,20 +39,26 @@ public sealed class WorldGen
     }
     private string GenChunk(Vector2 chunkPosition)
     {
+
+
         string data = "";
         // each chunk is represented by one string line
         // 0>32;0>12;0>1;
+        double noiseValue;
+        _position = chunkPosition * WorldContainer.CHUNK_SIDE;
         for(int i = 0;i<WorldContainer.CHUNK_SIDE;i++)
         {
             for(int j = 0;j<WorldContainer.CHUNK_SIDE;j++)
             {
-                if(MainGame.Random.Next(0, 2) == 1)
-                {
-                    data+= "0>10;";
-                } else
-                {
-                    data+= "0>9;";
-                }
+                noiseValue = _perlin.Noise((_position.X + j) * 0.01f, (_position.Y + i) * 0.01f);
+                if (noiseValue < 0.50f)
+                    data += "0>9;";
+                else if (noiseValue < 0.60f)
+                    data += "0>10;";
+                else
+                    data += "0>11;";
+
+
                 // TODO: generating tiles using perlin noise
             }
         }

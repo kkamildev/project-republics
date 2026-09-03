@@ -201,3 +201,16 @@
 /processorParam:TextureFormat=Color
 /build:textures/Tiles/darkGrass.png
 
+#begin textures/Tiles/lightGrass.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/Tiles/lightGrass.png
+
+

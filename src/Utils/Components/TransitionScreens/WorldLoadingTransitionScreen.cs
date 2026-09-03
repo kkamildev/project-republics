@@ -23,7 +23,7 @@ public class WorldLoadingTransitionScreen : TransitionScreen
     public override void Update()
     {
         base.Update();
-        if(_currentTask == null)
+        if(_asyncState.Empty)
         {
             _background.Color = new Color(_background.Color, _inAnimation.Progress);
         } else
