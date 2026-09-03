@@ -1,5 +1,7 @@
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using project_republics.Components.World.Sections;
 using project_republics.Utils.DataStructures;
@@ -11,9 +13,9 @@ namespace project_republics.Components.World;
 public sealed class WorldGen
 {
     private readonly IWorldObject[] _singletonArray;
+    private readonly Dictionary<float, BaseTile> _generatorTilesRanges;
     private readonly int _seed;
     private readonly PerlinNoise _perlin;
-    private Vector2 _position;
     public WorldGen(int seed)
     {
         _seed = seed;
@@ -21,6 +23,13 @@ public sealed class WorldGen
         _singletonArray = [
             new BaseTile()
         ];
+        _generatorTilesRanges = new Dictionary<float, BaseTile>(){
+            {0.5f, new BaseTile(Utils.Input.Textures.GRASS_TILE, Enums.Biomes.PLAINS)},
+            {0.6f, new BaseTile(Utils.Input.Textures.DARK_GRASS_TILE, Enums.Biomes.PLAINS)},
+            {1f, new BaseTile(Utils.Input.Textures.LIGHT_GRASS_TILE, Enums.Biomes.PLAINS)}
+        };
+        _generatorTilesRanges = _generatorTilesRanges.OrderBy(kv => kv.Key).ToDictionary(kv => kv.Key, kv => kv.Value);
+
     }
 
     public SectorData GenSector(ByteVector2 sectorPosition)
@@ -45,21 +54,15 @@ public sealed class WorldGen
         // each chunk is represented by one string line
         // 0>32;0>12;0>1;
         double noiseValue;
-        _position = chunkPosition * WorldContainer.CHUNK_SIDE;
+        KeyValuePair<float, BaseTile> foundTile;
         for(int i = 0;i<WorldContainer.CHUNK_SIDE;i++)
         {
             for(int j = 0;j<WorldContainer.CHUNK_SIDE;j++)
             {
-                noiseValue = _perlin.Noise((_position.X + j) * 0.01f, (_position.Y + i) * 0.01f);
-                if (noiseValue < 0.50f)
-                    data += "0>9;";
-                else if (noiseValue < 0.60f)
-                    data += "0>10;";
-                else
-                    data += "0>11;";
-
-
-                // TODO: generating tiles using perlin noise
+                noiseValue = _perlin.Noise((chunkPosition * WorldContainer.CHUNK_SIDE + new Vector2(j, i)) * 0.01f);
+                // TODO: generate other structures
+                foundTile = _generatorTilesRanges.First((key) => noiseValue < key.Key);
+                data += foundTile.Value.Serialize();
             }
         }
         return data;

@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 
 namespace project_republics.Utils.Generators;
 
@@ -8,8 +9,7 @@ public class PerlinNoise
 
     public PerlinNoise(int seed)
     {
-        // skopiuj bazową tablicę
-        int[] p = {
+        int[] p = [
             151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,
             140,36,103,30,69,142,8,99,37,240,21,10,23,190,6,148,
             247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,
@@ -28,7 +28,7 @@ public class PerlinNoise
             157,184,84,204,176,115,121,50,45,127,4,150,254,138,
             236,205,93,222,114,67,29,24,72,243,141,128,195,78,
             66,215,61,156,180
-        };
+        ];
         Random rng = new(seed);
         for (int i = 255; i > 0; i--)
         {
@@ -77,5 +77,10 @@ public class PerlinNoise
         double x2 = Lerp(Grad(ab, xf, yf - 1), Grad(bb, xf - 1, yf - 1), u);
 
         return (Lerp(x1, x2, v) + 1.0) * 0.5;
+    }
+
+    public double Noise(Vector2 position)
+    {
+        return Noise(position.X, position.Y);
     }
 }

@@ -78,6 +78,11 @@ public class Chunk
             }
         }
     }
+    public BaseTile GetTile(Vector2 blockPos)
+    {
+        Vector2 position = new(blockPos.X % WorldContainer.CHUNK_SIDE, blockPos.Y % WorldContainer.CHUNK_SIDE);
+        return _tiles[(int)position.Y, (int)position.X];
+    }
 
     public void Draw()
     {

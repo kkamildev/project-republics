@@ -61,6 +61,13 @@ public class Sector
         }
     }
 
+    public BaseTile GetTile()
+    {
+        Vector2 blockPos = _viewPosition / 32;
+        Vector2 position = new(blockPos.X / WorldContainer.CHUNK_SIDE, blockPos.Y / WorldContainer.CHUNK_SIDE);
+        return _chunks[(int)position.Y, (int)position.X].GetTile(blockPos);
+    }
+
     public void Draw()
     {
         for(int i = 0;i<_chunks.GetLength(0);i++)

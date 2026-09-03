@@ -17,6 +17,7 @@ public class WorldContainer
     public const int PLAYER_GRAPH_RENDER_RANGE = 4;
     private int _visibleChunks;
     private Sector _activeSector;
+    private BaseTile _selectedTile;
     private readonly WorldStorage _storage;
     private readonly WorldGen _worldGenerator;
     private readonly Player _mainPlayerRef;
@@ -54,6 +55,7 @@ public class WorldContainer
     private void OnChangePlayerPosition(Vector2 newPosition)
     {
         _activeSector.SetViewPosition(newPosition, OnChangeChunkVisibility);
+        _selectedTile = _activeSector.GetTile();
     }
 
     private void OnChangeChunkVisibility(bool visible)
@@ -82,6 +84,14 @@ public class WorldContainer
         get
         {
             return _visibleChunks;
+        }
+    }
+
+    public BaseTile SelectedTile
+    {
+        get
+        {
+            return _selectedTile;
         }
     }
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using project_republics.Components.World.Enums;
 using project_republics.Utils.Components.Sprites;
 using project_republics.Utils.Exceptions;
 using project_republics.Utils.Input;
@@ -11,12 +12,15 @@ namespace project_republics.Components.World.Sections;
 public class BaseTile : IWorldObject
 {
     private readonly Chunk _chunkRef;
-    private Sprite _sprite;
+    private readonly Sprite _sprite;
     private readonly Vector2 _primaryPosition;
-    public BaseTile(Chunk chunkRef, Vector2 inChunkPosition, Textures texture)
+    private readonly Biomes _biome;
+    public BaseTile(Chunk chunkRef, Vector2 inChunkPosition, Textures texture, Biomes biome)
     {
+        
         _chunkRef = chunkRef;
         _primaryPosition = (_chunkRef.Position.ToVector2() * WorldContainer.CHUNK_SIDE + inChunkPosition) * 32 + MainGame.Resolution / 2;
+        _biome = biome;
         _sprite = new(texture, _primaryPosition)
         {
             Scale = 2f
@@ -26,6 +30,12 @@ public class BaseTile : IWorldObject
     public BaseTile()
     {
         
+    }
+
+    public BaseTile(Textures texture, Biomes biome)
+    {
+        _biome = biome;
+        _sprite = new(texture, Vector2.Zero);
     }
 
     public virtual void Draw()
@@ -46,7 +56,7 @@ public class BaseTile : IWorldObject
 
     public string Serialize()
     {
-        return $"0>{_sprite.Texture}";
+        return $"0>{(int)_sprite.Texture},{(byte)_biome};";
     }
 
     public IWorldObject Parse(Chunk chunkRef, Vector2 inChunkPosition, string data)
@@ -54,7 +64,7 @@ public class BaseTile : IWorldObject
         try
         {
             string[] args = data.Split(",");
-            return new BaseTile(chunkRef, inChunkPosition, (Textures)int.Parse(args[0]));
+            return new BaseTile(chunkRef, inChunkPosition, (Textures)int.Parse(args[0]), (Biomes)byte.Parse(args[1]));
         } catch(Exception)
         {
             throw new WorldObjectParseException("Tile", data);
@@ -66,6 +76,14 @@ public class BaseTile : IWorldObject
         set
         {
             _sprite.Position = _primaryPosition - value;
+        }
+    }
+
+    public Biomes Biome
+    {
+        get
+        {
+            return _biome;
         }
     }
 }
