@@ -40,7 +40,7 @@ public class DebugMenu : UIBase, IDisposable
         _playerPosState = new((newValue) => _texts.Texts[4].StringParams = [newValue]);
         _visibleChunksState = new((newValue) => _texts.Texts[5].StringParams = [newValue]);
         _biomeState = new((newValue) => _texts.Texts[6].StringParams = [newValue]);
-        _background = new(Utils.Input.Textures.BACKGROUND, new Rectangle(0, 0, 400, (int)MainGame.Resolution.Y), 0, 0, 0){Color = new Color(Color.Black, 0.75f)};
+        _background = new(Utils.Input.Textures.BACKGROUND, new Rectangle(0, 0, 400, (int)MainGame.Resolution.Y), 0, 0, 0){Color = new Color(Color.Black, 0.60f)};
         MainPosition = new Vector2(-400, 0);
     }
     

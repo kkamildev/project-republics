@@ -14,7 +14,8 @@ public class WorldContainer
     public const byte SECTOR_CHUNKS_SIDE = 64;
     public const byte MAP_SIDE = 25;
     public const int PLAYER_MOVEMENT_SPEED = 700;
-    public const int PLAYER_GRAPH_RENDER_RANGE = 4;
+    public const int PLAYER_GRAPH_RENDER_RANGE = 5;
+    public const int TILE_SIZE = 16;
     private int _visibleChunks;
     private Sector _activeSector;
     private BaseTile _selectedTile;
@@ -55,7 +56,16 @@ public class WorldContainer
     private void OnChangePlayerPosition(Vector2 newPosition)
     {
         _activeSector.SetViewPosition(newPosition, OnChangeChunkVisibility);
+
+        // prev tile returning to normal state
+        if(_selectedTile != null)
+        {
+            _selectedTile.Color = Color.White;
+        }
         _selectedTile = _activeSector.GetTile();
+
+        // new tile, selected tile state like highlight
+        _selectedTile.Color = Color.Gray;
     }
 
     private void OnChangeChunkVisibility(bool visible)

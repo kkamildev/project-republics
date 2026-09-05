@@ -24,7 +24,7 @@ public class Player : IDisposable
     {
         _speedMultiplier = 1f;
         _data = data;
-        _position = new Vector2(_data.X, _data.Y) * 32;
+        _position = new Vector2(_data.X, _data.Y) * WorldContainer.TILE_SIZE;
         MainGame.Input.SubscribeAction(Utils.Input.Controls.MOVE_UP, UpAction);
         MainGame.Input.SubscribeAction(Utils.Input.Controls.MOVE_DOWN, DownAction);
         MainGame.Input.SubscribeAction(Utils.Input.Controls.MOVE_LEFT, LeftAction);
@@ -49,9 +49,9 @@ public class Player : IDisposable
         if(OnChangePosition != null)
         {
             _position.Y+= WorldContainer.PLAYER_MOVEMENT_SPEED * MainGame.DeltaTime * _speedMultiplier;
-            if(_position.Y > WorldContainer.SECTOR_CHUNKS_SIDE * WorldContainer.CHUNK_SIDE * 32)
+            if(_position.Y > WorldContainer.SECTOR_CHUNKS_SIDE * WorldContainer.CHUNK_SIDE * WorldContainer.TILE_SIZE)
             {
-                _position.Y = WorldContainer.SECTOR_CHUNKS_SIDE * WorldContainer.CHUNK_SIDE * 32;
+                _position.Y = WorldContainer.SECTOR_CHUNKS_SIDE * WorldContainer.CHUNK_SIDE * WorldContainer.TILE_SIZE;
             }
             MoveAction();
         }
@@ -73,17 +73,17 @@ public class Player : IDisposable
         if(OnChangePosition != null)
         {
             _position.X+= WorldContainer.PLAYER_MOVEMENT_SPEED * MainGame.DeltaTime * _speedMultiplier;
-            if(_position.X > WorldContainer.SECTOR_CHUNKS_SIDE * WorldContainer.CHUNK_SIDE * 32)
+            if(_position.X > WorldContainer.SECTOR_CHUNKS_SIDE * WorldContainer.CHUNK_SIDE * WorldContainer.TILE_SIZE)
             {
-                _position.X = WorldContainer.SECTOR_CHUNKS_SIDE * WorldContainer.CHUNK_SIDE * 32;
+                _position.X = WorldContainer.SECTOR_CHUNKS_SIDE * WorldContainer.CHUNK_SIDE * WorldContainer.TILE_SIZE;
             }
             MoveAction();
         }
     }
     private void MoveAction()
     {
-        _data.X = (int)_position.X / 32;
-        _data.Y = (int)_position.Y / 32;
+        _data.X = (int)_position.X / WorldContainer.TILE_SIZE;
+        _data.Y = (int)_position.Y / WorldContainer.TILE_SIZE;
         OnChangePosition.Invoke(_position);
     }
 

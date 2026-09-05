@@ -56,7 +56,7 @@ public class Chunk
 
     public void SetPositionToTiles(Vector2 newPosition, Action<bool> onChangeChunkVisibility)
     {
-        Vector2 chunkPosition = newPosition / 32 / WorldContainer.CHUNK_SIDE;
+        Vector2 chunkPosition = newPosition / WorldContainer.TILE_SIZE / WorldContainer.CHUNK_SIDE;
 
         if(Vector2.Distance(chunkPosition, _position.ToVector2()) > WorldContainer.PLAYER_GRAPH_RENDER_RANGE)
         {

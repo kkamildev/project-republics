@@ -19,11 +19,11 @@ public class BaseTile : IWorldObject
     {
         
         _chunkRef = chunkRef;
-        _primaryPosition = (_chunkRef.Position.ToVector2() * WorldContainer.CHUNK_SIDE + inChunkPosition) * 32 + MainGame.Resolution / 2;
+        _primaryPosition = (_chunkRef.Position.ToVector2() * WorldContainer.CHUNK_SIDE + inChunkPosition) * WorldContainer.TILE_SIZE + MainGame.Resolution / 2;
         _biome = biome;
         _sprite = new(texture, _primaryPosition)
         {
-            Scale = 2f
+            Scale = WorldContainer.TILE_SIZE / 16f
         };
     }
 
@@ -84,6 +84,26 @@ public class BaseTile : IWorldObject
         get
         {
             return _biome;
+        }
+    }
+
+    public Color Color
+    {
+        get
+        {
+            return _sprite.Color;
+        }
+        set
+        {
+            _sprite.Color = value;
+        }
+    }
+
+    public bool Visible
+    {
+        get
+        {
+            return _chunkRef.Visible;
         }
     }
 }

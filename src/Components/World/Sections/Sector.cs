@@ -63,7 +63,7 @@ public class Sector
 
     public BaseTile GetTile()
     {
-        Vector2 blockPos = _viewPosition / 32;
+        Vector2 blockPos = _viewPosition / WorldContainer.TILE_SIZE;
         Vector2 position = new(blockPos.X / WorldContainer.CHUNK_SIDE, blockPos.Y / WorldContainer.CHUNK_SIDE);
         return _chunks[(int)position.Y, (int)position.X].GetTile(blockPos);
     }
