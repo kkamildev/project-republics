@@ -56,7 +56,7 @@ public class BaseTile : IWorldObject
 
     public string Serialize()
     {
-        return $"0>{(int)_sprite.Texture},{(byte)_biome};";
+        return $"0>{(int)_sprite.Texture},{(byte)_biome}";
     }
 
     public IWorldObject Parse(Chunk chunkRef, Vector2 inChunkPosition, string data)

@@ -53,7 +53,9 @@ public sealed class WorldGen
         string data = "";
         // each chunk is represented by one string line
         // 0>32;0>12;0>1;
+        // each block is presentent by layers divided using '+' char
         double noiseValue;
+        string[] blockData = new string[1];
         KeyValuePair<float, BaseTile> foundTile;
         for(int i = 0;i<WorldContainer.CHUNK_SIDE;i++)
         {
@@ -62,7 +64,13 @@ public sealed class WorldGen
                 noiseValue = _perlin.Noise((chunkPosition * WorldContainer.CHUNK_SIDE + new Vector2(j, i)) * 0.01f);
                 // TODO: generate other structures
                 foundTile = _generatorTilesRanges.First((key) => noiseValue < key.Key);
-                data += foundTile.Value.Serialize();
+
+                // LAYER 1: SURFACE
+                blockData[0] = foundTile.Value.Serialize();
+
+                blockData[^1] += ';';
+                data += string.Join('+', blockData);
+                
             }
         }
         return data;
