@@ -29,14 +29,18 @@ public class Chunk
         // TODO: Create full parser
         string[] blocks = chunkData.Split(";");
         string[] blockData;
+        string[] objectData;
         IWorldObject objectSingleton;
         for(int i = 0;i<WorldContainer.CHUNK_SIDE;i++)
         {
             for(int j = 0;j<WorldContainer.CHUNK_SIDE;j++)
             {
-                blockData = blocks[i * WorldContainer.CHUNK_SIDE + j].Split(">");
-                objectSingleton = GetObjectToParse(blockData);
-                _tiles[i, j] = objectSingleton.Parse(this, new Vector2(j, i), blockData[1]) as BaseTile;
+                blockData = blocks[i * WorldContainer.CHUNK_SIDE + j].Split('+');
+
+                // LAYER 1: SURFACE
+                objectData = blockData[0].Split('>');
+                objectSingleton = GetObjectToParse(objectData);
+                _tiles[i, j] = objectSingleton.Parse(this, new Vector2(j, i), objectData[1]) as BaseTile;
             }
         }
         
